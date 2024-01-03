@@ -1,0 +1,1450 @@
+\documentclass[AER]{AEA}
+
+%\usepackage{amsmath}
+%\usepackage{setspace}
+%\documentclass[12pt]{article}
+%\usepackage{amsmath}
+%\usepackage{setspace}
+\usepackage{amsfonts} % for mathbb
+%\usepackage{adjustbox}
+
+\usepackage{placeins} % needed to use \FloatBarrier
+\usepackage{graphicx} % for includegraphics
+\usepackage{hyperref} % for URLs
+
+%% Table stuff
+%\usepackage{longtable} 
+\usepackage{booktabs} % For \toprule
+%\usepackage{tabularx}
+%\usepackage{caption}
+\usepackage{dcolumn}
+\usepackage{natbib} % for citep
+\usepackage{subcaption} % needed for subfiture
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{enumerate}
+%\usepackage{amsmath,amsfonts, amssymb,amsthm,epsfig,epstopdf,url,array}
+%\usepackage{setspace}
+%\usepackage{xcolor}
+%\setlength{\extrarowheight}{4pt}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.7}
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{fit,calc,arrows,positioning}
+
+\hypersetup{
+  colorlinks = TRUE,
+  citecolor=blue,
+  linkcolor=red,
+  urlcolor=black
+}
+
+% Words to add to flyspell dictionary
+% Regressor
+% headcounts
+% pre 
+% generalizability 
+% endogeneity 
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\starlanguage}{Significance indicators: $p \le 0.05:*$,
+  .$p \le 0.01:**$, and $p \le .001:***$.}  
+
+\newcommand{\pops}{\admin{} are job openings posted in the administrative
+  category. \lpw{} are job openings predicted to have hourly wages less than \$5/hour based on a model fit with historical data. }
+
+\newcommand{\all}{\textsc{All}}
+\newcommand{\admin}{\textsc{Admin}}
+%\newcommand{\lpw}{\textsc{lpw}}
+%\newcommand{\lpw}{\textsc{LowPredWage}}
+\newcommand{\lpw}{\textsc{LowPredWage}}
+
+% Include tables?
+\newif\iftables
+\tablesfalse
+%\tablestrue
+
+\iftables
+  \newcommand{\includeTables}[1]{#1}
+\else
+  \newcommand{\includeTables}[1]{}
+\fi
+
+\input{parameters/parameters.tex} 
+\input{parameters/effects_parameters.tex}
+\input{parameters/params_country_selection.tex}
+\input{parameters/did_parameters.tex}
+
+\input{parameters/parameters_fill_and_hours.tex}
+\input{parameters/parameters_composition.tex}
+
+\newcommand{\figureWidth}{0.90}
+\newtheorem{prop}{Proposition}
+
+%\draftSpacing{1.5}
+
+
+\title{Price Floors and Employer Preferences: \\ Evidence from a Minimum Wage Experiment}
+\shortTitle{Price Floors and Employer Preferences}
+\author{John J. Horton \\ MIT \& NBER\footnote{Author contact information is available at \href{http://john-joseph-horton.com/}{http://john-joseph-horton.com/}.
+    Thanks to seminar participants at the Carlson School of Management, University of Minnesota; the Harris School at the
+    University of Chicago; FA\"{U} N\"{u}rnberg; the NBER Summer Institute Labor Studies meeting; Microsoft Research New York; Texas A\&M University and Harvard Business School. 
+}}
+
+\begin{document}
+
+
+\date{\today}
+\pubMonth{Month}
+\pubYear{Year}
+\pubVolume{Vol}
+\pubIssue{Issue}
+\JEL{J31, J38}
+\Keywords{}
+
+\begin{abstract}
+\noindent Firms posting job openings in an online labor market were randomly assigned minimum hourly wages.
+When facing a minimum wage, fewer firms hired, but those they did hire paid higher wages. 
+The reduction in hiring was fairly small, even at the highest minimum wage imposed.  
+In contrast, minimum wages substantially reduced hours-worked, across cells.
+Firms facing a higher minimum wage shifted to hiring more productive workers.
+This labor-labor substitution would presumably be less effective in equilibrium if all firms sought out more productive workers.
+Using the platform's imposition of a market-wide minimum wage after the experiment, I find that many of the experimental results also hold in equilibrium, including the substitution towards more productive workers.
+However, there was also a large reduction in the number of jobs posted for which the minimum wage would likely bind.
+\end{abstract} 
+
+\maketitle
+
+%\section{Introduction}
+
+If disemployment effects from minimum wages are modest, a potential reason is that firms can adjust in ways that do not necessarily reduce employee headcounts: 
+firms can cut back on hours, reduce non-monetary compensation, increase prices, have lower profits, and so on.
+Other non-wage labor costs might fall, say through reduced turnover or increased productivity from enhanced worker morale.
+Given enough time, firms might also change what ``kinds'' of workers they hire through labor-labor substitution, perhaps leaving headcounts unchanged.
+
+The adjustments firms \emph{might} make are clear enough\footnote{
+  See \cite{schmitt2013does} on potential margins of adjustment; \cite{draca2011minimum} on price pass-through; \cite{hirsch2011minimum} on morale. See \cite{fairris2008, giuliano2009minimum} on labor-labor substitution.
+}, but credibly measuring some of these adjustments is challenging. 
+For one, although US state-level variation in minimum wages provides a plausible identification strategy, it is not a perfect strategy. 
+Changes to state minimum wage levels are not made at random, and so much of the back-and-forth in the literature is about how to address the resulting selection issues.
+An additional empirical problem is measurement---some plausible firm adjustments would simply not show up in conventional administrative or survey datasets, either because the needed data is not recorded, or it is recorded with too much error to be useful.\footnote{
+  See \cite{card1992using, card1995time, katz1992effect, allegretto2011minimum, dube2010minimum, neumark2013revisiting, clemens2014minimum, powell2016synthetic, meer2013effects}.
+}
+
+
+Many of the limitations in conventional minimum wage study settings do not apply to this paper, in which I report the results of a minimum wage experiment conducted in an online labor market.
+During the experiment, treated firms were prohibited from hiring a worker at a wage below that firm's randomly assigned minimum.
+Firms differed in the degree of experience with the platform, which is observed---some are new and some have hired in the past. 
+\footnote{
+  I use the terms ``worker'', ``firm'', ``employer'', ``hired'', ``wage'' and ``employer'' for consistency with the literature and not as an indication of my views on the legal status of the relationships created in the marketplace. 
+}  
+The existence of this minimum wage was not announced to firms or to workers.
+Instead, job applicants were automatically instructed to raise their wage bids (if needed) when submitting applications, until the floor was exceeded.
+At the end of the experiment, the platform announced its intention to impose a platform-wide minimum wage, and then imposed that minimum wage several months later.
+
+
+Because of the empirical context of the experiment and the exogenous source of variation, many of the challenges of conventional minimum wage research are not challenges in this study. 
+With individual employers as the unit of randomization, the experimental sample is enormous, consisting of nearly 160,000 job openings.
+For each job opening, I observe whether anyone was hired, at what wage, and for how many hours; 
+I also have detailed measures on the pre-experiment attributes of all workers. 
+These measurements are made essentially without error because of the computer-mediated nature of the empirical context. 
+
+Despite these advantages, there are also limitations and new challenges because of the setting. 
+For one, a minimum wage that only applies to some firms is quite different from a minimum wage that binds market-wide, as the latter scenario would have clear equilibrium effects not relevant in the former scenario. 
+For these equilibrium questions, the platform's announcement and imposition of the minimum wage serve as a useful natural experiment.
+Although the minimum wage was applied all at once, platform-wide, very different wages prevailed in sub-markets for different kinds of work.
+As such, there are unaffected sub-markets that can serve as controls, permitting a difference-in-differences analysis.
+Another advantage of the platform-wide roll-out is that knowledge of the minimum wage was well-publicized, highlighting which experimental results (if any) depended on employers not knowing about the minimum wage policy.
+
+The main results of the experiment are as follows:
+Imposing a minimum wage raised the wages of hired workers, but this imposition also reduced hiring, albeit not by very much.
+Effects on hiring are only clearly detectable at the highest minimum wages.
+However, hours-worked fell sharply, with reductions as large as \HoursReduction{}\% in sub-populations of job openings expected to pay low wages.
+Large reductions in hours-worked occurred even in sub-populations that saw little or no reduction in hiring. 
+The net effect on hired worker total earnings was a wash; the increase in the wage was offset by the decline in hours-worked.
+Presumably, some of the reduction in hours-worked was caused by employers economizing on labor, but it was likely not the only cause.  
+
+Hours-worked could have fallen, in part, because employers facing minimum wages hired substantially more productive workers, as proxied by greater past earnings and higher past average wages. 
+This labor-labor substitution towards more productive workers occurred even at minimum wages for which there was no detectable decline in hiring, ruling out a pure selection explanation for the shift in hired worker composition.
+The extent of labor-labor substitution is large enough to explain about half of the reduction in hours-worked, under the assumption that a worker's past average wage is a good proxy for their productivity.
+
+The labor-labor substitution I find is only detectable because of the proxies for individual productivity.
+When I instead look for measures of labor-labor substitution with respect to demographics---namely the country the worker is from---the substitution is far harder to detect and only visible at the highest minimum wage. 
+This is in sharp contrast with the productivity-based measures of substitution, which showed clear effects at all minimum wage levels.
+Prior empirical work that has examined employment probabilities by affected workers past wages has often found clearer evidence of negative employment effects \citep{abowd2000}.
+
+Empirical work that has shown disemployment effects for groups like teenagers or workers near a new floor could be interpreted as the upshot to a better market definition i.e., the researcher is finding the workers employed in the jobs that the minimum wage prices out.
+In this paper, while I also show that relatively low-wage workers are adversely affected, it is not just the case that jobs that paid low wages all disappeared, affecting the workers that took those kinds of jobs.
+Rather \emph{within} the applicant pools of those jobs, firms shifted toward hiring more productive workers, who had become relatively less expensive. 
+
+Whether this labor-labor substitution is an effective margin of adjustment depends strongly on how firm attempts at substitution are borne out in equilibrium.
+If all firms faced a minimum wage and all tried to adjust by hiring workers with higher productivity, sought-after workers would see their wages bid up. 
+The magnitude of that equilibrium bidding up effect---and thus the desirability and hence extent of substitution---would depend on the labor supply elasticity of the more productive workers. 
+For example, if hiring more productive workers becomes too expensive, firms might forgo hiring altogether.
+And knowing about this higher minimum wage, firms might be less willing to post jobs.
+To explore these equilibrium issues, I use the platform-wide announcement and imposition of a minimum wage.     
+
+To analyze the platform-wide imposition of a minimum wage, I use the relatively low-wage ``Administrative Support'' category as the treated sub-market and all higher wage categories of work as control sub-markets. 
+I find that simply announcing the upcoming minimum wage policy did little. 
+There is no evidence that employers tried to hire workers quickly for relatively low-wage jobs or post more such jobs.
+In contrast, the imposition of the minimum wage strongly affected several market outcomes.
+As in the experiment, the wage of hired workers increased, employers shifted towards hiring more productive workers, and hours-worked fell substantially. 
+The match-up of experimental results and observational results on substitution suggests the employer's lack of knowledge during the experiment was not driving the experimental results, as the results are the same when employers do have knowledge of \emph{why} wage bids are higher. 
+
+Following market-wide imposition, employers posted fewer jobs likely to pay low wages in the months following the market-wide imposition.
+The number of hourly jobs posted in administrative support falls by around 25\%.
+There is no discernible reduction or increase in the posting of non-wage-based jobs (i.e. fixed price projects that would not be subject to the minimum wage), suggesting this avoidance strategy was not feasible for all kinds of jobs.
+Of those hourly jobs still posted, there is no evidence of a reduction in hiring, conditional upon a job post.
+However, this could simply reflect a compositional change in the kinds of jobs being posted.
+
+In the experiment, only a small fraction of jobs were in the active treatment and job-seekers were free to apply across jobs.
+This makes identifying individual ``winners and losers'' at the worker level impossible.
+However, the experimental results do suggest different groups of workers could be impacted differently.
+Although wages increased with a minimum wage, labor-labor substitution could have a downside for the kind of labor being substituted away from.
+To explore this possibility, category-level data is insufficient, so I constructed an individual-worker longitudinal dataset around the time of the minimum wage imposition.
+I find that workers that had been working below the new platform minimum wage raised their wage bids after the platform-wide minimum wage was imposed, as expected. 
+These same workers experienced a substantial decrease in their probability of being hired, while workers previously working above the minimum wage were unaffected.
+
+While generalization to conventional settings should be done with caution, the labor-labor substitution finding offers a parsimonious partial explanation for why conventional minimum wage studies find such modest or non-existent short-run disemployment effects. 
+Of course, this result might not generalize to other markets, given the many differences between the empirical context and the conventional low-wage labor market.
+For example, conventional market jobs might not allow for as much variation in individual productivity, though evidence suggests such variation does exist and can be sizable~\citep{lazear2015value, sandvik2020workplace}.
+Furthermore, there is intriguing evidence that even these seemingly highly flexible, ``spot'' online labor markets have imperfect competition \cite{dube2020monopsony}.
+An intriguing possibility is that productivity-based substitution occurs in conventional markets in response to minimum wage changes, but has been largely overlooked simply because it is difficult to detect without very rich individual productivity data. 
+The effects from the market-wide imposition do suggest that when employers have more time to adjust, they respond on margins other than just shifts in hiring.
+
+The plan of the paper is as follows. 
+Section~\ref{sec:empirical_context} describes the empirical context of the experiment. 
+Section~\ref{sec:ed} introduces the experimental design and explores threats to internal validity.
+It also presents the methodology for identifying job openings likely to pay low wages and thus be affected by the treatments.
+Section~\ref{sec:conceptual_framework} presents a simple conceptual framework for understanding the experimental results.
+Section~\ref{sec:er} presents the main experimental results of the paper.
+Section~\ref{sec:market_wide} presents results from the announcement and imposition of a market-wide minimum wage.
+Section~\ref{sec:conclusion} concludes. 
+
+\section{Empirical context} \label{sec:empirical_context} 
+
+A number of online labor markets have emerged in recent years \citep{Horton2010, agrawal2015digitization}. 
+In these markets, firms contract with workers to perform tasks that can be done remotely, such as computer programming, graphic design, data entry, and writing. 
+Markets differ in their scope and focus, but common services provided by the platforms include publishing job listings, hosting user profile pages, arbitrating disputes, certifying worker skills, and maintaining feedback systems. 
+
+The experiment reported in this paper was conducted in a large online labor market.  
+In this market, a would-be employer writes job descriptions, labels the job opening with a category (e.g., ``Administrative Support''), lists required skills, and then posts the job opening to the platform website. 
+Workers generally learn about job openings via electronic searches. 
+Workers submit applications, which generally include a wage bid (for hourly jobs) or a total project bid (for fixed-price jobs) and a cover letter.
+Only hourly jobs were eligible for the experiment.
+In addition to worker-initiated applications, employers can also search worker profiles and invite workers to apply. 
+After a worker submits an application, the employer evaluates applicants and can decide to make an offer or offers.\footnote{
+      Although they can bargain over the wage, there is relatively little wage bargaining, with most employers and workers treating wage bids as take-it-or-leave-it offers \citep{barach2017}. 
+      Interestingly, \cite{fradkin2016} finds surprisingly little bargaining on Airbnb. 
+      There is perhaps some reluctance to begin a relationship with haggling over price. 
+}
+
+\subsection{Wage bidding, profile rates and the measurement of hours-worked} \label{sec:profile_rates}
+
+Workers have an hourly ``profile rate'' that is listed on their platform profiles. 
+This profile rate is their default bid for hourly job openings, though they are free to override it, tailoring it for each application.
+Workers can set their profile rate and change it whenever they like, but they have the incentive to keep it close to what they think their market rate is, as firms searching in the market for workers use the profile rate in their decision-making about whom to recruit \citep{horton2019buyer}. 
+If a worker is hired, it is at an agreed-upon hourly wage.
+To work on hourly contracts, workers must install software that precisely records hours-worked.
+
+
+Most relationships formed on the platform are quite short, as the median contract lasts about one week. 
+However, relationships have no set end date and some relationships can continue for years, with hours-worked continuing to grow.
+To stabilize the data for analysis purposes, I stop experimental measurements 180 days after the formation of the contract. 
+However, no results are sensitive to this duration restriction given how few observations it affects. 
+
+\subsection{Multi-homing and market definition}
+
+The marketplace used for this study was not the only contemporaneous marketplace for online work. 
+As such, a worry is that job openings were simultaneously posted on several other platforms, and perhaps in conventional markets as well.
+However, surveys conducted by the platform suggest that online and offline hiring are only very weak substitutes, and that ``multi-homing'' of job openings is relatively rare.
+Supporting this view, a main finding of the experiment is that hiring reductions were small or non-existent, implying that displacement of hiring to other platforms was not an important margin of adjustment, at least in the short-run.  
+Furthermore, there is no evidence that treated job openings were subsequently posted on another online labor market that, at the time, had a lower minimum wage (I will discuss this later in the paper). 
+
+\subsection{Other research using online labor markets as a testing domain}
+There has been some research that uses online labor markets as a domain for research.
+\cite{pallais2010inefficient} shows via a field experiment that past on-platform worker experience is an excellent predictor of being hired for future job openings.
+\cite{stanton2011landing} shows that agencies (which act as quasi-firms) help workers find jobs and break into the marketplace.
+\cite{agrawal2012online} investigate what factors matter to firms in making selections from an applicant pool and present some evidence of statistical discrimination, which can be ameliorated by better information.
+\cite{horton2013effects} explores the effects of making algorithmic recommendations to would-be employers. 
+\cite{barach2017} reports the results of an experiment in which employers no longer had access to wage history when making hiring decisions.  
+
+\section{Experimental design and internal validity}  \label{sec:ed}
+
+During the experimental period, firms posting an hourly job opening were immediately assigned to an experimental cell.\footnote{
+  Firms posting fixed-price job openings were not eligible for the experiment
+  A small number of very large platform clients were exempted prior to randomization. 
+  Firms could have posted a subsequent fixed-price job to avoid the minimum wage, which is part of the reason I only use the first job opening in the analysis, as they could be affected by the treatment. 
+  Despite this possibility, there is no evidence that firms switched to using fixed-price contracts as an adjustment strategy. 
+}
+There were four experimental cells: 
+A control group with the platform status quo of no minimum wage, which received 75\% of the sample ($n=\numControl$), and three active treatment cells, which split the remaining 25\% of the sample. 
+A total of \numTotal{} job openings were assigned.
+The active treatments had minimum wages of \$2/hour in MW2 ($n=\numMWTwo$), \$3/hour in MW3 ($n=\numMWThree$), and \$4/hour in MW4 ($n=\numMWFour$). 
+Having relatively small numbers of jobs in the active treatment cells was a deliberate experimental design choice, with the goal being to reduce the potential for market-moving violations of the SUTVA condition---a concern in experiments conducted in a true marketplace \citep{blake2014marketplace}. 
+I will discuss this issue---and related threats to internal validity---in more depth below.
+
+
+If the firm posted additional job openings, these openings also received the same experimental assignment as the original opening.
+I do not include these follow-on openings in the analysis, as whether a job was posted or the attributes of such a job could be affected by the treatment. 
+
+
+The minimum wage was implemented by not allowing workers to submit wage bids below the assigned opening-specific minimum wage.
+Prior to the experiment, wage bids were restricted to positive numbers via an automated check of the job application form. 
+For job openings in the active treatment cells, this \$0 floor was simply raised to the appropriate minimum.  
+If an applying worker tried entering a wage below the minimum wage, he or she was instructed (via a dialog box) that the proposed wage was too low and needed to be raised.
+The worker was not told the precise amount the wage bid had to increase by, in order to reduce bunching at the exact minimum wage.
+The worker's application was not sent to the employer until the minimum wage condition was met.
+
+\subsection{Threats to internal validity} \label{sec:internal_validity}
+The internal validity of the experiment could have been jeopardized if any of the following occurred: 
+(1) a failed randomization,
+(2) applicant attrition at the wage bidding stage,
+(3) workers sorting across job openings based on the experimental cell of that opening,
+(4) firms sorting across time (i.e., posting the same opening again sometime later to get a better ``draw'' of applicants), and
+(5) firms sorting across platforms including the ``platform'' of the conventional labor market.
+For both issues (4) and (5), the concern is that any observed reduction in hiring could actually be displacement to other platforms. 
+However, as will be discussed, there was very little reduction in hiring, so both of these concerns are somewhat moot.  
+For issues (2) and (3), the concern is that different cells would have selected applicant pools. 
+
+
+For issue (1)---failed randomization---there is no evidence this occurred. 
+Job openings are well-balanced on pre-randomization attributes, and the counts of job openings per cell are consistent with a random process. 
+See Appendix \ref{sec:randomization} for this analysis.  
+
+
+For issue (2)---applicants abandoning the application process before submitting an application---this was regarded by the experimental designers as unlikely.
+Submitting a wage bid was the last part of the application process, making application costs sunk.
+As such, workers had little incentive not to comply with the instructions to raise their wage bid.\footnote{
+  Although workers have a time-based quota of job applications they can send, it is set so high that it is almost never binding and so withdrawing an application because of a too-high minimum wage would be unlikely. 
+}
+Consistent with this sunk cost argument, there is no evidence that the count of applicants differed across experimental cells.
+See Appendix \ref{sec:workers_sorting} for this analysis.
+
+
+For issue (3)---worker sorting across openings---the potential problem is that workers were free to apply to any job opening in the marketplace. If workers knew the assignment of a job opening, they might seek their preferred opening. 
+While a concern in principle, this kind of sorting would be exceedingly difficult in practice, and the lack of differences in applicant counts by the experimental group is consistent with a lack of sorting. 
+
+
+The reason this sorting is unlikely in practice is those firm treatment assignments were not publicly known to workers, nor was the existence of the experiment.
+As such, few workers learned there was some opening-specific difference to seek out, much less what preferences they should have over these differences. 
+The only way to learn about any particular job opening assignment was to apply. 
+Compounding the difficulty for would-be sorting workers, recall that only 25\% of job openings had any minimum wage, making finding a preferred opening challenging.  
+
+
+For issue (4)---firms ``sorting'' across time by re-posting their job opening to get another draw of applicants---the problem is that such sorting would look like a reduction in hiring, as the first job goes unfilled. 
+Firms might post another job opening if they thought they received an idiosyncratically bad ``draw'' of applicants.\footnote{
+  Or they could re-post to avoid their treatment cell if they (a) believed they were in an experiment and (b) mistakenly thought the level of randomization was the job post rather than firm or (c) thought the experiment would conclude shortly.
+  These possibilities will be discussed in more depth in Section~\ref{sec:employer_knowledge}.g
+}
+Despite the possibility, there is actually a slight decrease in the probability of posting a subsequent job opening for treated firms.
+See Appendix~\ref{sec:firm_sorting_time} for this analysis. 
+
+
+For issue (5)---firms sorting over platforms---the concern is that this kind of sorting could bias the results toward finding a larger reduction in hiring.
+To assess this concern, I checked whether firms in the highest minimum wage cell posted their job openings on another online labor market with a lower minimum wage.
+I find no evidence of increased cross-posting of job openings assigned to the highest minimum wage.
+See Appendix~\ref{ref:firms_sorting_platforms} for this analysis. 
+
+
+I have no evidence of whether any work was displaced to offline hiring, but as discussed in Section~\ref{sec:empirical_context}, survey evidence suggests that few firms see offline hiring as a substitute for online hiring. 
+Given the nature of work and the typical wages on online labor platforms, it is unlikely that local hiring was a feasible alternative for most firms, particularly given that most employers were from the US.
+
+
+Given the lack of internal validity issues, there is a simple way to conceptualize the experiment: 
+Firms got the same applicants they would have gotten, regardless of the experimental cell, but with the distribution of wage bids differing based on their treatment assignment.
+Those applicants who would have bid below the assigned minimum wage floor simply bid up.
+
+\subsection{What did employers know or infer?} \label{sec:employer_knowledge}
+
+
+Some treated employers received atypically high wage bids from workers.
+Instead of simply taking these wage bids as given, some employers might have been (a) ``alerted'' they were in an experiment or (b) ``persuaded'' that some applying workers were more productive because they were proposing higher wages.
+However, the behaviors of employers, at least collectively, are not consistent with either ``persuaded'' or ``alerted'' belief changes.
+Instead, employers acted \emph{as if} they were well-informed price-takers in a spot market:
+They simply compared the price offered to the productivity they can infer from worker attributes and made a hiring decision. 
+In Appendix~\ref{sec:what_did_employers_know}, I discuss the platform design and economic reasons why ``alerted'' or ``persuaded'' beliefs would be unlikely and present evidence from both the experiment and the platform-wide roll-out to support this view.
+
+\subsection{Identifying job openings likely to be affected by a minimum wage \label{sec:def}}
+
+A challenge in all minimum wage research is identifying the segment of the labor market where a minimum wage will matter.
+For this experiment, I use two approaches to find sub-populations of job openings that were likely to pay low wages: 
+(1) I used the posting firm's self-categorization of their job opening by the type of work, selecting those assigned to the category with the lowest average wages on the platform, and (2) I created my own classification, based on a predictive model trained with data from pre-experiment jobs.
+
+The lowest wage category on the market is ``Administrative Support,'' or \admin{}. 
+The left panel of Figure~\ref{fig:wage_distro} shows the empirical CDF of the log wages of hired workers in the control.
+This distribution is decomposed into \admin{} and non-\admin{} job openings in the right panel of the figure.
+The three levels of the minimum wage are overlaid as dashed vertical lines.
+We can see that \admin{} jobs pay considerably less than non-\admin{} jobs. 
+%The wage distribution in \admin{} is considerably left-shifted relative to the non-\admin{} job openings.
+In \admin{}, the 1st quartile of the wage distribution is below \$3/hour, the median is near \$4/hour, and the 3rd quartile is only slightly above \$5/hour.
+Note that the highest minimum wage of \$4/hour is above the median wage.
+
+\begin{figure}[ht]
+\centering 
+\caption{Empirical CDFs of hired workers in the control group \label{fig:wage_distro}} 
+\begin{subfigure}{0.50 \textwidth}
+  \includegraphics{./plots/realized_wage_distro.pdf}
+  \caption{Control cell of \all{}}
+\end{subfigure}%
+\begin{subfigure}{0.50 \textwidth}
+  \includegraphics{./plots/realized_wage_distro_facet.pdf}
+    \caption{Control cell of \admin{} jobs (top) and non-\admin{} openings (bottom)}
+\end{subfigure} 
+\begin{minipage}{0.95\linewidth}
+{\footnotesize
+\emph{Notes:} 
+This figure shows the empirical CDF of the hourly wages of hired workers in the control group, on a log scale. 
+The CDF in the left panel is for all workers. 
+In the right panel, the top CDF is hired workers for control group \admin{} job openings, while the bottom CDF is for all other job openings in the control group. 
+}
+\end{minipage} 
+\end{figure} 
+
+Although administrative jobs pay the lowest wages on average, not all low-paying jobs are in the administrative category, and not all administrative category jobs are low paying.
+To make use of the low-paying but  non-\admin{} openings in the analysis, I use historical pre-experiment data from the platform to fit a predictive model and then use it out of sample to label all experimental job openings with low predicted wages as the low-predicted wage sample, or \lpw{}.\footnote{
+ Appendix~\ref{sec:wages_by_category} shows the distribution of wages by category and details on the model training to construct the \lpw{} sample. 
+}
+
+\subsection{Effectiveness of the experimental intervention at preventing wages below the assigned minimum}
+
+To test whether the experimental intervention was effective in preventing contracts from being formed below the cell-specific minimum, I plot the distribution of hourly wage by experimental cell, on a log scale in Figure~\ref{fig:first_stage}. 
+The hourly wage is calculated by taking the total wage bill for each contract and dividing by the total number of hours-worked.
+The bars in the histogram are each \$1 wide, with intervals of the form $[a, a + 1)$ where $a$ is an integer. 
+
+
+The top panel of the figure shows the distribution for the control group. 
+There are substantial numbers of hired workers that received less than the lowest minimum wage.
+In the active treatment cells, the mass of observed hourly wages is nearly all to the right of the imposed minimum wage for that cell.
+The small number of non-complying observations is due to workers offering refunds to their firms, lowering the wage bill but keeping the hours-worked the same and hence lowering the effective wage.
+This small amount of non-compliance notwithstanding, the treatment was clearly delivered.
+
+
+\begin{figure}[h!]
+  \caption{The realized wage distributions for hired workers in \all{}, by experimental group \label{fig:first_stage}}
+  \centering
+  \begin{minipage}{0.99\textwidth}
+    \includegraphics[width = \linewidth]{./plots/first_stage.pdf}
+{\footnotesize \\
+  \emph{Notes:} This figure shows a density histogram of log observed hourly wages in each of the experimental cells.
+  The x-axis is on a log scale.
+  The bars in the histogram are each \$1 wide, with intervals of $[a, a + 1)$, where $a$ is an integer. 
+}
+\end{minipage} 
+\end{figure}
+
+\section{Conceptual framework}  \label{sec:conceptual_framework}
+The focus of the empirical analysis is on how the minimum wage affected the decision-making of employers.
+Changes in decision-making might be manifested by changes in 
+1) whether the firm hires at all,
+2) the ``kind'' of worker it hires, 
+3) the wage of the hired worker,
+and 4) the hours-worked, conditional upon a match being formed. 
+Below, I describe a simple version of the firm's hiring problem that offers a framework for interpreting changes in these outcomes when the hiring firm faces a minimum wage. 
+
+
+The firm's hiring problem is to select the applicant offering the greatest return, as measured by the value of the work delivered minus the cost.
+Suppose the firm has a project of a ``size'' such that the project can be completed with $Q$ efficiency units of labor.
+A worker with technical productivity $y$ will complete the project in $h = Q/y$ hours.
+The firm gets a value of $V$ from having the project completed.
+The firm receives wage bids from a pool of applicants with heterogeneous technical productivity.
+Each worker submits a take-it-or-leave-it hourly wage bid of $w$.
+If worker $i$ is hired, the project is completed in $Q/y_j$ hours and the wage bill is $w_i Q/y_i$. 
+What the firm cares about for an applicant $i$ is $V - Q (w_i/y_i)$.
+As $V$ and $Q$ are common across applicants, what matters is the ratio of a worker's wage bid to their technical productivity, $w_i / y_i$.
+Let $r$ be the ratio of the wage bid to technical productivity.
+
+One could enrich the model by endogenizing $Q$, with $Q'(r) < 0$, i.e., the employer scales down the scope of the project when then $w/y$ is higher.
+This would change observed hours-worked and the firm's ``no hire'' condition, but it would not change the selection problem, as the firm would still care about selecting the lowest $w/y$ applicant. 
+
+
+A seemingly important difference between the context of the experiment and conventional contexts is that on the platform, work is project-based work, whereas, in conventional employment, there is typically no set end date to a relationship. 
+However, this is a difference with little direct bearing on the firm's selection problem, as the total size, $Q$, ``drops out'' and so it is only the flow of value rather than the total stock that matters.\footnote{
+  One potential difference is that in hiring for roles with no defined end-date, it might be impossible to reduce scope below the output of one worker, given the preference workers or firms might have for full-time work.
+  For example, a firm can go from having ten to eight data analysts.
+  But given that for many roles, part-time work is uncommon, the firm
+  probably cannot go from one analyst to 4/5ths of an analyst.
+}
+
+
+The firm's decision problem is shown graphically in Figure~\ref{fig:substitution_diagram}, with the firm choosing among three applicants, $A$, $B$, and $C$.
+Each applicant differs in their wage bid, $w$, (on the x-axis), and technical productivity, $y$, (on the y-axis).
+Although the firm cares about $w_i / y_i$ in selecting among applicants, whether it hires at all would depend on the surplus the best option affords, and so we can think of the firm as having some reservation ratio, $\underline{r}$ beneath which they will not hire at all.
+The firm's indifference curves are straight lines, coming down from the upper left corner and parallel to the $\underline{r}$ line.
+
+With this diagram, it is easy to see how labor-labor substitution can be an important margin of adjustment, but that at a sufficiently high wage, hiring will not occur.
+Before the minimum wage is imposed, the firm's preferences are $A \succ B \succ C \succ \mbox{Not hiring}$.
+Consider a minimum wage, $\underline{w}$, indicated by a dashed vertical line, binding for $A$ and $B$, but not $C$.
+At this new minimum, applicant $A$---which has raised their wage bid so that are at $A'$---offers a surplus below the firm's reservation surplus and will not be hired.
+$B$ offers less surplus at $B'$, but is still hireable.
+But the most preferred applicant is now $C$, who did not have to change their wage bid.
+If $C$ is hired, the project will take fewer hours because $C$ is more productive.
+The firm is also getting less surplus per hour relative to what they would have gotten with $A$ had they not faced a minimum wage, so they might reduce the scope of work (i.e., endogenizing $Q$). 
+
+\begin{figure}[ht]
+  \centering 
+  \caption{Firm preferences over applicants with a minimum wage: from $A \succ B \succ C \succ \mbox{Not Hiring}$ before the minimum wage to $C \succ B' \succ \mbox{Not Hiring} \succ A'$ after the minimum wage\label{fig:substitution_diagram}}
+  \begin{minipage}{.95 \linewidth}
+    \centering
+    \begin{tikzpicture}[scale=0.70]
+    %title	
+	  % Axis
+    \draw[->,>=latex'] (-10,0) -- coordinate (x axis mid) (8,0);
+    \draw[->,>=latex'] (-10,0) -- coordinate (y axis mid) (-10,10);
+    % Labels
+    \node[below=0.2] at (x axis mid) {{Hourly wage bid, $w$}};
+    \node[rotate=90,yshift=10pt] at (y axis mid) {{Technical productivity, $y$}}; 
+    
+    %Slant
+    \draw[thick,color=red,densely dashed,line width=1pt] (-10,0) -- node[above right,xshift=1.8cm,yshift=0.7cm, color =black, font=\large, rotate=24.3 ] {Firm reservation, $\underline{r}$} (8,8.2);
+
+    % Indifference curve
+
+    %% THrough A 
+    \draw[color=lightgray,line width=1pt] (-10, 0 + 2.3) -- node[above
+      right,xshift=1.8cm,yshift=0.7cm, color =black, font=\large,
+      rotate=24.3 ] {} (8, 8.2 + 2.3);
+
+    %% THrough B
+    \draw[color=lightgray,line width=1pt] (-10, 0 + 1.45) -- node[above
+      right,xshift=1.8cm,yshift=0.7cm, color =black, font=\large,
+      rotate=24.3 ] {} (8, 8.2 + 1.45);
+
+    % Through C 
+    \draw[color=lightgray,line width=1pt] (-10, 0 + 0.95) -- node[above
+      right,xshift=1.8cm,yshift=0.7cm, color =black, font=\large,
+      rotate=24.3 ] {} (8, 8.2 + 0.95);
+    
+    %vertical
+    \draw[thick,color=blue,densely dashed,line width= 1.4pt] (-2,0) -- (-2,10);
+    
+    %horizontal
+    %% A move
+    \draw[thick,color=blue,densely dashed,line width = 1.4pt,
+      -stealth] (-8.5,3) -- (-2,3);
+    %% B move 
+    \draw[thick,color=blue,densely dashed,line width = 1.4pt, -stealth] (-3.8,4.3) -- (-2,4.3);
+
+    % The minimum wage line is at 2
+    %nodes    
+    \filldraw [black] (-2, 4.3) circle (3.5pt) node {};
+    \draw (-2,4.3) node[anchor=south west, font=\Large] {$B'$};
+
+    %% OLD C
+    %% \filldraw [black] (-1.4, 6.1) circle (3.5pt) node {};
+    %% \draw (-1.3, 6.35) node[anchor=south, font=\Large] {$C$};
+
+    \filldraw [black] (0, 5.5) circle (3.5pt) node {};
+    \draw (.1, 5.75) node[anchor=south, font=\Large] {$C$};
+    
+    \filldraw [black] (-2, 3) circle (3.5pt) node {};
+    \draw (-2,3) node[anchor= south west, font=\Large] {$A'$};
+    
+    \filldraw [black] (-8.5, 3) circle (3.5pt) node {};
+    \draw (-8.5,3) node[anchor= south east, font=\Large] {$A$};
+
+    %%
+    \filldraw [black] (-3.8, 4.3) circle (3.5pt) node {};
+    \draw (-3.8,4.3) node[anchor= south east, font=\Large] {$B$};
+    
+    %labels
+    \draw[] (-1.8,0.5) -- node[right, color = blue] {$\underline{w}$, minimum wage} (-1.8,0.5);
+    
+  \end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.95\linewidth}
+{\footnotesize
+  \emph{Notes:} This figure indicates the firm's hiring problem when facing a collection of applicants that differ in their technical productivity and hourly wage bids.
+  Each dot represents an applicant with some perceived technical productivity, $y$, and hourly wage, $w$.
+  The dashed vertical line indicates an imposed minimum wage.
+}
+\end{minipage} 
+\end{figure} 
+
+In the scenario above, some workers have higher technical productivity than others.
+This kind of variation is expected given the nature of labor.
+Harder to explain is the variation in wage bids conditional upon technical productivity.
+If the market is competitive, why is $w/y$ not the same for all applicants?
+This is similar to the question posed by \cite{romer1992firms} about why firms try to hire the ``best'' applicants if workers are simply paid their marginal product. 
+
+
+One explanation for variation in $w/y$ is that different workers presumably regard job openings as being more or less attractive than their other options, and these differences are reflected in their wage bids. 
+Similarly, firms might infer different levels of productivity in the applicants for their particular job---differences that the applicants themselves are unaware of and do not incorporate into their bids. 
+The fact that firms bother to screen and evaluate candidates before making a hire is evidence that they are not indifferent over the pool they receive, and that there is latent information beyond what is reflected in the wage bid.
+Whatever the source of idiosyncratic variation in $w/y$, the result is a distribution of payoffs the firm would get from hiring different workers, which creates the possibility of substitution when a floor is imposed on $w$. 
+
+\section{Experimental results} \label{sec:er} 
+To analyze the experiment, my primary approach is to regress the job-level outcome of interest, $y_j$, on the experimental group indicators, 
+\begin{align} \label{eq:gsi}
+  y_j = \beta_0 + \beta_{2} \textsc{MW2}_j +
+  \beta_{3} \textsc{MW3}_j + \beta_{4} \textsc{MW4}_j  + \epsilon,  
+\end{align}
+where $\textsc{MW2}$, $\textsc{M3}$, and $\textsc{MW4}$ are indicators for whether job opening $j$ has a minimum wage of \$2, \$3 or \$4, respectively.
+
+For each outcome, I present results for three samples: all job openings (labeled \all{}), administrative openings, (labeled \admin{}), and jobs predicted to pay low wages (labeled \lpw{}). 
+When there are multiple hired workers per job opening, what I do depends on the nature of the outcome.
+If the outcome is a rate, I take the average for all hired workers and use that, such as the wage of hired workers. 
+If the outcome is a quantity, such as the number of hours-worked, I take the sum. 
+However, multiple hires are fairly rare in the experimental data: 
+of employers making a hire, \FracSingleHires{}\% only hire one worker, while\FracDoubleHires{}\% hire two workers. 
+In any event, there is no evidence that the minimum wage altered the number of hires per opening, conditional upon the employer making at least one hire.  
+
+All results from the experiment are reported in Figure~\ref{fig:all_new}.
+Each ``row'' of the figure reports the effects on a different outcome; outcomes that are conceptually related to each other are grouped together in panels.
+For each outcome, point estimates are shown for $\hat{\beta}_2$, $\hat{\beta}_3$ and $\hat{\beta}_4$ from Equation~\ref{eq:gsi}.
+Around each point estimate, a 95\% confidence interval is shown, calculated with robust standard errors. 
+The mean for the control group, $\hat{\beta}_0$, is reported under the point estimates, labeled ``Ctl. mean.''
+I also label each $\hat{\beta}$ for the minimum wage cells with the implied percentage change in that experimental group relative to the control.
+The sample size for all cells pooled together is reported next to this mean ($N=\ldots$).
+%Note that here and throughout the paper for differences in levels where the outcome is naturally discussed as a fraction, I label level differences as ``percentage points,'' whereas for true percentage changes from the control, I use the \% symbol.
+%When the outcome is in logs, I describe changes in log points as percentage changes using the $\log (1 + x) \approx x$ for small values of $x$ approximation.  
+
+\subsection{Match formation} \label{sec:ld}
+
+I begin by examining whether the minimum wage affected whether the employers hired anyone at all.
+I define ``hired'' as some number of hours-worked by a worker against that particular job opening.
+These results are reported in the top panel of Figure~\ref{fig:all_new}, ``\panelA{},'', with the label ``Anyone hired?''
+
+\begin{figure}[h!]
+  \centering
+  \caption{Effects of imposing job-specific minimum wages on job
+    outcomes relative to the control group on hiring and hours-worked \label{fig:all_new}}
+  \begin{minipage}{1.15\linewidth}
+  \includegraphics[width = \linewidth]{./plots/fill_and_hours.pdf}
+  \end{minipage}
+  \begin{minipage}{0.95\linewidth}
+    {\footnotesize
+      \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi} for a collection of job-specific outcomes.
+      See Section~\ref{sec:ed} for details on the experimental design and sample definitions. 
+    }
+\end{minipage} 
+\end{figure} 
+
+
+\begin{figure}[h!]
+  \centering
+  \caption{Effects of imposing job-specific minimum wages on job
+    outcomes relative to the control group on worker compositio \label{fig:all_new_part_2}}
+  \begin{minipage}{1.15\linewidth}
+  \includegraphics[width = \linewidth]{./plots/composition.pdf}
+  \end{minipage}
+  \begin{minipage}{0.95\linewidth}
+    {\footnotesize
+      \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi} for a collection of job-specific outcomes.
+      See Section~\ref{sec:ed} for details on the experimental design and sample definitions. 
+    }
+\end{minipage} 
+\end{figure} 
+
+
+\FloatBarrier 
+
+Starting with the full sample, \all{}, treated cells had a lower probability that anyone was hired compared to the control cell.
+There is a \ALLFourItotalchargegtZeropctchange{}\% reduction relative to the control in MW4 and a \ALLThreeItotalchargegtZeropctchange{}\% reduction in MW3.
+The MW2 reduction is \ALLTwoItotalchargegtZeropctchange{}\%, but the confidence interval includes zero. 
+In the MW4 cell, which had the largest reduction in hiring, the level decrease is about \ALLFourItotalchargegtZeroeffects{}, from a baseline hiring rate of \ALLZeroItotalchargegtZerocontrolvalue{}.
+
+Declines in hiring from the minimum wage were generally larger in the sub-populations of jobs expected to pay lower wages.
+Still in the top row of Figure~\ref{fig:all_new}, but in the middle column, the sample is \admin{} jobs.
+There are generally larger point estimates for a reduction in hiring, though even in MW3 the percentage change is approximately the same, at \ADMINThreeItotalchargegtZeropctchange{}\%, matching the MW3 effect in \all{}.
+The 95\% confidence interval includes $0$.
+In the \lpw{} sub-population, in the far right column, we can see that there are larger reductions in the probability of hiring. 
+The MW4 percentage reduction in hiring is larger, at about \LPWFourItotalchargegtZeropctchange{}\%.
+In MW3, the reduction is close to \LPWThreeItotalchargegtZeropctchange{}\% and in MW2 it is close to \LPWTwoItotalchargegtZeropctchange{}\%, with the MW2 confidence interval including zero.
+
+The highest minimum wage, MW4, clearly decreased hiring, particularly in job openings likely to otherwise pay low wages.
+However, the largest reduction, in \lpw{} for MW4, is still only about \LPWFourItotalchargegtZeroeffects{} percentage points, or \LPWFourItotalchargegtZeropctchange{}\%, despite \$4/hour being substantially above the median wage for filled control cell job openings in \lpw{}.
+If we had naively assumed that jobs that would have been filled at a wage below the minimum would simply be screened out, effects are only about a \emph{tenth} of what they should be in \admin{} MW4.
+Although effects are always negative, for the lower values of the minimum wage, the confidence intervals for the point estimate typically include zero.
+For example, nowhere is the MW2 reduction in hiring conventionally significant. 
+
+Note that although it is tempting to calculate an elasticity with respect to the minimum wage from this data, it would not have a useful interpretation. 
+The none-to-one jump gives an undefined denominator, and all the subsequent jumps have imprecise differences in hiring rates.
+Similarly, with experimental variation in the wage, one might think we can cleanly estimate a labor demand schedule, but recall the potential for the imposed minimum wage to alter the composition of the hired workers, never mind inducing labor supply effects.
+As such, I report the effects of the minimum wage on wages and hours separately without trying to estimate a demand elasticity.
+
+\subsection{Wages, hours-worked, and earnings of hired workers} \label{sec:wages}
+
+If a worker is hired, I can observe the hourly wage, hours-worked, and total earnings.
+The effects of the minimum wage on these outcomes are presented in the second panel from the top of Figure~\ref{fig:all_new}, labeled ``\panelB{}.''
+It is critical to note that the sample in these regressions is conditioned on hiring, except that I also include a measure of earnings with 0s i.e., unfilled jobs included.
+
+Starting with the first row, the outcome is labeled ``Log hours-worked (conditional upon any), (1).'' 
+The sample is restricted to openings where a worker was hired and he or she billed at least one-quarter of an hour, the minimum chunk of billable time on the platform.\footnote{ 
+  I also use the count of hours, with 0s included., as the outcome in Appendix~\ref{sec:hours_worked_zero}.
+  As expected---given the decline in the fraction of jobs where a hire is made---the reduction in hours with 0s included is also negative, but the estimates are less precise given the high variance in hours-worked.
+}
+In the full sample \all{}, hours-worked fell in all treatment cells.
+Hours-worked fell \ALLFourloghourspctchange{}\% in MW4, \ALLThreeloghourspctchange{}\% in MW3 and \ALLTwologhourspctchange{}\% in MW2.
+Only in MW2 does the confidence interval contain zero.
+In the sub-populations, we see much larger reductions in hours-worked.
+In \lpw{}, hours-worked fell sharply: \LPWFourloghourspctchange{}\% in MW4,
+\LPWThreeloghourspctchange{}\% in MW3 and \LPWTwologhourspctchange{}\% in MW2.
+Effect sizes are similar in \admin{}.
+We can see that despite relatively small reductions on the intensive
+margin, there were large reductions on the intensive margin.
+
+
+In the second row, labeled ``Log mean wage, conditional upon a hire (2)'' we can see the imposed minimum wage clearly increased the wage of the hired worker, conditional upon a hire being made. 
+Even in \all{}, there is about a \ALLTwologmeanwageovercontractpctchange{}\% increase in MW2, a \ALLThreelogmeanwageovercontractpctchange{}\% in MW3 and a \ALLFourlogmeanwageovercontractpctchange{}\% increase in MW4.
+Note that the control group average wages in \all{} are substantially higher than either \admin{} or \lpw{}, as expected.
+In the sub-populations of jobs likely to pay lower wages, the minimum wage had stronger positive effects on wages.
+In \admin{}, hired worker wages rose by \ADMINFourlogmeanwageovercontractpctchange{}\% in MW4,
+\ADMINThreelogmeanwageovercontractpctchange{}\% in MW3 and 
+\ADMINTwologmeanwageovercontractpctchange{}\% in MW2.
+For the \lpw{} sub-population, the effects are even stronger still: in \lpw{}
+hired wages rose about \LPWFourlogmeanwageovercontractpctchange{}\% in MW4, \LPWThreelogmeanwageovercontractpctchange{}\%
+in MW3, and \LPWTwologmeanwageovercontractpctchange{}\% in MW2.
+I will return later to the mechanism by which wages increased.
+
+In terms of why hours-worked fell, there is no evidence it was caused by selection e.g., the extensive margin effect screened out the jobs most likely to have many hours---see Appendix~\ref{sec:why_hours_fell} for this analysis.
+
+
+Given the increases in average wages, but the decrease in average hours-worked, the total effect on hired worker earnings depends on the relative magnitudes.
+It is also relevant what fraction of jobs are filled at all, as an unfilled job mechanically leads to zero earnings.
+In the two bottom rows of the (B) panel in Figure~\ref{fig:all_new} two measures of earnings are reported, one conditional upon a job being filled, and the other not, with 0s included.
+
+
+The first earnings measure is labeled ``Log earnings (conditional upon any)'' with the sample restricted to jobs where a hire was made.
+In \all{}, the effects are close to zero in MW2 and MW3.
+However, in MW4 there is evidence of a substantial increase in log earnings in \admin{}---but recall this is also the cell with non-trivial reductions in hiring. %TK, do this programmatically 
+For log earnings in \lpw{} and \admin{}, for MW2 and even MW3, the confidence intervals include 0, consistent with the hours-worked and wage effects being mostly offsetting.
+The effects in MW4 are positive, but again, this is also where we had the largest reductions on the extensive margin.
+
+The second earnings measure is ``Earnings (in 100s of USDs, 0s included)'' with the sample unrestricted.
+Note that I scaled earnings by 1/100 so as to be able to show this outcome on the same scale as the log measure of earnings.
+When we look at levels of earnings, there is little consistency.
+There is perhaps some evidence of a net decline in MW2, but this effect is insignificant in every sub-population.
+The formerly strong evidence in MW4 looks decidedly mixed.
+
+
+Taken together, the results suggest the minimum wage likely had negligible effects on total earnings, with the caveat that statistical power is not high enough to say much confidently.
+At the highest levels of the minimum wage, we see non-trivial reductions on the extensive margin or job openings with no associated earnings.
+Further complicating any strong claims about worker welfare, hours-worked is a cost to workers, so even a net decline in earnings is not necessarily unwelcome.
+
+\subsubsection{Reasons for the increase in wages} 
+
+Although it is clear that imposing a minimum wage caused higher wages paid for jobs still filled, the precise mechanism remains to be shown.
+There are several potential reasons for the increase: 
+(1) ``selection''---the job openings that do not fill would have paid low wages and what is left are the relatively higher-paying jobs; (recall in Section~\ref{sec:conceptual_framework}, if each applicant were left-and-down shifted, it would have been more likely for the employer not to hire at all, screening out this relatively low-wage work)
+(2) ``substitution''---the firms select higher productivity workers, who are paid higher wages (recall in Section~\ref{sec:conceptual_framework} the shift from hiring $A$ to $C$);
+(3) ``markup''---firms hire the same workers they would have hired anyway, but at a higher wage (in Section~\ref{sec:conceptual_framework}, had $C$ and $A$ had been unavailable, the firm would have hired $B$ without and without the minimum wage, but with the minimum wage, $B$ would be hired at a higher hourly rate). 
+
+Although these three explanations are not mutually exclusive, I can rule out (1), selection, as the sole explanation: 
+Recall that in the MW3 cell in \admin{}, there was more or less no reduction in hiring, and yet the average wage increased by nearly \ADMINThreelogmeanwageovercontractpctchange{}\% (this mirrors the argument that selection alone cannot explain the decline in hours-worked).
+More generally, if we assume that the minimum wage perfectly screened out the jobs that counter-factually would have paid the lowest wages, using the control group in \all{}, the empirical elasticity of the average wage to the fraction of the lowest wage contracts removed is about 1, i.e., removing 10\% of the observed lowest wage jobs increases the average for the remaining jobs by about 10\%.
+This stands in contrast with the actual finding that the wage effects are, in percentage terms, much larger that the extensive margin reductions.
+This suggests a substantial role for explanations (2) ``substitution'' and (3) ``markup.''
+
+\subsection{Hired worker composition, by productivity and markup}
+
+To detect and quantify substitution effects, we do not need to model the micro-details of selection, but rather use as experimental outcomes the pre-treatment characteristics of workers.
+This analysis is motivated by the shift depicted in Section~\ref{sec:conceptual_framework} where the firm's first choice under a minimum wage switched from the lowest technical productivity applicant $A$ to the highest applicant, $C$.
+To detect this labor-labor substitution, I use three proxies for hired-worker productivity: 
+(1) average past wage,
+(2) cumulative past earnings, and
+(3) profile rate of hired workers.
+Critically, all of these measures are calculated using data from jobs posted before the start of the experiment. 
+The effect of the treatment on these outcomes is explored in the panel of Figure~\ref{fig:all_new_part_2} labeled ``\panelC{}.'' 
+
+The first outcome is labeled  ``Log past wage of the hired worker (1).'' 
+The average wage is calculated by dividing total hourly earnings by the total hours-worked, prior to the experiment.
+In \all{}, hired workers in MW2 and MW4 had higher past wages, with the effect significant or nearly significant in both cells. 
+The effect is slightly negative in MW3. 
+Turning to the sub-populations, we see much stronger effects.
+In the \lpw{} sub-population, hired workers had substantially higher past average wages in the active treatment cells. 
+For example, on the MW4 cell, in \lpw{}, hired workers had \LPWFourloghiredpastwpctchange{}\% higher past wages than those hired in the control.
+The MW2 effects were positive and close to \LPWTwologhiredpastwpctchange{}\%, and nearly conventionally significant. 
+Effects are somewhat smaller in \admin{}.
+
+The second productivity proxy outcome is earnings, and the row is labeled ``Log cumulative past earnings of the hired worker (2).''
+The sample is restricted to hired worker having at least \$1 in past earnings.\footnote{ 
+  This is not an important restriction, as there is no discernible difference among the cells on whether the hired worker had any past experience. 
+  This is perhaps unsurprising as there is little ``room'' for treatment effects on whether or not the worker has past earnings, as over 90\% of hired workers in the control group had past platform experience.
+  See Appendix~\ref{sec:pastExper} for an analysis of the effects of the minimum wage on the probability that the hired worker had prior on-platform experience. 
+}
+The sample is slightly larger than the average past wage sample, as workers can have earnings from fixed-price contracts as well.
+In \all{}, there is some evidence of a shift towards more experienced workers in MW4, but the point estimate for MW2 is actually negative, albeit with a CI that comfortably includes zero.
+In contrast to \all{}, in the sub-populations, the shift towards relatively more experienced workers is obvious.
+For example, in \lpw{}, hired workers in MW4 had \LPWFourloghiredpastypctchange{}\% higher cumulative past earnings compared to the control.
+The effect was \LPWThreeloghiredpastypctchange{}\% higher in MW3 and \LPWTwologhiredpastypctchange{}\% higher in MW2.
+
+Another proxy for a worker's productivity is their profile rate.
+One advantage of using the profile rate as a proxy for worker productivity is that it is available for all workers, even if they have never worked on the platform. 
+Furthermore, it can potentially give a more accurate measure of the worker's current market wage compared to the average past wage, which can include wages from many long-completed jobs.
+In analyzing the effect of minimum wages on the profile rate of the hired worker, I use the pre-experiment profile rate. 
+
+In the row labeled ``Log profile rate of the hired worker (3),'' we can see that there is some evidence of an increase in \all{}, but as with the other productivity proxies, in the sub-populations, the treatment effects are larger and the shift obvious:
+in \admin{}, profile rates are about \ADMINTwologhiredprpctchange{}\% higher in MW2 and \ADMINThreeloghiredprpctchange{}\% in MW3, and \ADMINFourloghiredprpctchange{}\% higher in MW4. 
+Effect sizes in \lpw{} are quite similar to those in \admin{}.\footnote{
+  The profile rate is discussed in Section~\ref{sec:profile_rates}.
+}
+
+These shifts in the attributes of hired workers give strong evidence of labor-labor substitution as an employer margin of adjustment.
+Despite the importance of labor-labor substitution, it does not fully explain the wage increase.
+To see this, we can use as an outcome the hired worker's ``markup'' or the difference between their worker's profile rate and their actual wage bid.
+These results are reported in the panel labeled ``Markup of the wage bid of the hired worker (4)'' in Figure~\ref{fig:all_new_part_2}.
+The sample is restricted to hired workers with a listed profile rate. 
+As this outcome is already a worker-specific percentage, I do not report the percentage change.
+Note that the mean markup in the control is negative, workers often bid below their profile rate. 
+
+
+Across all treatment cells and samples, the minimum wage increased wage bid markups.
+The increase is large, even in cells with almost no reduction in hiring, such as MW3 in \admin{}.   
+To give a numerical example, the treatment effect on the hired worker markup in MW4 is about 0.25 in \admin{}.
+If a hired worker in the control group in \admin{} had a wage bid of \$3.60/hour but a profile rate of \$4/hour (so a 10\% discount), the 0.2 point estimate implies that the bidding worker instead applied a -0.10 + 0.25 = 15\% increase off their profile rate, i.e., they bid \$4.60/hour and offered no discount whatsoever.
+
+\subsection{Hired worker composition, by country}
+
+Labor-labor substitution in response to a minimum wage has been observed in conventional markets.\footnote{
+  Although modern empirical work has given relatively little attention to labor-labor substitution, some of the earliest empirical work on the minimum wage considered the possibility:
+  The remarkable study of the introduction of a minimum wage in Oregon by \cite{obenauer1915} looked at changes in employment by workers of different experience levels, which had different associated minimum wages. 
+} 
+However, changes in composition are typically detected with respect to demographic characteristics.
+For example, using personnel data from a single large firm, \cite{giuliano2009minimum} find that teenagers from higher socioeconomic status zip codes displaced older workers following a minimum wage increase.  
+\cite{fairris2008} finds that a Los Angeles living wage that applied to city contractors caused those vendors to substitute in favor of workers with characteristics associated with a wage premium in that local labor market.
+
+If employers were engaging in productivity-based labor-labor substitution, detecting it through changes in demographics would be challenging if most of the variation in individual productivity is within---rather than between---demographic groups.  
+If this ``more-within-than-between'' characterization holds, the kind of productivity-focused substitution found in the experiment might not result in much evidence of demographic substitution. 
+To make this point more clear, I look for labor-labor substitution in the experiment using a demographic measure, namely the hired worker's country. 
+On the platform, the best chance for detecting substitution via demographics would be through shifts in the country of the hired worker, as there are substantial differences in the average hourly wages paid to workers from different countries \citep{agrawal2015digitization}.
+
+
+To look for labor-labor substitution by demographics, I use an indicator for the country of the hired worker as the outcome.
+I use the United States and Bangladesh, the highest and lowest average-wage countries, respectively, when the experiment was run.
+There are stark differences between the two countries: in the control group, hired US workers have a median wage of \$17/hour, whereas Bangladeshi workers have a mean wage of \$5/hour.
+These differences largely reflect differences in the area of focus, with US workers specializing in work that tends to pay higher wages.
+Regarding baseline composition, in the control group, \BANGfractionControl{}\% of hires are from Bangladesh, whereas only \USfractionControl{}\% are from the US.
+
+
+In the panel of Figure~\ref{fig:all_new_part_2} labeled ``Hired worker composition, by country,'' in the row labeled ``Hire from US'' we can see that in MW4, US workers were substantially more likely to be hired in both \admin{} and \lpw{} and the confidence interval does not include zero.
+However, in MW2 and MW3, while the increase in US hires is positive, the confidence intervals include zero.
+Without the MW4 cell, we would likely conclude there is no strong evidence of labor-labor substitution.
+This is despite the fact that with the more direct productivity measures such as past wages and earnings, the evidence for substitution was unambiguous even in MW2.
+
+The difficulty of seeing the labor-labor substitution based on demographics is also illustrated at the low end by examining ``Hire from Bangladesh.''
+While the fraction of hired workers from Bangladesh decline everywhere, the confidence interval contains zero for all cells and subgroups.
+Again, an analysis that only had access to demographics could easily miss the labor-labor substitution that is occurring. 
+
+\subsection{Strengths and limitations of the experiment}
+
+The experimental results leave open at least four questions:
+(a) whether labor-labor substitution is a useful margin of adjustment for employers in equilibrium,
+(b) whether employer knowledge of the minimum wage policy mattered,
+(c) whether the quantity and composition of jobs being posted would change with a platform-wide minimum wage,
+and (d) the equilibrium effects on workers when all jobs were subject to the minimum wage (as opposed to just some fraction)?
+
+
+For (a), in the experiment firms could shift towards more productive workers without much worry that these workers would demand higher wages, as only a relatively small fraction of employers were in the active treatment cells.
+However, in an equilibrium where all employers were subject to a minimum wage and all tried to hire more productive workers, this margin of adjustment might prove difficult. 
+For (b), employers did not know they were in an experiment, and as such, might have reacted differently compared to employers who understood a minimum wage was in effect.
+Recall the discussion in Section~\ref{sec:employer_knowledge}.
+For (c), in the experiment, the composition of jobs was fixed, as jobs were only allocated to a cell \emph{after} they were posted.
+In contrast, firms with knowledge of the minimum wage might decide not to post jobs at all.
+Recall from Section~\ref{sec:conceptual_framework} that even if a firm still hires with a minimum wage, they receive less surplus than in the counterfactual.
+For (d), workers were free to apply across jobs and only a relatively small fraction of job posts were treated; in a setting where a minimum wage applied to all jobs, the effects on workers could be quite different. 
+
+In the next section, I will use the platform-wide announcement and imposition of a minimum wage to answer these remaining questions.
+
+\section{Platform-wide imposition of the minimum wage} \label{sec:market_wide}
+
+After the experiment, the platform implemented a universal \$3/hour minimum wage, making MW3 the default experience.
+Unlike during the experiment, this minimum wage policy was publicly announced. 
+The announcement was made about two and a half months before the minimum wage was actually imposed.
+As the minimum wage was universally applied, it is impossible to report experimental estimates of its effects. 
+However, I can compare various market outcomes before and after the announcement and imposition.
+I can also compare categories of work that differed substantially in their wages before the policy change, allowing for a difference-in-differences analysis.
+To do this, I use the low-wage \admin{} category as the treatment group and use the remaining relatively high-wage categories as the controls, subject to some restrictions I will discuss.
+In addition to the category panel, I also construct a dataset of the applications of individual workers to see how different kinds of workers were affected, focusing on their bidding behavior and their per-application probability of being hired. 
+
+\subsection{Effects of the announcement and imposition of the platform minimum wage on hired worker wages} 
+I first inspect whether the platform policy change was actually implemented.
+Figure~\ref{fig:event_study_hourly_rate_hired} plots the weekly time series of quantiles of hired worker wages that week, by category of work.
+The quantiles are the 10th, 25th, 50th and 90th.
+The y-axis is the hourly wage, on a log scale.
+Job categories are ordered left to right and top to bottom by the pre-announcement mean wage in that category.
+The date of the minimum wage policy announcement and imposition are indicated by vertical dashed lines.
+The time period for the figure is the year the minimum wage policy change occurred, extended for several months into the post period.
+The panel ends when the category definitions changed.
+
+\begin{figure}[h!]
+\centering 
+\caption{Hired worker wages by week, by category of work following the \$3/hour minimum wage announcement and imposition \label{fig:event_study_hourly_rate_hired} } 
+\begin{minipage}{1.0 \linewidth}
+\includegraphics[width = \linewidth]{./plots/event_study_hourly_rate_hired.pdf} 
+{\footnotesize
+  \emph{Notes:} This figure plots by-category weekly wage quantiles for all work categories.
+  The minimum wage policy announcement and imposition are indicated with vertical dashed lines.
+}
+\end{minipage} 
+\end{figure} 
+
+In all categories, there is no evidence of a systematic change during the period when the minimum wage was announced but not yet implemented: the announcement alone seemingly did nothing.
+However, once the minimum wage was implemented, the effect on hourly wages is clear and obvious: all wage quantiles that were previously below \$3/hour immediately snap up to \$3/hour.
+There are three categories where the 10th percentile of the wage distribution was below the platform-imposed minimum: ``Administrative Support'', ``Customer Service'', and ``Sales \& Marketing.''
+However, for the two non-\admin{} categories, it is only certain low-wage sub-categories that make up most jobs at the 10th percentile. 
+For categories where even the 10th percentile was above the minimum wage, such as in ``Web Development'' and ``Software Development,'' we see no change.
+It is clear the policy change was implemented.
+Furthermore, simply plotting market aggregated over time shows
+For example, in Appendix~\ref{sec:post_imposition_shift} shows that post-imposition, there was a clear shift towards hiring workers in \admin{} with greater past earnings, just as in the experiment.
+However, to actually quantify these effects, I shift to a difference-in-differences analysis.
+
+\subsection{Panel construction}
+
+To perform a difference-in-differences analysis, I construct a job category-month panel, with \admin{} as the treated unit and all other eight categories as control units.
+In the panel, the time periods are 30 days long, with 0 day defined as the imposition date.\footnote{
+  This time period is longer than the 7-day period used in Figures~\ref{fig:event_study_hired_admin} and \ref{fig:event_study_hourly_rate_hired}, I used 7 days as the period duration because I wanted to show how the change immediately followed the imposition, whereas, for other outcomes, my focus is on how the market equilibrium changed. 
+}
+
+
+The categories used as control units are not selected at random, but on the basis of an observable difference---namely wages. 
+However, these control units are useful for understanding what happened in \admin{}, by providing a contemporaneous measure of seasonality, platform-wide growth trends, fluctuations in demand for online work generally, and so on. 
+One complication with this category panel approach is that there are ``sub-categories'' that have wages below the minimum but are not in \admin{}.
+Some categories have relatively low-wage sub-categories of work, such as ``Customer Service'' and ``Sales \& Marketing'' in Figure~\ref{fig:event_study_hourly_rate_hired}.
+I remove data from these sub-categories rather than ``transfer'' them to \admin{}, as I want to compare the experimental \admin{} estimates to the observational estimates using just the \admin{} category. 
+
+\subsection{Inference about the effects of the platform-wide imposition}
+My preferred specification is 
+\begin{align} \label{eq:did_effects}
+  y_i = \sum_t \beta_t \textsc{Admin} + \alpha_i + \delta_t + \gamma_i t + \epsilon
+\end{align}
+where $\alpha_i$ is a category-specific effect, $\delta_t$ is a period specific effect, $\beta_t$ are a collection of \admin{}-specific effects and $\gamma_t$ is a category-specific linear time trend.
+
+As we have a collection of never-treated controls and a single treated unit, there are no negative weighting concerns \citep{goodman2021difference}.
+Standard errors are clustered at the level of the category.
+
+\subsection{Difference-in-differences estimates}
+
+
+Figure~\ref{fig:did_all_outcomes} reports estimates of $\hat{\beta}_t$ from Equation~\ref{eq:did_effects} for a collection of outcomes.
+When there is a corresponding experimental estimate for MW3 in \admin{}, I plot that as a horizontal line in the post-period.
+The imposition is indicated with a vertical dashed line.
+
+\begin{figure}[h!]
+  \centering
+  \caption{Difference-in-differences estimates of effects of platform-wide imposition} \label{fig:did_all_outcomes} 
+  \begin{minipage}{\linewidth}
+    \begin{subfigure}{1 \textwidth}
+      \centering
+      \caption{Effects on job-posting and hiring} \label{fig:q_outcomes}
+      \includegraphics[width = \linewidth]{./plots/did_q_outcomes.pdf} 
+    \end{subfigure} \\
+    \begin{subfigure}{1 \textwidth}
+      \caption{Effects on wages, hours-worked, and the wage bill} \label{fig:match_outcomes}
+      \includegraphics[width = \linewidth]{./plots/did_match_outcomes.pdf} 
+    \end{subfigure}\\
+    \begin{subfigure}{1 \textwidth}
+          \caption{Effects on labor-labor substitution proxies} \label{fig:ll_subst_outcomes}
+          \includegraphics[width = \linewidth]{./plots/did_ll_subst_outcomes.pdf}
+    \end{subfigure} 
+{\footnotesize
+  \emph{Notes:} This figure plots the by-week estimates of the treatment effects of the platform-wide imposition of the minimum wage.}
+\end{minipage} 
+\end{figure} 
+
+\subsubsection{Effects on job-posting, hiring, and formed matches}
+The effects on job posting and hiring are shown in Figure~\ref{fig:q_outcomes}. 
+The first outcome of interest is the log number of \emph{hourly} jobs posted in the sub-category, labeled ``Log number of jobs posted.''
+In the post period, we can see that there is about a 20-30\% decline in the number of posted jobs in \admin{}.
+The mean post-period effect (averaging over the $\hat{\beta}_t$) is \DIDnumjobs{} in log points.
+If we instead look at all jobs---fixed price and hourly---the reduction is much smaller, on the order of 15\%.
+It is not shown, but when the outcome is just fixed-price jobs, the point estimates in the post-period are all close to zero.
+While presumably some projects that would have been hourly contracts were re-conceived as fixed price projects, this was not fully offsetting, likely reflecting that switching contractual structures is not costless \citep{bajari2001incentives}.
+
+The substantial reduction in the number of hourly jobs posted in \admin{} suggests some employers decided the expected surplus from hiring was below the cost of posting a job (in terms of the Section~\ref{sec:conceptual_framework}, recall that even firms that still hired with a minimum wage can receive lest surplus).
+
+One implication of the reduction in \admin{} job posting is that all effects measured with the sample of filled or posted jobs could potentially just be a composition effect.
+This caveat aside, it is still useful to estimate these observational estimates and compare them to the experimental estimates.
+
+The next outcome is the fraction of posted jobs that lead to a hire.
+For this outcome, we can compare the observational estimate to the MW3 \admin{} experimental estimate, which was a \ADMINThreeItotalchargegtZeroeffects{} decline (but that the 95\% CI includes zero).
+The difference-in-difference mean effect in the post period is \DIDfillrate{}.
+However, the point estimate is imprecise and not conventionally significant.
+Period by period, there is perhaps some evidence of a higher fill rate near the end of the period.
+
+With fewer jobs posted but perhaps those being posted more likely to fill, a natural question is what is the effect on total expenditure.
+Unfortunately, the effects on total expenditure are highly imprecise and are not reported.
+However, as a proxy, we can look at the total number of jobs filled.
+We can see in the panel labeled ``Log number of filled jobs'' that there is a decline in \admin{}.
+
+\subsubsection{Effects on wages, hours-worked, and the wage bill}
+As in the experiment, if a job is filled, we observed hours-worked, the average wage of the hired worker, and total earnings.
+The estimates for these results are plotted in Figure~\ref{fig:match_outcomes}.
+
+Starting with the ``Log average wage of hired worker'' the increase in \admin{} is substantial and quite close to what was observed in the experiment.
+Among those jobs where a hire was still made, hours-worked per job declined by \DIDhours{} log points.
+This outcome is labeled ``Log mean hours worked per contract.'' 
+By comparison, the effect from the experiment was a \ADMINThreeloghourseffects{} log points.
+This larger effect (if not due to sampling variation) is suggestive that the imposition screened out those jobs that would have had a high number of hours.
+
+As in the experiment, the wage and hours-worked effects are offsetting in sign.
+The panel ``Log average worker earnings'' shows the effect on worker earnings, conditional upon being hired. 
+However, the effects are imprecisely estimated, with confidence intervals easily incorporating huge positive and negative effects.
+As in the experiment, we lack the precision to conclude much.
+
+It would be useful if there were some clean measure of output under different cells, or perhaps some measure of net employer surplus.
+If, for example, workers are happier with clients because of the ``gift'' of high wages, we might observe some gratitude towards employers.
+The feedback both parties give at the conclusion of a match might proxy for this, but as I show in Appendix~\ref{sec:quality}, there is no evidence of any difference in the rating workers give employers or employers give workers. 
+One possible explanation is that this feedback channel is simply too inflated to offer a precise measurement of surplus, or efficiency wage effects are not real \cite{filippas2022}.
+
+\subsubsection{Effects on labor-labor substitution proxies}
+During the experiment, employers substituted towards more productive workers, as proxied by past wages and on-platform experience.
+I do the same analysis for hired workers by category post-imposition, reporting results in Figure~\ref{fig:ll_subst_outcomes}.
+
+In the observational analysis, we see the same shift in hiring towards more productive workers post-imposition.
+In the panel labeled ``Log mean past wage of hired worker'' we can see that hired workers had  \DIDpastavgwage{} log points higher past wages, compared to \ADMINThreeloghiredpastweffects{} log points in the experiment.
+Although this measure is imprecise, it has a magnitude increase similar to what was found in the experiment.
+Note that these results were previewed in Figure~\ref{fig:event_study_hired_admin}, which showed the time series of average hired worker attributes in \admin{}.
+
+Not only did hired workers have higher past wages---but they also had greater cumulative earnings and greater cumulative hours-worked.
+This can be seen in the panels labeled ``Log mean past earnings of hired workers'' (\DIDcumulativepastearnings{} log points higher in \admin{} post-imposition; the experimental estimate of this shift was \ADMINTwologhiredpastyeffects{} log points).
+I also include as an outcome ``Log cumulative past hours-worked'' even though this was not an experimental outcome in Figure~\ref{fig:all_new} in the interests of space, but it shows the same marked shift.
+
+The observed shifts towards more productive workers are not just the same sign as in the experiment, but also similar in magnitude.
+This suggests the ``persuaded'' critique of the experimental results was relatively unimportant and that substitution is a viable margin of adjustment even outside the experimental context. 
+
+\subsection{Worker-application difference-in-differences estimates of the effects of the platform-wide minimum wage}
+
+The experimental and observational evidence shows that firms adjusted to the platform-wide minimum wage by hiring more productive workers. 
+A natural question is how this substitution affected workers in different parts of the pre-imposition wage distribution.
+The category-month panel is not suitable for exploring this question, as the shift occurs \emph{within} a category of work.
+As such, I constructed a dataset of all applications sent to job openings 14 days before and 14 days after the imposition date, as well as the same data from one year prior to the experiment, which I call the ``placebo year.''
+I then compare the wage bid workers proposed and whether the application leads to a hire, conditioned on pre-period wage bidding for both time periods. 
+
+The reason for including the ``placebo year'' data is that new job-seekers enjoy strong wage growth early in their tenure on the platform as they gain experience.
+As such, we expect workers originally bidding low amounts to bid higher in the near future.
+Without this knowledge of typical new worker wage dynamics, we might over-attribute bidding up to the minimum wage in a pure event study.
+
+As workers can send multiple applications, applications are nested within the worker.
+This structure is useful, as it allows for a within-worker estimate of the effects of the minimum wage on application behavior.   
+To account for the nested structure of the data, I include worker-specific fixed effects and cluster standard errors at the level of the individual worker. 
+I segment workers into  ``bands'' based on their average wage bid in the pre-period.  
+I then estimate a regression  
+\begin{align} \label{eq:application_level}
+y_{ij} = \sum_{k \in K} \beta_k \left( \textsc{Post}_{ij} \times \textsc{PreWageBand}^k_{i} \right) + c_i + \epsilon,
+\end{align}
+where $i$ indexes workers, $j$ indexes job openings applied to, and $\textsc{Post}_{ij}$ is an indicator that the application was sent to a job opening posted after the imposition date of the platform-wide minimum wage. 
+The $\textsc{PreWageBand}^k_i$ is an indicator for whether worker $i$ had an average wage bid in the pre-period that was in the band $k$. 
+The $c_i$ is an individual worker fixed effect. 
+The coefficients of interest are the collection of $\beta_k$ coefficients.
+I also create a worker panel version of this dataset, aggregating within each worker period (pre and post) the total number of applications sent and the total number of hires.   
+
+\begin{figure}[ht!]
+\centering 
+\caption{Changes in wage bids and hire probability post implementation of platform-wide minimum wage} \label{fig:event_study} 
+\begin{minipage}{0.95 \textwidth}
+  \includegraphics[width = \linewidth]{./plots/application_event_study.pdf}
+{\footnotesize
+  \emph{Notes:} This figure shows the $\beta^k$ coefficients from Equation~\ref{eq:application_level}. 
+   The sample consists of all job applications to hourly job openings 14 days before and 14 days after the minimum wage imposition.
+   Standard errors clustered at the level of the individual worker. 
+   The top panel shows the change in wage bids in the post-period relative to the pre-period, by pre-period average wage bid. 
+   The bottom panel shows the change in the application success rate relative to the pre-period, by pre-period average wage bid.  
+}
+\end{minipage} 
+\end{figure}
+
+Figure~\ref{fig:event_study} plots the $\hat{\beta}_k$ coefficients.
+The estimates are plotted using a solid line for the actual imposition year and a dashed line for the placebo year.
+
+The top panel outcome is the worker's individual wage bid in logs.
+In both the actual and placebo years, workers bidding a low wage in the pre-period bid higher in the post-period.
+However, in the actual imposition year, workers with below-minimum wage bids in the pre-period bid substantially higher in the post-period.
+Workers who were well above the \$3/hour minimum had essentially no change in their wage bids relative to the placebo (or the pre-period for that matter---all points estimates are close to zero).
+In short, there seems to be little evidence of any spill-over effects of the minimum wage higher up the wage distribution. 
+
+The outcome in the second panel from the top is an indicator for whether the applying worker was hired for the associated job opening. 
+We can see that in the placebo year there is essentially no change from the post- to pre-periods, with all point estimates close to zero. 
+In contrast, for the actual imposition year, we can see that those workers who had to bid up to meet the new minimum wage suffered a decrease in their success probability.   
+To get a sense of the magnitude, consider the $(2,3]$ band workers, who bid about 10\% higher relative to what they ``should'' have bid, given the increase in the placebo.
+This led to about a 1 percentage point decrease in the per-application win probability. 
+While this may not seem large, the average per-application hire rate for workers in this band is just \TwoThreePerAppWinRate{}, implying that the per-application success probability is less than half of what it was before the change.  
+Interestingly, the decline in win probability seems to extend beyond just those clearly bidding up, perhaps reflecting the overall decrease in the posting of \admin{} jobs. 
+
+Despite the decline in per-application win-rates, workers might potentially offset this reduction with a more intensive search. 
+However, if other workers do the same, the equilibrium reduction in success probabilities might be even greater (or this already-large reduction in hire probability already reflects this equilibrium adjustment).  
+
+To explore the net effect, I switch to the short panel version.
+The outcome in the second panel from the bottom is the count of hires.
+If workers could compensate for decreased win probabilities with a more intensive search effort, the actual and placebo years could be similar.
+Instead, for low-wage workers, we see a clear net decline in hires in the post-period.
+In the bottom panel, we can see why: low-wage workers did not increase their application intensity and even perhaps decreased it. 
+ 
+\section{Discussion and conclusion} \label{sec:conclusion}
+
+The experiment showed that for a firm facing a minimum wage:
+(1) the wages of hired workers increases, 
+(2) at a sufficiently high minimum wage, the probability of hiring goes down, 
+(3) hours-worked decreases, and 
+(4) the size of the reductions in hours-worked can be parsimoniously explained in part by the substantial substitution of higher-productivity workers for lower-productivity workers. 
+
+The observational findings from the market-wide imposition are that employers posted fewer jobs that would have likely paid low wages. 
+The wage of hired workers increased substantially after the imposition of the minimum wage, in line with the experimental estimate. 
+As in the experiment, firms substitute towards more productive workers. 
+After the imposition, workers that historically bid below the minimum wage raised their wage bids substantially and experienced a reduced probability of being hired, on a per-application basis. 
+
+A key finding of the paper is that labor-labor substitution is an important margin of adjustment for firms in this market facing a minimum wage.
+This kind of substitution is conceptually distinct from the typical framing of labor-labor substitution, in which workers have ``types'' but are imperfectly substitutable in the productive process, as in \cite{katz1992changes}. 
+The substitution I find occurred within a pool of applicants that had all self-selected as being suitable for that particular job.
+The tasks are well-defined and so applicants are unlikely to offer radically different ways of performing the same task.
+Instead, the substitution is happening with respect to technical productivity, and yet in a competitive market, these workers should already be getting their marginal product.
+A natural question is whether the kind of labor-labor substitution observed in this setting can be reconciled with a competitive labor market model.
+The answer seems to depend on assumptions about the productive process.  
+
+One assumption is that a job has a fixed marginal technical productivity.
+With this assumption, labor-labor substitution cannot be an adjustment strategy---either the minimum wage is above or below the marginal product of the job.
+An alternative assumption is that workers can have heterogeneous technical productivity, with wages reflecting these differences. 
+If applicants to the same job opening have heterogeneous technical productivity, labor-labor substitution as a response to a minimum wage is not only possible---it explains too much, in the sense that the minimum wage could be completely undone by substitution, so long as workers existing with productivity above the minimum wage.
+Firms buying labor in a competitive market face a horizontal supply curve for every possible level of technical productivity.
+If each worker is paid their marginal product, then firms could always substitute towards higher productivity workers. 
+But there are practical limits to this margin. 
+In the experiment, some jobs facing higher minimum wages clearly go filled; after the imposition, employers clearly post fewer jobs where this kind of adjustment is necessary.
+At a high enough minimum wage, the hireable worker applicant pool is sufficiently thinned out that jobs go unfilled or firms do not find it worthwhile to post them.
+
+In the experiment, the evidence for labor-labor substitution was clear with proxies for productivity but fairly obscure with respect to demographics.
+This is suggestive that prior conventional minimum wage research might tend to underestimate the importance of labor-labor substitution.
+Even then, \cite{clemens2021dropouts} finds evidence of workers still in jobs following statutory minimum wage increases to be better educated and older, and that firms respond to minimum wage increases by upgrading the skill requirements of jobs \citep{clemens2021dropouts}. 
+If labor-labor substitution is important in conventional settings, it would have important implications for designing minimum wage policies.  
+It suggests that higher minimum wages should be paired with more targeted exemptions for lower-productivity workers likely to be displaced.
+
+%% Two directions of research grounded in more conventional settings would be particularly welcome: 
+%% (1) research that quantified the extent to which firms observe the productivity of both applicants and their existing workforce (not already captured by wages), and to what extent can firms adjust this composition through hiring and firing; 
+%% (2) at a market level, what is the labor supply elasticity of ``high-type'' workers, particularly those currently out of the labor force (such as teens from high socioeconomic backgrounds). 
+%% Of course, researching (1) in a conventional setting would be challenging, but with increasing computer-mediation of all aspects of the labor market matching process, this could change, perhaps making it possible to collect data on the pool of applicants available for jobs and the hired workers, before and after a change.  
+
+\clearpage
+
+\bibliographystyle{aer}
+\bibliography{minimum_wage.bib}
+
+\clearpage 
+
+\newpage
+
+\appendix
+
+\section{Online Appendix} \label{sec:iv} 
+
+\subsection{Randomization} \label{sec:randomization} 
+
+Table~\ref{tab:randomization_check} shows the means for a host of pre-treatment job opening outcomes for both the control and MW4.
+We can see that these differences are all close to zero and none of the differences are conventionally statistically significant. 
+In terms of job opening attributes, ``Technical'' is an indicator for whether the job opening required some kind of computer programming.
+``Admin'' and ``Software Dev.'' are indicators for more-refined self-assess categories.
+
+For the other job opening attributes, ``New buyer?'' is an indicator for whether the buyer had ever used the platform before by posting a job opening; ``Prefers high quality'' is an indicator for whether the buyer stated ex ante that they were looking for the most experienced, highest wage workers; the job description length is the length of the buyer's job description measured in characters of text, and ``prior spend'' is the cumulative amount of money paid by the buyer on wages prior to the experiment.   
+
+\begin{table}
+\begin{center}
+\caption{Comparison of pre-treatment covariates for the control and MW4 groups as a check of randomization \label{tab:randomization_check}}
+\begin{small}
+\begin{tabular}{lllcccc}
+\toprule
+& & \multicolumn{1}{c}{\parbox[t][][t]{2cm}{Treatment mean:\\ $\bar{X}_{TRT}$}}
+& \multicolumn{1}{c}{\parbox[t][][t]{2cm}{Control mean:\\ $\bar{X}_{CTL}$}}
+& \multicolumn{1}{c}{\parbox[t][][t]{2cm}{Difference in means: \\ $\bar{X}_{TRT} - \bar{X}_{CTL}$}}
+& \multicolumn{1}{c}{\parbox[b][][b]{2cm}{ p-value }} \\
+\\
+\hline
+  \input{./tables/randomization_check.tex}
+% \bottomrule
+ \end{tabular}
+\end{small}
+\end{center}
+\singlespace
+\begin{footnotesize}
+  \emph{Notes:} This table reports pre-treatment covariate means for the MW4 and control groups. 
+\end{footnotesize}
+\end{table}
+
+\subsection{Workers sorting across openings}  \label{sec:workers_sorting} 
+One test of sorting is whether applicant counts differ by experimental cell.
+Figure~\ref{fig:all_new_organic_applications} shows the effects on the number of organic job applications per opening, by treatment cell. 
+The sample is restricted to job openings that received at least one application.  
+
+In the population, the counts are very slightly negative.
+In the sub-populations where would expect larger results, the estimates are less precise rather than larger, with the MW2 cell in \lpw{} at zero.
+This lack of a ``dose-response'' relationship suggests any difference in application counts is likely just due to sampling variation.
+It seems that workers neither avoided nor sought out job openings with imposed minimum wages.  
+
+\begin{figure}[h!]
+  \caption{Effects of minimum wage treatment on the number of organic applications per job opening} \label{fig:all_new_organic_applications}
+  \centering
+  \begin{minipage}{0.99\textwidth}
+    \includegraphics[width = \linewidth]{./plots/organic_applications.pdf}
+{\footnotesize \\
+  \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi}, where the outcome is the log number of organic applications the job opening received. 
+  See Section~\ref{sec:ed} for details on the experimental design and sample definitions.  
+}
+\end{minipage} 
+\end{figure}
+
+\subsection{Firms seeking to avoid the minimum wage on the platform} \label{sec:firm_sorting_time}
+An internal validity concern is that employers might post additional jobs to avoid the minimum wage (which would not actually be effective, given the design of the experiment).
+This re-posting hypothesis would tend to overstate the extensive margin reductions in hiring.
+Given that these effects on the extensive margin are already small, there is not much ``room'' for this kind of adjustment by firms.
+There is also no evidence for this phenomenon:
+Figure~\ref{fig:all_new_follow_on_openings} shows the effects on whether the employer posted another job within the period covered by the sample.
+The effects on follow-on openings are negative. 
+If firms were re-posting because they thought they received an idiosyncratically bad draw, this effect should be positive.
+Furthermore, the number posting fixed price jobs---which would not be subject to a minimum wage---does not increase, which also cuts against the notion of alerted employers trying to avoid the minimum wage.
+
+\begin{figure}[h!]
+  \centering
+  \caption{Effects of a minimum wage of whether the employer posted another opening} \label{fig:all_new_follow_on_openings}
+  \begin{minipage}{1.15\linewidth}
+  \includegraphics[width = \linewidth]{./plots/follow_on_openings.pdf}
+  \end{minipage}
+  \begin{minipage}{0.95\linewidth}
+    {\footnotesize
+      \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi} where the outcome is whether the employer posted another job opening. 
+    }
+\end{minipage} 
+\end{figure} 
+
+In the population, each active treatment cell has a negative coefficient, though none are significant.
+In the sub-populations \admin{} and \lpw{}, the estimates are less precise and are not always the same sign.
+If anything, the negative effects are stronger in MW4 where the incentive to ``hunt'' would be strongest.
+This is not consistent with large numbers of employers thinking they received a bad ``draw'' of applicants or could avoid the policy by re-posting.
+It is consistent with them simply believing that prices were higher
+and thus posting more jobs was less attractive (previewing the finding
+that jobs posted in \admin{} declined post-imposition).\footnote{
+  Although one might be tempted to perform a difference-in-differences analysis with the first and second jobs posts to assess the effects of exposure to a minimum wage, there are concerns about this being a selected sample (even if the counts of second jobs by treatment are discernibly different).
+  The kinds of employers that post a second job after exposure to a minimum wage might be quite different.
+  Furthermore, the actual platform-wide-imposition does not raise this concern and so I focus my attention on the platform-wide rollout to assess the longer-term effects of the minimum wage. 
+} 
+
+\subsection{Firms sorting across platforms} \label{ref:firms_sorting_platforms}
+Although would-be employers have several options for low-wage, hourly administrative work, survey evidence suggests that relatively few firms ``multi-home'' by posting jobs on multiple platforms (see Section~\ref{sec:empirical_context} for a discussion of how prevalent this in practice). 
+However, if firms did respond to the minimum wage by posting their job opening on another market platform, they would have essentially two other options. 
+During the period of the experiment, all of the major alternative platforms had minimum wages as well, though they differed in their level. 
+Each opening in the experimental sample has a job title e.g., ``Java Developer Needed for Short Project.'' 
+Assuming firms posting on multiple sites would re-use their job titles, for each MW4 job title, I constructed an indicator for whether that exact job title appeared on an alternative online labor market whose collection of job titles is available. 
+The resultant fitted model is 
+\begin{equation} \label{eq:alt_platform} 
+\mbox{Pr}\left(\mbox{Title Match on Alt. Platform}\right) = 
+\underbrace{0.0034}_{0.0069} \cdot \mathbf{1}\{ \underline{w} = 4\} + \underbrace{0.155}_{0.0018}  
+\end{equation} 
+which shows that the minimum wage on the platform did not simply displace firms to the most natural alternative and closest substitute, at least in the short-run. 
+
+
+\subsection{What did employers know?} \label{sec:what_did_employers_know}
+
+Changed beliefs are a nuisance for our purposes, as they would not happen with a market-wide imposition of a minimum wage.
+Although we do not know what employers actually believed, we can explore if their behaviors are consisten with either alerted or persuaded beleifs. 
+
+This could be because the higher bids accurately reflect the cost of hiring a worker for the job, or because the employer was made aware they were part of an experiment or believed the worker to be more productive than they otherwise would have.
+These changes in beliefs may have affected the employer's behavior, such as posting another job to avoid their treatment group or waiting to post another job after the experiment ended.
+
+It is difficult to determine whether beliefs changed and if behaviors changed as a result, but the number of ``alerted'' employers may have been reduced by the design of the platform interface.
+During the post-experiment phase, there was no evidence that employers tried to quickly fill jobs before the minimum wage deadline, and market outcomes only changed once the minimum wage was implemented.
+The likelihood of an employer being ``alerted'' or ``persuaded'' may depend on their experience with the platform, with experienced employers being more likely to be "alerted" and new employers being more likely to be "persuaded."
+
+Some treated employers with received atypically high wage bids for their jobs.
+Instead of simply taking these wage bids as given, some employers might have been (a) ``alerted'' they were in an experiment or (b) ``persuaded'' that some applying workers were more productive because they were proposing higher wages.
+Changed beliefs are a nuisance for our purposes, as they would not happen with a market-wide imposition of a minimum wage.
+Although we do not know what employers actually believed, we can explore if their behaviors are consisten with either alerted or persuaded beleifs. 
+
+A ``persuaded'' employer might infer a worker bidding more is more productive.
+This kind of inference is consistent with \cite{wolinsky1983prices} in which price reveals quality, despite quality being imperfectly observed by some buyers.
+If we adapt this logic to the experiment, some workers are forced to bid more than is rational for them, but they do not face the full lost-business downside of this bidding up because employers (incorrectly) update their beliefs about the bidding worker's productivity.
+In contrast, an ``alerted'' employer knows there is some external reason causing the higher bids, perhaps believing they are in an experiment.
+In response, they might post another job hoping to avoid their cell, or wait to post another job after the experiment was over.
+
+
+The number of ``alerted'' employers was likely reduced by the design of the platform interface.
+At the time the experiment was run, applicants were not ranked by wage bids, but rather by arrival time.
+Wages bids were also simply listed next to an applicant, rather than visualized in some way that would make a spike at \$2, \$3 or \$4 salient.
+Such a spike in the distribution of wage bids might not be noticeable even if visualized, as applicants were instructed to continue to bid up until they reached the floor rather than simply being told the floor.
+Applicants were paginated, with just 10 applicants showing at a time, making it difficult for the employer to make an inference about the change in the pool at a glance.
+
+
+Inconsistent with many being ``alerted,'' treated employers did not try to avoid the minimum wage by posting another job, posting another job but switching to a fixed price job, or posting another job on alternative platform (Appendix~\ref{sec:firm_sorting_time} and Appendix~\ref{ref:firms_sorting_platforms}).
+Furthermore, during the post-experiment phase, when the upcoming minimum wage was widely announced, there is no evidence that employers tried to quickly fill jobs before the deadline (discussed at length in Section~\ref{sec:market_wide}).
+Market outcomes only changed once the minimum wage was actually implemented.
+
+% No difference in old and new
+We might expect that whether an employer had ``alerted'' or ``persuaded'' beliefs would in turn depend on their experience with the platform.
+An experienced employer would be more likely to be ``alerted'' while a new employer unfamiliar with rates would be like to ``persuaded.''
+If an experienced employer had more accurate beliefs about worker productivity, then the \cite{wolinsky1983prices} logic suggests they would be less likely to hire over-priced applicants unlike more credulous rookies. 
+Despite the plausibility of this argument, I find no evidence that the treatment effects on hiring depended on whether the employer had prior experience on the platform (Appendix~\ref{sec:employer_experience}).
+Furthmore, there is no evidence that the labor-labor substitution results depend on employer experience, which is a direct test of the \cite{wolinsky1983prices}/persuaded conjecture. 
+
+
+When the minimum wage was imposed platform-wide, everyone had ``alerted'' beliefs and no one would have ``persuaded'' beliefs.
+Despite this very different informational environment, the results on the composition shifts in hiring are not just directionally the same, but also similar in magnitude.
+We also see the same amount of labor-labor substitution, which is contrary to the notion that many employers were ``persuaded'' during the experimental phase. 
+This might be surprising, but consider that bids themselves might not be very informative.
+Anyone is free to propose any number as wage bid and the only cost to doing so is the cost of making an offer, which is close to zero, and there are many reasons why workers might submit uncompetitive bids.
+As such, even if we think the wage offers are credible as a willingness to sell---the worker would really work at that price---there is little reason to think it reflects a credible willingness to buy, which is what would be informative about productivity.
+
+
+
+
+\subsection{Constructing LPW group} \label{sec:wages_by_category}
+
+Figure~\ref{fig:wages_by_category} shows boxplots for the log wages for each on-platform category of work in the control group.\footnote{
+  The sample is restricted to wages above 25 cents per hour in which the worker worked at least one hour. 
+  There are a small number of contracts (0.2\% of filled job openings) formed for very small hourly wages (usually 1 cent) though these are usually firms and workers that are using the platform's time tracking features but are not actually using the site for payment purposes.
+}  
+
+
+\begin{figure}
+\centering 
+\caption{Wages by category of work in the control group} \label{fig:wages_by_category} 
+\includegraphics[width = \linewidth]{./plots/avg_wages_by_cat.pdf} 
+\begin{minipage}{0.95\linewidth}
+{\footnotesize
+\emph{Notes:} 
+ This figure shows the distribution of hourly wages hours for filled jobs in the control group, by category of work. 
+ The box indicates the 25th and 75th percentiles. 
+ The heavy center-line is the median. 
+ The whiskers are the highest and lowest values within 3/2 of the IQR, from the median. 
+}
+\end{minipage} 
+\end{figure} 
+
+
+The training data was 100,000 pre-experiment job openings in which a hire was made.
+The outcome was the log hourly wage for the hired worker. 
+The candidate predictors included the category of work, skills required, the anticipated duration, and the job opening title.\footnote{
+ For textual predictors, I used the RTextTools package, developed by \cite{jurka2012rtexttools} to create a document term matrix.
+}
+To estimate the model, I used the glmnet package developed by \cite{friedman2009glmnet}, using LASSO for regularization and variable selection \citep{tibshirani1996regression}.
+The optimal tuning parameters were selected via cross validation. 
+Using the fitted model, I made predictions for every job opening in the experiment, and then selected those predicted to pay less than \$5/hour.
+
+
+\section{Additional experimental outcomes}
+
+\subsection{Hours-worked (0s included)} \label{sec:hours_worked_zero}
+
+Figure~\ref{fig:all_new_hours_zero} shows the effect of the intervention on hours-worked, with 0s included for unfilled jobs. 
+It shows the same large decrease in hours-worked found when conditioning on hiring. 
+
+\begin{figure}[h!]
+  \caption{Effect on hours-worked, with 0s included for unfilled jobs} \label{fig:all_new_hours_zero}
+  \centering
+  \begin{minipage}{0.99\textwidth}
+    \includegraphics[width = \linewidth]{./plots/hours_zero.pdf}
+{\footnotesize \\
+  \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi} for hours-worked, with $0$s included for job openings where a hire was not made. 
+}
+\end{minipage} 
+\end{figure}
+
+\subsection{Hours-worked quantile regression} \label{sec:why_hours_fell}
+%quantile_hours_worked
+Perhaps hours-worked fell because jobs that would have many hours went unfilled.
+However, hours-worked fell even in cells that had little or no reduction in hiring.
+For example, MW3 in \admin{} had almost no reduction in hiring, but a \ADMINThreeloghourspctchange{}\% decrease in hours-worked, making a pure selection explanation implausible.
+Even if we take the 2\% MW2 reduction in \admin{}, if we assume worse-case missingness for \admin{} (i.e., the 2\% unfilled would be the 6\% that would have had the most hours), the log point reduction in hours-worked would be 0.08 log points, not the 0.28 we observe).  
+Furthermore, a quantile regressions of hours-worked show that reductions occurred throughout the distribution of hours-worked and that the difference between treatment and control was not simply that treated jobs were ``missing'' jobs with many hours.
+
+Table~\ref{tab:quantile_hours_worked} reports a collection of quantile regressions of hours-worked on the treatment indicators.
+It shows that hours-worked decreased at points throughout the distribution.
+
+\input{./tables/quantile_hours_worked.tex}
+
+\subsection{Any past experience of the hired worker} \label{sec:pastExper} 
+The outcome variable in the analysis shown in Figure~\ref{fig:all_new_any_exper} is an indicator for whether the hired worker had any on-platform work experience at the time they were hired. 
+There is no strong evidence that the treatment affected the probability that the hired worker had prior experience. 
+
+\begin{figure}[h!]
+  \centering
+  \caption{Effects of imposing job-specific minimum wages on the probability the hired worker had any on-platform experience} \label{fig:all_new_any_exper}
+  \begin{minipage}{1.15\linewidth}
+  \includegraphics[width = \linewidth]{./plots/any_exper.pdf}
+  \end{minipage}
+  \begin{minipage}{0.95\linewidth}
+    {\footnotesize
+      \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi} where the outcome is an indicator for whether the hired worker had any on-platform experience. 
+    }
+\end{minipage} 
+\end{figure} 
+
+\subsection{Subjective evaluations post-contract} \label{sec:quality} 
+When a firm or a worker ends a contract, both sides are asked to rate the other side on a five-star scale. 
+Although five stars are, by far, the most common rating, there is some variation in ratings. 
+Generally, worker ratings of firms are more favorable than firm ratings of workers. 
+It is beyond the scope of this paper to model what this feedback actually means---particularly since the given feedback clearly has some strategic implications---it is at least plausible that it proxies for a party's surplus from a relationship. 
+
+The top panel of Figure~\ref{fig:all_new_feedback} shows the difference in average feedback by firms in the active treatment cells compared to those in the control group.
+The bottom panel of Figure~\ref{fig:all_new_feedback} shows the difference in average feedback by workers in the active treatment cells compared to those in the control group.
+There is no strong evidence of any difference in average feedback of either type. 
+
+\begin{figure}[h!]
+  \centering
+  \caption{Effects of imposing job-specific minimum wages on job outcomes relative to the control group} \label{fig:all_new_feedback}
+  \begin{minipage}{1.15\linewidth}
+  \includegraphics[width = \linewidth]{./plots/feedback.pdf}
+  \end{minipage}
+  \begin{minipage}{0.95\linewidth}
+    {\footnotesize
+      \emph{Notes:} This figure reports estimates of Equation~\ref{eq:gsi} for the two feedback measures: a worker on the employer and employer on the worker. 
+    }
+\end{minipage} 
+\end{figure} 
+
+%\input{./plots/fig_wrapper_fbToWorker.tex} 
+%The left panel of Figure~\ref{fig:fbToEmployer} shows the difference in average feedback by firms in the minimum wage cells compared to the control group.  
+%\input{./plots/fig_wrapper_fbToEmployer.tex}
+
+
+\subsection{Treatment effects on hiring by employer experience} \label{sec:employer_experience}
+
+A reasonable conjecture is that employers with on-platform experience in treatment cells might have made different inferences about the wage increases than those employers new to the platform.
+However, there is no evidence this is the case:
+employer prior experience is positively correlated with the probability of hiring, but there is no evidence that treatment effects differ by employer experience.
+Nor is there a detectable difference in the experience level of hired
+workers, by experience level.
+ 
+Table~\ref{tab:any_prior} reports these results.
+In Columns~(1) and (2), the outcome is whether the employer hired. 
+In Column~(1), the regression is an estimate of Equation~\ref{eq:gsi} but augmented with the employer experience.
+In Column~(2), employer experience is interacted with the treatment indicators.
+In Columns~(3) and (4), the outcome is the log cumulative earnings of the hired worker.
+
+\input{tables/any_prior.tex}
+
+The confidence interval for the coefficients on every employer's prior experience/treatment cell interaction term comfortably includes zero.
+Furthermore, when I perform an LR test, with the simpler model nested within the model with interactions.
+I fail to reject the null hypothesis in both cases, and the log-likelihoods for the two models are nearly identical.
+This result is not driven by experienced employers simply being rare or exceedingly common---about 34\% of employers in the experiment had hired workers on the platform in the past.
+If there were big differences in treatment effects by experience, we would likely detect them. 
+
+\subsection{Characteristics of hired workers in \admin{} post-imposition as event study} \label{sec:post_imposition_shift}
+Recall that in the experiment, there was a strong shift towards hiring more experienced workers, but that this might not be borne out in equilibrium. 
+To detect whether this shift also occurred following the platform-wide roll-out, Figure~\ref{fig:event_study_hired_admin} plots the attributes of workers hired in \admin{} over time.
+The announcement and imposition are indicated by dashed vertical lines.
+
+In the top row, labeled ``Past average wage of hired worker (1),'' the times series are the quantiles of the hired worker's past average wage that week.
+Importantly, this average past wage is computed only using wages earned prior to the announcement of the minimum wage.
+There is no visual evidence of a change at any quantile post-announcement.
+However, post-imposition, there is a clear increase in the average past wages of the hired workers, at multiple quantiles.
+This pattern of more experienced workers being hired is repeated in the bottom panel for cumulative earnings, labeled ``Past cumulative earnings of hired worker (2).'' 
+
+Figure~\ref{fig:event_study_hired_admin} suggests that the substitution towards more productive workers that occurred during the experiment also occurred post-imposition.
+However, a direct comparison of the observational and experimental magnitudes requires a different approach, which is the focus of the next section. 
+
+\begin{figure}[h!]
+\centering 
+\caption{Time-series of the attributes of hired workers, in \admin{} only}
+\label{fig:event_study_hired_admin} 
+\begin{minipage}{0.90 \linewidth}
+\includegraphics[width = \linewidth]{./plots/event_study_hired_admin.pdf} 
+{\footnotesize
+  \emph{Notes:} This figure plots weekly quantiles for the attributes of hired workers in the \admin{} category.
+  The minimum wage policy announcement and imposition are indicated with vertical dashed lines.
+}
+\end{minipage} 
+\end{figure} 
+
+
+\end{document}
+
+

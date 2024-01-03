@@ -1,0 +1,322 @@
+\subsection{Did affected workers shift to an ``uncovered'' sector of fixed price work?} \label{sec:shift_fp}
+One possible way that workers could adjust to platform-imposed minimum wage is to shift to an ``uncovered'' sector. 
+On the platform, fixed price work is not covered by the minimum wage. 
+However, Figure~\ref{fig:event_study_fp} shows, there is little evidence of such a shift. 
+The outcome variable is an indicator for whether a worker's application was to a fixed price opening. 
+Comparing the imposition year to th placebo year, there is no evidence that workers likely to be affected by the minimum wage began applying to more fixed price job openings.  
+
+\begin{figure}[ht]
+\centering 
+\caption{Changes in application-focus post implementation of platform-wide minimum wage \label{fig:event_study_fp}} 
+\begin{minipage}{0.95 \textwidth}
+  \includegraphics[width = \linewidth]{./plots/event_study_fp.pdf}
+{\footnotesize
+  \emph{Notes:} This figure shows the $\beta^k$ coefficients from Equation~\ref{eq:application_level}, but with an outcome of being an indicator for whether the worker applied to a fixed price job opening.  
+   The sample consists of all job applications to hourly job openings 15 days before and 15 days after the experimental period. 
+   The equation is fit using OLS, with standard errors clustered at the level of the individual worker. 
+}
+\end{minipage} 
+\end{figure}
+
+\subsection{More on LL-substittion by demographics}
+
+To look for demographic shifts, I plot the fraction of workers hired from each country.
+Figure~\ref{fig:country_selection} plots the fraction of hired workers from several countries, by experimental group.
+The countries are, from top to bottom, the United States, India, Philippines, and Bangladesh.
+The countries are ordered by the average hourly wage of workers from that country. 
+
+The four countries used in this analysis made up about 80\% of the hired workers, with the plurality coming the Philippines (about \PHILfractionControl{}\%), with India and Bangladesh (\BANGfractionControl{}\%), followed by the US at only \USfractionControl{}\%. 
+The sample is the job openings in \lpw{}, the sub-population in which we would expect the strongest substitution effects.
+For each country, the 95\% CI for the control group is projected out as two horizontal dashed lines. 
+
+\begin{figure}
+\centering 
+\caption{Effects of the minimum wage on the country of the hired worker, in \lpw{} sub-population, with countries ordered from higher to lowest average wages} \label{fig:country_selection} 
+\includegraphics[width = 0.8 \linewidth]{./plots/country_selection.pdf} 
+\begin{minipage}{0.95\linewidth}
+{\footnotesize
+\emph{Notes:} This figure reports the fraction of hired workers from one of several countries.
+The countries are, from left to right, the US, India, Philippines, and Bangladesh.
+This is also the descending ordering of average wages on the platform by worker country. 
+}
+\end{minipage} 
+\end{figure} 
+\FloatBarrier
+
+
+In the top facet of Figure~\ref{fig:country_selection}, we can see that with higher minimum wages, the fraction of hires that are from the US increases.
+The fraction of hires from the US increased from about \USfractionControl{}\% to  \USfractionFour{}\%.
+In the bottom facet which reports the fraction of hires from Bangladesh, we can see that the fraction of hires decreases with higher minimum wages.
+If we just compared MW4 to the control, we could detect the labor-labor substitution in the US and Bangladesh.
+For India, there is no discernible pattern, while for the Philippines, there is some slight evidence of a decline in the fraction from that country with higher minimum wages. 
+However, for MW2 and MW3, we would conclude little or no demographic substitution. 
+
+Comparing across countries, the MW2 and MW3 fractions would not be statistically distinguishable from the control.
+Furthermore, the magnitudes are all close to zero, though both MW2 and MW3 effects are positive for the US and negative for Bangladesh.
+The MW4 point estimate for India are close to zero, and while the Philippines estimate is negative, it is only about 1 percentage point and is not conventionally significant.
+
+The US versus Bangladesh comparison in MW4 is highly suggestive of substitution, and perhaps a ``conventional'' analysis would have detected it.
+However, the magnitudes are not large, and recall that MW4 in \lpw{} had a non-trivial reduction in hiring, and the shift could be viewed as due to selection. 
+Substitution is barely detectable with respect to demographic measures---but clearly detectable with respect to individual productivity measures.
+This illustrates the importance of individual productivity measures in detecting substitution. 
+
+
+\subsection{Effects of the minimum wage imposition on hours-worked in \admin{}}
+One of the clearest findings from the experiment was that hours-worked conditional upon a hire declined in the treated group.
+This decline was likely due to some combination of more productive worker being hired and the hiring employer scaling back the score of work.
+Post-imposition, we also have the possibility that different kinds of jobs get posted.
+Did this same reduction in hours-worked happen post-imposition? 
+
+Simply regressing hours-worked for a given contract on the wage that project paid tells us very little.
+The reason is that much of the variation in hours-worked is explained by the nature of the project---some projects are large and some are small, and they also differ in their skill requirements---some projects are very simple and pay low wages, and some projects require greater expertise and pay higher wages.
+A regression of hours-worked on wages would capture these correlations, without telling us anything anything about how changing the wage affected things. 
+However, if we see that after the minimum wage imposition, contracts formed at wages right above the minimum wage, it suggests those are contract that otherwise would have formed at lower wages, and if the employer is reducing the scope of the project or getting a more productive worker, we should see reduced hours-worked.
+
+To test for this, I compare hours-worked at different wage bands before and after the minimum wage imposition, estimating a regression of the form 
+\begin{align} \label{eq:hours_worked} 
+  \log h_{j} = \sum_{k \in K} \beta_k \left( \textsc{Post}_{j} \times \textsc{WageBand}^k_{j} \right) + \textsc{Post}_{j}
+  \epsilon,
+\end{align}
+where $h_j$ is hours-worked of job $j$, $\textsc{WageBand}^k_j$ is an indicator for the wage band of the job.
+
+Figure~\ref{fig:event_study_admin_hours_worked_by_bins_reg} plots the coefficients on the post indicator and the wage band indicator. 
+We can see that $[2.99,3.33]$ band has a large reduction in hours-worked, whereas there is no obvious change in other bands.
+When the minimum wage was in effect, these jobs had about 30\% fewer hours-worked.
+This could be a selection effect---perhaps jobs that would have taken many hours are screened out.
+But the alternative explanation is that some combination of reduced labor demand and more productive hires reduced hours-worked, as in the experiment.
+
+\begin{figure}[h!]
+\centering 
+\caption{Mean hours-worked by wage band in \admin{}, before and after the imposition}
+\label{fig:event_study_admin_hours_worked_by_bins_reg} 
+\begin{minipage}{0.90 \linewidth}
+\includegraphics[width = \linewidth]{./plots/event_study_admin_hours_worked_by_bins_reg.pdf} 
+{\footnotesize
+  \emph{Notes:} This reports estimates from Equation~\ref{eq:hours_worked}. 
+}
+\end{minipage} 
+\end{figure} 
+
+
+\subsection{Effects of the minimum wage on the hired worker earnings} \label{sec:earnings} 
+
+For each job opening, I can calculate the total wage bill, which is the amount paid to hired workers.  
+Figure~\ref{fig:earnings} reports regressions with the total wage bill as the outcome, with zeros for unfilled job openings included. 
+There is some weak evidence of a lower wage bill in MW3 (significant in \admin{} and \lpw{}), but this result is somewhat undermined by the absence of effects in MW2 or MW4.
+Further, there is no evidence of a stronger pattern in \admin{} or \lpw{} compared to \all{}, as was the case with many other results. 
+With no clear pattern in the earnings results across populations and experimental groups, it seems that the wage and hours effects are essentially offsetting, at least given the available precision. 
+
+\input{./plots/fig_wrapper_earnings.tex}
+
+Given the imprecision of total earning estimates, I also examine changes in log earnings, conditional upon a job opening being filled. 
+With these estimates, there is fairly strong evidence for a larger wage bill in MW4, though this is also the cell that had a non-trivial reduction in hiring. 
+
+Figure~\ref{fig:log_earnings} shows the results when the outcome variable is log earnings, conditional upon the hired worker earning some amount of money.
+
+\input{./plots/fig_wrapper_log_earnings.tex}
+
+
+
+\subsection{Other stuff TK}
+
+Starting with hiring, in the top panel of Figure~\ref{fig:event_study_robustness}, on the left, corresponding to
+the announcement, there is no evidence that fill rates changed substantially. 
+Although all point estimates are negative, only the one week post-period estimates are conventionally significant for all pre-period bandwidths. 
+These are also the least precise estimates. 
+The four week pre-period bandwidth is always negative and significant, albeit marginally, for each post-period bandwidth.
+
+For the imposition, only the estimates using the one week post-period window are negative. 
+However, these estimates  are close to zero and not conventionally significant. 
+With a larger post-period window, the effects become positive and highly significant. 
+Not only is there no decline in hiring, there is evidence of a substantial \emph{increase} in hiring.
+
+One possible explanation for the increase in hiring is that the composition of job openings changed. 
+In the panel below the hiring results, I report the same set of coefficients but for regressions where the outcome is an indicator for whether the job opening was posted in the \admin{} category.
+For the announcement, there is no strong evidence of a compositional shift, as the estimates are generally close to zero for all post-period windows.
+In contrast, following the imposition, the fraction of jobs posted in the administrative category fell substantially.
+All estimates, regardless of the size of the  pre- and post-windows, are negative and highly significant, with reductions of about 5 to 7 percentage points for the largest post-period bandwidth. 
+
+\begin{figure}[h!]
+  \caption{Fraction of hourly job openings that are administrative by day, in the year the minimum wage was imposed (solid line) and in the previous calendar year (dashed line).} \label{fig:admin_frac}
+  \centering
+\begin{minipage}{0.90\textwidth}
+  \includegraphics[width = \linewidth]{./plots/event_study_admin.pdf}
+{\footnotesize \\
+  \emph{Notes:} This figure plots the fraction of job openings posted in the administrative category. 
+The solid line shows the fraction in the year the minimum wage was imposed. 
+The dashed line shows the fraction in the ``placebo year,'' which was one year prior.  
+The ``0'' day, indicated with a vertical line, is the day the minimum wage was imposed. 
+}
+\end{minipage} 
+\end{figure}
+
+Although the regression evidence suggests a compositional shift, the credibility of this finding depends on the suitability of the placebo year as a counter-factual.
+To better assess this assumption, Figure~\ref{fig:admin_frac} plots the daily fraction of jobs posted in the administrative category.
+The ``0'' day is the day the \$3/hour minimum wage was imposed market-wide. 
+The actual year fraction is shown as a solid line and the placebo year fraction is shown as a dashed line. 
+A 95\% CI is plotted for each daily estimate.
+
+The two time series in Figure~\ref{fig:admin_frac} track closely in the pre-period, but then diverge in the post-period.
+However, the post-period difference seems to be more caused by an increase in the placebo year not matched in the actual year.
+The post-period gap could, of course, be due changes in the market, in either year, not related to the minimum wage policy.
+The composition results would be more credible if both lines were more or less flat in the pre-period and the placebo continued to be flat in the post-period.
+Caveats aside, to the extent the placebo year is providing a reasonable counter-factual, there is some evidence of a post-imposition compositional shift away from relatively low-paying job openings. 
+
+Figure~\ref{fig:event_study_admin_hours_worked_by_bins}
+
+\begin{figure}[h!]
+\centering 
+\caption{Estimates of the effects of the platform-wide \$3/hour minimum wage on hours-worked in the administrative support category} \label{fig:event_study_admin_hours_worked_by_bins} 
+\begin{minipage}{0.90 \linewidth}
+\includegraphics[width = \linewidth]{./plots/event_study_admin_hours_worked_by_bins.pdf} 
+{\footnotesize
+  \emph{Notes:}
+}
+\end{minipage} 
+\end{figure} 
+
+
+\begin{figure}[h!]
+\centering 
+\caption{Estimates of the effects of the platform-wide \$3/hour minimum wage on hired worker wages} \label{fig:event_study_admin_hours_worked_scatter} 
+\begin{minipage}{0.90 \linewidth}
+\includegraphics[width = \linewidth]{./plots/event_study_admin_hours_worked_scatter.png} 
+{\footnotesize
+  \emph{Notes:}
+}
+\end{minipage} 
+\end{figure} 
+
+
+\begin{table}
+  \caption{Effects of imposing a job-specific minimum wage job-specific outcomes \label{tab:all_pretty}} 
+  \centering
+  \begin{tiny}
+    \input{tables/all_pretty.tex}
+  \end{tiny}
+\begin{minipage}{0.95\linewidth}
+{\footnotesize
+  \emph{Notes:}
+This table reports group means for the entire population of jobs, in \all{}, jobs posted in the administrative category, \admin{}, and jobs predicted \emph{ex ante} to pay low wages, \lpw{}.
+}
+\end{minipage} 
+\end{table}
+
+
+
+\begin{table}
+    \caption{Attributes of hired workers, by experimental group \label{tab:all_selection_pretty}} 
+\begin{tiny}
+  \input{tables/all_selection_pretty.tex}
+\end{tiny}
+\begin{minipage}{0.95\linewidth}
+{\footnotesize
+\emph{Notes:} This table reports group means for the entire population of jobs, in \all{}, jobs posted in the administrative category, \admin{}, and jobs predicted \emph{ex ante} to pay low wages, \lpw{}.
+}
+\end{minipage} 
+\end{table}
+
+\begin{figure}[h!t]
+\centering 
+\caption{Effects of imposing a job-specific minimum wage on job-specific outcomes \label{fig:all}} 
+\begin{minipage}{0.95\linewidth}
+  \includegraphics[width = \linewidth]{plots/all.pdf}
+  {\footnotesize
+    \emph{Notes:} Each ``row'' reports group-specific means for the minimum wage experiment, for a different outcome.
+    The ``columns'' of this figure correspond to three different datasets.
+    The mean for each group is plotted, as well as a bar showing the difference from the control group.
+  }
+\end{minipage} 
+\end{figure} 
+
+
+\subsection{The difference-in-differences estimate of employer selection and post-hire outcomes} 
+
+As in the experiment, many of the outcomes of interest are only observed if a worker is hired. 
+The effects of the announcement and imposition on these outcomes are shown in Figure~\ref{fig:event_study_hired_robustness}.
+It shows difference-in-difference estimates using the same methodology as for the hiring and job opening composition results from Figure~\ref{fig:event_study_robustness}.  
+The outcomes are, from top to bottom, the: 
+(1) log hourly rate of the hired worker,
+(2) log profile rate of the hired worker, 
+(3) average past log wage of the hired worker, and 
+(4) log hours-worked.  
+The left panel shows the results for the minimum wage announcement, while the right panel shows the results for the minimum wage imposition.
+For the imposition results, the experimental estimates from the \all{} group are indicated with horizontal lines labeled with the associated minimum wage. 
+
+\begin{figure}[h!]
+\centering 
+\caption{Estimates of the effects of the platform-wide \$3/hour minimum wage on filled opening outcomes} \label{fig:event_study_hired_robustness} 
+\begin{minipage}{0.90 \linewidth}
+\includegraphics[width = \linewidth]{./plots/event_study_hired_robustness.pdf} 
+{\footnotesize
+  \emph{Notes:}
+  This figure plots difference-in-difference estimates of the effect of announcing and imposing a \$3/hour platform-wide minimum wage. 
+  The left column shows the ``announcement'' estimates and the right column shows the ``imposition'' estimates.
+  The x-axis shows the length of the post-period window (in days).
+  The y-axis is the estimated treatment effect taking the actual year estimate minus the estimate calculated from the placebo year (one year prior), or $\hat{\beta}_{\textsc{Actual}} - \hat{\beta}_{\textsc{Placebo}}$. 
+}
+\end{minipage} 
+\end{figure} 
+
+The first outcome shown in the top panel of Figure~\ref{fig:event_study_hired_robustness} is the hourly rate of the hired worker.
+There is no evidence that the announcement had any effect, with most of the confidence intervals comfortably including zero. 
+In contrast, hired wages increased substantially after the imposition, with point estimates ranging from 10\% to 15\%, depending on the post-period window length.
+The estimates are somewhat sensitive to the pre-period window used, with larger windows implying smaller effects, but the estimates do not seem sensitive to length of the post-period windows used. 
+These estimates are larger than the MW3 experimental estimates but are close to the MW4 experimental estimates. % (see Figure~\ref{fig:meanWage}). 
+
+In the next panel down of Figure~\ref{fig:event_study_hired_robustness}, the outcome is the profile rate of the hired worker. 
+There is no evidence of an announcement effect but strong evidence of an imposition effect.   
+Profile rates were about 10\% higher, regardless of the post-period window length.
+This increase is substantially higher than the experimental increase in any of the cells. 
+Although this would seemingly imply even greater labor-labor substitution in equilibrium, it is important to note that workers were free to change their listed profile rates at any time. 
+Post-imposition, workers presumably changed their profile rates accordingly, to reflect the new policy.
+
+The past average wage of the hired worker does not suffer from the same limitations as the profile rate, as workers cannot change it. 
+This past average wage is the outcome in the third panel of Figure~\ref{fig:event_study_hired_robustness}. 
+There is no evidence of an announcement effect, but strong evidence of a positive imposition effect.  
+The point estimates vary, but they are about 5\%. 
+This is higher than the MW3 experimental estimates (which were actually slightly negative for MW3 in \all{}). 
+The results suggest there was substitution towards higher wage workers after the market-wide imposition.
+
+In the bottom panel, the outcome is the number of hours-worked. 
+Interestingly, there is perhaps some weak evidence of more hours-worked after the announcement, which would be consistent with employers trying to get work done in anticipation of the upcoming policy change. 
+However, the effect is not large and not all specifications give point estimates that are conventionally significant.
+The evidence for a reduction in hours-worked is much stronger in the imposition case. 
+Matching the experimental results, the point estimates imply a 6\% reduction in hours-worked in the post-period. 
+The experimental estimate for MW3 was about a 9\% reduction, though this was the largest reduction among the active treatment cells---in MW4 and MW2 the reduction was closer to 5\%, suggesting that MW3 was a high estimate of the true causal effect due to sampling variation. 
+However, MW4 also had a non-trivial reduction in hiring, and so selection effects could matter.
+
+The market-wide imposition difference-in-differences estimates generally match the experimental outcomes in both sign and magnitude, with the notable exception that hiring does not seem to decrease at all post-imposition. 
+It is clear that the average past wage of the hired worker increased substantially, with point estimates somewhat larger than those found in the experiment. 
+The effects on the profile rate are even larger, but this seems most likely to be an artefact of the profile rate being updated by workers rather than evidence of even stronger labor-labor substitution.
+
+
+
+To quantify the extent of labor-labor substitution, it is useful to use other categories of work where the minimum wage had no evident effect on wages.  
+If we assume that quantiles of various outcomes in other categories of work were not affected by the minimum wage imposition, we can estimate 
+\begin{align} \label{eq:quantile_reg}
+  \log y^q_{ct} = \delta_t + \gamma_c + \beta \left(\textsc{Post}_{t} \times \admin{}_c \right) + \epsilon
+\end{align}
+where $\delta_t$ is a week-specific effect, $\gamma_c$ is a category specific effect and $\textsc{Post}_t$ is an indicator for whether the observation is in the post-period.
+
+Figure~\ref{fig:diff_in_diff} plots $\hat{\beta}$ for hired worker outcomes, at different quantiles.
+For comparison, the experimental MW3 estimate for the \admin{} is plotted as a dashed line.
+The mean log effect is on the far left, in each panel.
+Both the ``Customer Service,'' and ``Sales and Marketing'' categories are removed. 
+
+For the outcome ``Hourly rate for current contract (1)'' we can see increases of nearly 50\% at the 10th quantile but little effect at the highest quantiles.
+The measures of hired worker productivity all show large increases at the lowest quantiles: the ``Past average wage of hired worker (2)'', ``Past cumulative earnings of hired worker (4)'',  and ``Past cumulative hours-worked of hired worker (3)'' are all large ad positive at the 75th quantile.
+The measure of past cumulative experience---as measured by hours-worked---is positive at all quantiles.
+
+\begin{figure}[h!]
+\centering 
+\caption{Difference-in-differences estimates of the effects of the minimum wage imposition on hired worker attributes in the \admin{} category} \label{fig:diff_in_diff} 
+\begin{minipage}{1.0 \linewidth}
+\includegraphics[width = \linewidth]{./plots/diff_in_diff.pdf} 
+{\footnotesize
+  \emph{Notes:} This figure reports estimates of the effects of the minimum wage imposition in \admin{}, using Equation~\ref{eq:quantile_reg}.
+  The data consist of a panel of quantiles of hired worker outcomes, by category and by week.
+  Both the ``Customer Service'' and ``Sales and Marketing'' categories are removed from the data, as they were also affected by the minimum wage imposition. 
+}
+\end{minipage} 
+\end{figure} 
