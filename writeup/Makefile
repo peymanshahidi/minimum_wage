@@ -5,6 +5,20 @@ images = images/bidding_interface
 include .env
 export
 
+##############
+## Docker file
+##############
+
+.PHONY: docker
+
+docker:
+	@echo "Building docker image"
+	@cd .. && sudo docker build -t minimum_wage .
+	@echo "Running docker image"
+	@echo "Navigate to: http://localhost:8080/writeup/minimum_wage.pdf"
+	@cd .. & sudo docker run -p 8080:8000 minimum_wage
+
+
 ######################################
 ## Compress the data & move to Dropbox
 ######################################
@@ -42,6 +56,10 @@ tables =
 plots = 
 parameters =
 
+#################################################
+## These are all "called out" numbers in the text
+#################################################
+
 parameters += parameters/parameters.tex
 parameters/parameters.tex: ../analysis/parameters.R 
 	cd ../analysis && ./parameters.R
@@ -56,59 +74,14 @@ parameters += parameters/params_country_selection.tex
 parameters/params_country_selection.tex: ../analysis/parameters_country_selection.R 
 	cd ../analysis && Rscript parameters_country_selection.R
 
-plots += ./plots/realized_wage_distro.pdf
-./plots/realized_wage_distro.pdf: ../analysis/realized_wage_distro.R 
-	cd ../analysis && Rscript realized_wage_distro.R
+##########
+## Figures
+##########
 
-plots += ./plots/realized_wage_distro_facet.pdf
-./plots/realized_wage_distro_facet.pdf: ../analysis/realized_wage_distro.R 
-	cd ../analysis && Rscript realized_wage_distro.R
+#############################################################################################
+# These lines ensure that if the underlying utility R script changes, the main file is re-run
+#############################################################################################
 
-plots += ./plots/first_stage.pdf
-./plots/first_stage.pdf: ../analysis/first_stage.R
-	cd ../analysis && Rscript first_stage.R
-
-plots += ./plots/event_study_hourly_rate_hired.pdf
-./plots/event_study_hourly_rate_hired.pdf: ../analysis/plot_event_study_hourly_rate_hired.R 
-	cd ../analysis && Rscript plot_event_study_hourly_rate_hired.R
-
-plots += ./plots/application_event_study.pdf
-./plots/application_event_study.pdf: ../analysis/plot_application_event_study.R 
-	cd ../analysis && Rscript plot_application_event_study.R
-
-plots += ./plots/avg_wages_by_cat.pdf 
-./plots/avg_wages_by_cat.pdf: ../analysis/avg_wages_by_cat.R 
-	cd ../analysis && Rscript avg_wages_by_cat.R
-
-plots += ./plots/event_study_hired_admin.pdf
-./plots/event_study_hired_admin.pdf: ../analysis/plot_event_study_hired_admin.R 
-	cd ../analysis && Rscript plot_event_study_hired_admin.R
-
-plots += plots/did_all_outcomes.pdf
-./plots/did_all_outcomes.pdf: ../analysis/plot_did_all_outcomes.R 
-	cd ../analysis && ./plot_did_all_outcomes.R 
-
-plots += plots/did_q_outcomes.pdf
-./plots/did_q_outcomes.pdf: ../analysis/plot_did_all_outcomes.R
-	cd ../analysis && ./plot_did_all_outcomes.R
-
-plots += plots/did_match_outcomes.pdf
-./plots/did_match_outcomes.pdf:  ../analysis/plot_did_all_outcomes.R
-	cd ../analysis && ./plot_did_all_outcomes.R
-
-plots += plots/did_ll_subst_outcomes.pdf
-./plots/did_ll_subst_outcomes.pdf:  ../analysis/plot_did_all_outcomes.R
-	cd ../analysis && ./plot_did_all_outcomes.R
-
-tables += ./tables/randomization_check.tex
-./tables/randomization_check.tex: ../analysis/randomization_check.R 
-	cd ../analysis && ./randomization_check.R
-
-tables += tables/quantile_hours_worked.tex
-./tables/quantile_hours_worked.tex: ../analysis/quantile_hours_worked.R 
-	cd ../analysis && Rscript quantile_hours_worked.R
-
-## Used to force R files to re-run if dependency changes
 ../analysis/plot_fill_and_hours.R: ../analysis/utilities_outcome_experimental_plots.R
 	touch ../analysis/plot_fill_and_hours.R
 
@@ -130,33 +103,127 @@ tables += tables/quantile_hours_worked.tex
 ../analysis/plot_feedback.R: ../analysis/utilities_outcome_experimental_plots.R
 	touch ../analysis/plot_feedback.R
 
+
+# Figure 1: 
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L401 
+plots += ./plots/realized_wage_distro.pdf
+./plots/realized_wage_distro.pdf: ../analysis/realized_wage_distro.R ../data/df_mw_first.csv
+	cd ../analysis && Rscript realized_wage_distro.R
+# (additional facet)
+plots += ./plots/realized_wage_distro_facet.pdf
+./plots/realized_wage_distro_facet.pdf: ../analysis/realized_wage_distro.R 
+	cd ../analysis && Rscript realized_wage_distro.R
+
+# Figure 2
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L441
+plots += ./plots/first_stage.pdf
+./plots/first_stage.pdf: ../analysis/first_stage.R ../data/df_mw_first.csv
+	cd ../analysis && Rscript first_stage.R
+
+# Figure 3 is a diagram
+
+data = ../data/df_mw_all.csv ../data/df_mw_admin.csv ../data/df_mw_lpw.csv
+
+# Figure 4
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L638
 plots += plots/fill_and_hours.pdf
-./plots/fill_and_hours.pdf: ../analysis/plot_fill_and_hours.R
+./plots/fill_and_hours.pdf: ../analysis/plot_fill_and_hours.R $(data)
 	cd ../analysis && Rscript plot_fill_and_hours.R
 
-plots += plots/follow_on_openings.pdf
-./plots/follow_on_openings.pdf: ../analysis/plot_follow_on_openings.R
-	cd ../analysis && Rscript plot_follow_on_openings.R
-
+# Figure 5
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L654 
 plots += plots/composition.pdf
-./plots/composition.pdf: ../analysis/plot_composition.R 
+./plots/composition.pdf: ../analysis/plot_composition.R $(data)
 	cd ../analysis && Rscript plot_composition.R
 
+# Figure 6
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L899
+plots += ./plots/event_study_hourly_rate_hired.pdf
+./plots/event_study_hourly_rate_hired.pdf: ../analysis/plot_event_study_hourly_rate_hired.R ../data/event_study_hired.csv
+	cd ../analysis && Rscript plot_event_study_hourly_rate_hired.R
+
+### Figure 7 
+plots += plots/did_all_outcomes.pdf
+./plots/did_all_outcomes.pdf: ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
+	cd ../analysis && ./plot_did_all_outcomes.R 
+
+### Figure 7 
+plots += plots/did_q_outcomes.pdf
+./plots/did_q_outcomes.pdf: ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
+	cd ../analysis && ./plot_did_all_outcomes.R
+
+### Figure 7 
+plots += plots/did_match_outcomes.pdf
+./plots/did_match_outcomes.pdf:  ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
+	cd ../analysis && ./plot_did_all_outcomes.R
+
+### Figure 7 
+plots += plots/did_ll_subst_outcomes.pdf
+./plots/did_ll_subst_outcomes.pdf:  ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
+	cd ../analysis && ./plot_did_all_outcomes.R
+
+
+#  Figure 8
+plots += ./plots/application_event_study.pdf
+./plots/application_event_study.pdf: ../analysis/plot_application_event_study.R 
+	cd ../analysis && Rscript plot_application_event_study.R
+
+
+###################
+## End of Main Body
+###################
+
+
+# Figure 9
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1199
 plots += plots/organic_applications.pdf
 ./plots/organic_applications.pdf: ../analysis/plot_organic_applications.R
 	cd ../analysis && Rscript plot_organic_applications.R
 
+### Figure 10: 
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1221
+plots += plots/follow_on_openings.pdf
+./plots/follow_on_openings.pdf: ../analysis/plot_follow_on_openings.R $(data)
+	cd ../analysis && Rscript plot_follow_on_openings.R
+
+# Figure 12
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1354
 plots += plots/hours_zero.pdf
 ./plots/hours_zero.pdf: ../analysis/plot_hours_zero.R
 	cd ../analysis && Rscript plot_hours_zero.R
 
+# Figure 13
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1382
 plots += plots/any_exper.pdf
 ./plots/any_exper.pdf: ../analysis/plot_any_exper.R
 	cd ../analysis && Rscript plot_any_exper.R
 
+# Figure 14
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1405
 plots += plots/feedback.pdf
 ./plots/feedback.pdf: ../analysis/plot_feedback.R
 	cd ../analysis && Rscript plot_feedback.R
+
+# Figure A3
+plots += ./plots/avg_wages_by_cat.pdf 
+./plots/avg_wages_by_cat.pdf: ../analysis/avg_wages_by_cat.R 
+	cd ../analysis && Rscript avg_wages_by_cat.R
+
+# Figure B4
+plots += ./plots/event_study_hired_admin.pdf
+./plots/event_study_hired_admin.pdf: ../analysis/plot_event_study_hired_admin.R 
+	cd ../analysis && Rscript plot_event_study_hired_admin.R
+
+# Table 1: 
+tables += ./tables/randomization_check.tex
+./tables/randomization_check.tex: ../analysis/randomization_check.R ../data/df_mw_first.csv 
+	cd ../analysis && ./randomization_check.R
+
+# Table 2
+# https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1372
+tables += tables/quantile_hours_worked.tex
+./tables/quantile_hours_worked.tex: ../analysis/quantile_hours_worked.R ../data/event_study_windows_hr_v_fp.csv
+	cd ../analysis && Rscript quantile_hours_worked.R
 
 tables += ./tables/any_prior.tex
 ./tables/any_prior.tex: ../analysis/table_any_prior.R 

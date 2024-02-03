@@ -119,10 +119,6 @@ All data files are CSVs.
 ## Dataset list
 The paper uses the following datasets: 
 
-
-    gretel_100.csv
-    Description: 
-
     event_study_hired_applicants_with_past_avg_wage.csv
     Description: Individual-level details on the workers hired before and after platform-wide change.
 
@@ -155,9 +151,6 @@ The paper uses the following datasets:
 
 
 ## Codebooks
-
-gretel_100.csv
-    
 
 event_study_hired_applicants_with_past_avg_wage.csv
     
@@ -300,7 +293,6 @@ rds2csv.R
      - utilities_outcome_experimental_plots.R
     
 
-
 # Replication
 
 ## Getting the data and code
@@ -350,101 +342,20 @@ sudo docker run -v $(pwd)/replication:/replication minimum_wage:v1 bash \
 ```
 
 ## Computational requirements
-The computational requirements for reproducing this paper are minimal:
-it can be run on a modern laptop in less than 10 minutes, using only open-source software.
+The computational requirements for reproducing this paper are minimal. 
+It can be run on a modern laptop in less than 10 minutes, using only open-source software.
 
-The machine details are: 
+The machine details when I last ran it are: 
 System info:
 - OS: "Ubuntu 20.04.6 LTS"
 - Processor:  11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
 - Memory available: 31GB memory
 
 The code was last run on 2024-01-03 15:16:41.
-
-## Using Amazon Web Services (preferred)
-
-There is a file, [start_machine.sh]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/start_machine.sh ) that will replicate the paper.
-If you have [aws command line tools](https://aws.amazon.com/cli/) configured, this script will: 
-
-1. Generate a private  pair for you to use
-1. Create an EC2 instance with sufficient RAM and storage
-1. Copy over a replication script
-1. Download the code & data used in the project
-1. Install the necessary dependencies using docker (see Dockerfile)
-1. Replicate the paper from scratch on the remote machine in a Docker container
-1. Copy the completed PDF paper locally and open it up
-1. Stop the instance (if desired) 
-
-The replication script is here: 
-
-
-
-## Using a local machine (next best - Dockerfile)
-
-The best approach to replicating the paper is to use the following Dockerfile. 
 ```
-FROM ubuntu:latest AS base
-RUN apt-get update
-RUN apt-get -y install tzdata
-RUN apt-get -y install pkg-config
-RUN apt-get -y install r-recommended
-RUN apt-get -y install make
-RUN apt-get -y install libcurl4-gnutls-dev
-RUN apt-get -y install build-essential
-RUN apt-get -y install libxml2-dev
-RUN apt-get -y install libssl-dev
-RUN apt-get -y install libnlopt-dev
-RUN apt-get -y install ghostscript
 
-from base as latex
-RUN apt-get -y install texlive-latex-base
-RUN apt-get -y install texlive-latex-extra
-
-from latex as rcran
-#setup R configs
-RUN echo "r <- getOption('repos'); r['CRAN'] <- 'http://cran.us.r-project.org'; options(repos = r);" > ~/.Rprofile
-RUN Rscript -e "install.packages('dotenv')"
-RUN Rscript -e "install.packages('cowplot')"
-RUN Rscript -e "install.packages('data.table')"
-RUN Rscript -e "install.packages('directlabels')"
-RUN Rscript -e "install.packages('dplyr')"
-RUN Rscript -e "install.packages('ggplot2')"
-RUN Rscript -e "install.packages('ggrepel')"
-RUN Rscript -e "install.packages('gridExtra')"
-RUN Rscript -e "install.packages('gt')"
-RUN Rscript -e "install.packages('lfe')"
-RUN Rscript -e "install.packages('lmtest')"
-RUN Rscript -e "install.packages('lubridate')"
-RUN Rscript -e "install.packages('magrittr')"
-RUN Rscript -e "install.packages('plyr')"
-RUN Rscript -e "install.packages('purrr')"
-RUN Rscript -e "install.packages('quantreg')"
-RUN Rscript -e "install.packages('sandwich')"
-RUN Rscript -e "install.packages('scales')"
-RUN Rscript -e "install.packages('stargazer')"
-RUN Rscript -e "install.packages('tidyr')"
-RUN Rscript -e "install.packages('remotes')"
-
-RUN Rscript -e 'remotes::install_github("johnjosephhorton/JJHmisc")'
-
-from rcran as main
-
-RUN mkdir minimum_wage
-COPY . minimum_wage
-
-
-```
 The Linux dependencies are mostly either for LaTeX or dependencies for various R packages.
 
-## Using a local machine without Docker - caveat replicator! 
-If you do not want to use Docker, the parts of the Dockerfile can easily be turned into a script.
-```
-sed -n \
--e '/^FROM /d' \
--e '/^from /d' \
--e '/^COPY /d' \
--e '/^#.*$/!s/^RUN //p' Dockerfile > startup_script.sh
-```
 
 #### Summary
 
@@ -466,22 +377,17 @@ Approximate time needed to reproduce the analyses on a standard 2023 desktop mac
 
 ## Analytic files
 
-
-
 Name: [plot_any_exper.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_any_exper.R)
 
 Data files used: []
-
 
 Name: [first_stage.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/first_stage.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv']
 
-
 Name: [plot_application_event_study.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_application_event_study.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/event_study_windows.csv']
-
 
 Name: [parameters_country_selection.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/parameters_country_selection.R)
 
@@ -653,159 +559,13 @@ sudo docker run -it minimum_wage:v1.0
 ## List of tables and programs
 
 Given the convention used here where each R file generates a single table or figure, the purpose of each file is mostly self-documenting.  For convenience, each figure or table in the paper is listed here with the file that creates it. It also includes a link to the location in the main body where that file lives. 
-
-
-### Figure 1: 
- 
- 
- File: [./plots/realized_wage_distro.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L401 )
- 
-  Created by: [../analysis/realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/realized_wage_distro.R)
- 
- 
- File: [./plots/realized_wage_distro_facet.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L405 )
- 
-  Created by: [../analysis/realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/realized_wage_distro.R)
- 
-
-### Figure 2: 
- 
- 
- File: [./plots/first_stage.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L441 )
- 
-  Created by: [../analysis/first_stage.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/first_stage.R)
- 
-
-### Figure 4: 
- 
- 
- File: [./plots/fill_and_hours.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L638 )
- 
-  Created by: [../analysis/plot_fill_and_hours.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_fill_and_hours.R)
- 
-
-### Figure 5: 
- 
- 
- File: [./plots/composition.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L654 )
- 
-  Created by: [../analysis/plot_composition.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_composition.R)
- 
-
-### Figure 6: 
- 
- 
- File: [./plots/event_study_hourly_rate_hired.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L899 )
- 
-  Created by: [../analysis/plot_event_study_hourly_rate_hired.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_event_study_hourly_rate_hired.R)
- 
-
-### Figure 7: 
- 
- 
- File: [./plots/did_q_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L955 )
- 
-  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
- 
- 
- File: [./plots/did_match_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L959 )
- 
-  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
- 
- 
- File: [./plots/did_ll_subst_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L963 )
- 
-  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
- 
-
-### Figure 8: 
- 
- 
- File: [./plots/application_event_study.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1061 )
- 
-  Created by: [../analysis/plot_application_event_study.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_application_event_study.R)
- 
-
-### Table 1: 
- 
- 
- File: [./tables/randomization_check.tex]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1174 )
- 
-  Created by: [../analysis/randomization_check.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/randomization_check.R)
- 
-
-### Figure 9: 
- 
- 
- File: [./plots/organic_applications.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1199 )
- 
-  Created by: [../analysis/plot_organic_applications.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_organic_applications.R)
- 
-
-### Figure 10: 
- 
- 
- File: [./plots/follow_on_openings.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1221 )
- 
-  Created by: [../analysis/plot_follow_on_openings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_follow_on_openings.R)
- 
-
-### Figure 11: 
- 
- 
- File: [./plots/avg_wages_by_cat.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1320 )
- 
-  Created by: [../analysis/avg_wages_by_cat.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/avg_wages_by_cat.R)
- 
-
-### Figure 12: 
- 
- 
- File: [./plots/hours_zero.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1354 )
- 
-  Created by: [../analysis/plot_hours_zero.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_hours_zero.R)
- 
-
-### Table 2: 
- 
- 
- File: [./tables/quantile_hours_worked.tex]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1372 )
- 
-  Created by: [../analysis/quantile_hours_worked.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/quantile_hours_worked.R)
- 
-
-### Figure 13: 
- 
- 
- File: [./plots/any_exper.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1382 )
- 
-  Created by: [../analysis/plot_any_exper.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_any_exper.R)
- 
-
-### Figure 14: 
- 
- 
- File: [./plots/feedback.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1405 )
- 
-  Created by: [../analysis/plot_feedback.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_feedback.R)
- 
-
-### Figure 15: 
- 
- 
- File: [./plots/event_study_hired_admin.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1460 )
- 
-  Created by: [../analysis/plot_event_study_hired_admin.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_event_study_hired_admin.R)
- 
-
-
+Please refer to the Makefile at [Makefile](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile) for a list of each table and figure and the associated code and dependencies.
 
 The provided code reproduces:
 
 - [X] All numbers provided in the text of the paper
 - [X] All tables and figures in the paper
 - [X] Selected tables and figures in the paper, as explained and justified below.
-
 
 ## References
 
