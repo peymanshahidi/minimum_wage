@@ -18,7 +18,7 @@
 | cumulative_past_hours | Cumulative past hours | 1155.51101511879 |
 | past_avg_wage | Past average wage | 7.34276375234518 |
 | admin | Indicator for administrative job | 1 |
-| trt | Indicator for treatment | 0 |
+| trt | Indicator for treated in that period i.e., treated unit in post period | 0 |
 | treated.unit | Indicator for treated unit | 1 |
 | post | Indicator that observation is in the post period. | FALSE |
 | total |  | 86723 |
