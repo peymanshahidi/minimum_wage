@@ -1,6 +1,5 @@
 | Column | Description | Sample Value |
 |-----|-------|--------|
-|  |  | 1 |
 | level1 |  | Administrative Support |
 | period | Time period | -10 |
 | date | Date | 2014-01-19 |
@@ -21,10 +20,10 @@
 | admin | Indicator for administrative job | 1 |
 | trt | Indicator for treatment | 0 |
 | treated.unit | Indicator for treated unit | 1 |
-| post |  | FALSE |
+| post | Indicator that observation is in the post period. | FALSE |
 | total |  | 86723 |
-| weight |  | 0.189233360827082 |
-| unit |  | Administrative Support
+| weight | How much weight to give to the treated unit | 0.189233360827082 |
+| unit | Unit used for TWFE (Level 1 category) | Administrative Support
  (Treated Unit) |
 | fp | Fixed price | 2417 |
 | fp_ratio | Fixed price ratio | 0.548819255222525 |
