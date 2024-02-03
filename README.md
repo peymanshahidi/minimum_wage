@@ -6,7 +6,6 @@ The code for this replication package is at:
 [https://www.github.com/johnjosephhorton/minimum_wage.git](https://www.github.com/johnjosephhorton/minimum_wage.git)
 
 
-
 ## Overview
 Although this guide has details, the project is largely self-documenting in the sense that the key recipes for building the project are captured in code. 
 The key pieces for replicating this project are: 
