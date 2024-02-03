@@ -122,7 +122,7 @@ Description: Individual-level details on the workers hired before and after plat
 
 1. [`df_mw_first.csv`](codebooks/df_mw_first.md) is the main experimental outcomes at job post level.
 1. [`event_study_hired_applicants.csv`](codebooks/event_study_hired_applicants.md) describes the attributes of hired applicants before and after the platform change. 
-
+1. [`did_panel.csv`](codebooks/did_panel.md)
 
 ## `event_study_windows_hr_v_fp.csv`
 Description: Composition of fixed price versus hourly jobs after the platform-wide change
