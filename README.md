@@ -1,4 +1,7 @@
-# Replication package for: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment
+# Replication package
+## Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment
+by John Horton
+
 
 This document describes the organization of code, data, and software associated with the project.
 The code for this replication package is at:
@@ -16,6 +19,7 @@ The key pieces for replicating this project are:
 
 ### File organization
 
+The main directories are:
 ```
 -writeup
 -analysis
@@ -23,7 +27,7 @@ The key pieces for replicating this project are:
 -data_prep
 ```
 
-The main writeup of the paper is in [`writeup/minimum wage.tex`]("writeup/).
+The main writeup of the paper is in [`writeup/minimum wage.tex`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex).
 
 The figures, tables, and parameter files (more on this later) are in `writeup/plots`, `writeup/tables` and `writeup/parameters`, respectively.
 
