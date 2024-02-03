@@ -123,7 +123,7 @@ Description: Individual-level details on the workers hired before and after plat
 ## `df_mw_first.csv`
 
 | Column | Description | Sample Value |
-|-----|-------|
+|-----|-------|------------------|
 | economic_opening | X | 203338482 |
 | team | X | 494815 |
 | first_opening | X | 203338482 |
