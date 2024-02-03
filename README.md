@@ -117,13 +117,12 @@ All data files are CSVs.
 # Dataset list
 The paper uses the following datasets: 
 
-## `event_study_hired_applicants_with_past_avg_wage.csv`
+`event_study_hired_applicants_with_past_avg_wage.csv`
 Description: Individual-level details on the workers hired before and after platform-wide change.
 
-## [`df_mw_first.csv`](codebooks/df_mw_first.md)
+1. [`df_mw_first.csv`](codebooks/df_mw_first.md) is the main experimental outcomes at job post level.
+1. [`event_study_hired_applicants.csv`](codebooks/event_study_hired_applicants.md) describes the attributes of hired applicants before and after the platform change. 
 
-## `event_study_hired_applicants.csv`
-Description: Individual-level details on the workers hired before and after platform-wide change.
 
 ## `event_study_windows_hr_v_fp.csv`
 Description: Composition of fixed price versus hourly jobs after the platform-wide change
