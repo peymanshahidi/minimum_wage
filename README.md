@@ -10,7 +10,7 @@ The code for this replication package is at:
 Although this guide has details, the project is largely self-documenting in the sense that the key recipes for building the project are captured in code. 
 The key pieces for replicating this project are: 
 
-1. A [Makefile](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/Makefile) that gives recipes for how each figure, table, and called-out number is constructed in the paper.
+1. A [Makefile](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile) that gives recipes for how each figure, table, and called-out number is constructed in the paper.
 
 1. A [Dockerfile](Dockerfile) that describes the system set-up needed with respect to computing resources and packages. 
 
@@ -27,7 +27,7 @@ The main writeup of the paper is in [`writeup/minimum wage.tex`]("writeup/).
 
 The figures, tables, and parameter files (more on this later) are in `writeup/plots`, `writeup/tables` and `writeup/parameters`, respectively.
 
-The code in [`analysis`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis ) writes files to these locations. 
+The code in [`analysis`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis ) writes files to these locations. 
 In the repository, these locations are empty by design.
 When the project is built, these locations are populated with the necessary files. 
 
@@ -359,7 +359,7 @@ The code was last run on 2024-01-03 15:16:41.
 
 ## Using Amazon Web Services (preferred)
 
-There is a file, [start_machine.sh]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/start_machine.sh ) that will replicate the paper.
+There is a file, [start_machine.sh]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/start_machine.sh ) that will replicate the paper.
 If you have [aws command line tools](https://aws.amazon.com/cli/) configured, this script will: 
 
 1. Generate a private  pair for you to use
@@ -464,112 +464,112 @@ Approximate time needed to reproduce the analyses on a standard 2023 desktop mac
 
 
 
-Name: [plot_any_exper.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_any_exper.R)
+Name: [plot_any_exper.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_any_exper.R)
 
 Data files used: []
 
 
-Name: [first_stage.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/first_stage.R)
+Name: [first_stage.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/first_stage.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv']
 
 
-Name: [plot_application_event_study.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_application_event_study.R)
+Name: [plot_application_event_study.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_application_event_study.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/event_study_windows.csv']
 
 
-Name: [parameters_country_selection.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/parameters_country_selection.R)
+Name: [parameters_country_selection.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/parameters_country_selection.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv', '/home/john/topics/minimum_wage/etl/transformed/hires_country_composition.csv']
 
 
-Name: [realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/realized_wage_distro.R)
+Name: [realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/realized_wage_distro.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv']
 
 
-Name: [plot_feedback.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_feedback.R)
+Name: [plot_feedback.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_feedback.R)
 
 Data files used: []
 
 
-Name: [settings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/settings.R)
+Name: [settings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/settings.R)
 
 Data files used: []
 
 
-Name: [plot_organic_applications.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_organic_applications.R)
+Name: [plot_organic_applications.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_organic_applications.R)
 
 Data files used: []
 
 
-Name: [quantile_hours_worked.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/quantile_hours_worked.R)
+Name: [quantile_hours_worked.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/quantile_hours_worked.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv', '/home/john/topics/minimum_wage/etl/transformed/event_study_windows_hr_v_fp.csv']
 
 
-Name: [parameters_effects.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/parameters_effects.R)
+Name: [parameters_effects.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/parameters_effects.R)
 
 Data files used: []
 
 
-Name: [plot_hours_zero.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_hours_zero.R)
+Name: [plot_hours_zero.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_hours_zero.R)
 
 Data files used: []
 
 
-Name: [plot_event_study_hourly_rate_hired.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_event_study_hourly_rate_hired.R)
+Name: [plot_event_study_hourly_rate_hired.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_event_study_hourly_rate_hired.R)
 
 Data files used: []
 
 
-Name: [table_any_prior.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/table_any_prior.R)
+Name: [table_any_prior.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/table_any_prior.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv']
 
 
-Name: [avg_wages_by_cat.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/avg_wages_by_cat.R)
+Name: [avg_wages_by_cat.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/avg_wages_by_cat.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv']
 
 
-Name: [plot_follow_on_openings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_follow_on_openings.R)
+Name: [plot_follow_on_openings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_follow_on_openings.R)
 
 Data files used: []
 
 
-Name: [plot_composition.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_composition.R)
+Name: [plot_composition.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_composition.R)
 
 Data files used: []
 
 
-Name: [randomization_check.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/randomization_check.R)
+Name: [randomization_check.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/randomization_check.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv']
 
 
-Name: [plot_fill_and_hours.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_fill_and_hours.R)
+Name: [plot_fill_and_hours.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_fill_and_hours.R)
 
 Data files used: []
 
 
-Name: [utilities_outcome_experimental_plots.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/utilities_outcome_experimental_plots.R)
+Name: [utilities_outcome_experimental_plots.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/utilities_outcome_experimental_plots.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/event_study_windows_hr_v_fp.csv', '/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv', '/home/john/topics/minimum_wage/etl/transformed/hires_country_composition.csv']
 
 
-Name: [plot_event_study_hired_admin.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_event_study_hired_admin.R)
+Name: [plot_event_study_hired_admin.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_event_study_hired_admin.R)
 
 Data files used: []
 
 
-Name: [plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_did_all_outcomes.R)
+Name: [plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
 
 Data files used: []
 
 
-Name: [parameters.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/parameters.R)
+Name: [parameters.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/parameters.R)
 
 Data files used: ['/home/john/topics/minimum_wage/etl/transformed/df_mw_first.csv', '/home/john/topics/minimum_wage/etl/transformed/event_study_windows.csv']
 
@@ -654,144 +654,144 @@ Given the convention used here where each R file generates a single table or fig
 ### Figure 1: 
  
  
- File: [./plots/realized_wage_distro.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L401 )
+ File: [./plots/realized_wage_distro.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L401 )
  
-  Created by: [../analysis/realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/realized_wage_distro.R)
+  Created by: [../analysis/realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/realized_wage_distro.R)
  
  
- File: [./plots/realized_wage_distro_facet.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L405 )
+ File: [./plots/realized_wage_distro_facet.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L405 )
  
-  Created by: [../analysis/realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/realized_wage_distro.R)
+  Created by: [../analysis/realized_wage_distro.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/realized_wage_distro.R)
  
 
 ### Figure 2: 
  
  
- File: [./plots/first_stage.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L441 )
+ File: [./plots/first_stage.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L441 )
  
-  Created by: [../analysis/first_stage.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/first_stage.R)
+  Created by: [../analysis/first_stage.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/first_stage.R)
  
 
 ### Figure 4: 
  
  
- File: [./plots/fill_and_hours.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L638 )
+ File: [./plots/fill_and_hours.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L638 )
  
-  Created by: [../analysis/plot_fill_and_hours.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_fill_and_hours.R)
+  Created by: [../analysis/plot_fill_and_hours.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_fill_and_hours.R)
  
 
 ### Figure 5: 
  
  
- File: [./plots/composition.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L654 )
+ File: [./plots/composition.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L654 )
  
-  Created by: [../analysis/plot_composition.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_composition.R)
+  Created by: [../analysis/plot_composition.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_composition.R)
  
 
 ### Figure 6: 
  
  
- File: [./plots/event_study_hourly_rate_hired.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L899 )
+ File: [./plots/event_study_hourly_rate_hired.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L899 )
  
-  Created by: [../analysis/plot_event_study_hourly_rate_hired.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_event_study_hourly_rate_hired.R)
+  Created by: [../analysis/plot_event_study_hourly_rate_hired.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_event_study_hourly_rate_hired.R)
  
 
 ### Figure 7: 
  
  
- File: [./plots/did_q_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L955 )
+ File: [./plots/did_q_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L955 )
  
-  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_did_all_outcomes.R)
- 
- 
- File: [./plots/did_match_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L959 )
- 
-  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_did_all_outcomes.R)
+  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
  
  
- File: [./plots/did_ll_subst_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L963 )
+ File: [./plots/did_match_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L959 )
  
-  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_did_all_outcomes.R)
+  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
+ 
+ 
+ File: [./plots/did_ll_subst_outcomes.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L963 )
+ 
+  Created by: [../analysis/plot_did_all_outcomes.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_did_all_outcomes.R)
  
 
 ### Figure 8: 
  
  
- File: [./plots/application_event_study.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1061 )
+ File: [./plots/application_event_study.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1061 )
  
-  Created by: [../analysis/plot_application_event_study.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_application_event_study.R)
+  Created by: [../analysis/plot_application_event_study.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_application_event_study.R)
  
 
 ### Table 1: 
  
  
- File: [./tables/randomization_check.tex]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1174 )
+ File: [./tables/randomization_check.tex]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1174 )
  
-  Created by: [../analysis/randomization_check.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/randomization_check.R)
+  Created by: [../analysis/randomization_check.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/randomization_check.R)
  
 
 ### Figure 9: 
  
  
- File: [./plots/organic_applications.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1199 )
+ File: [./plots/organic_applications.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1199 )
  
-  Created by: [../analysis/plot_organic_applications.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_organic_applications.R)
+  Created by: [../analysis/plot_organic_applications.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_organic_applications.R)
  
 
 ### Figure 10: 
  
  
- File: [./plots/follow_on_openings.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1221 )
+ File: [./plots/follow_on_openings.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1221 )
  
-  Created by: [../analysis/plot_follow_on_openings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_follow_on_openings.R)
+  Created by: [../analysis/plot_follow_on_openings.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_follow_on_openings.R)
  
 
 ### Figure 11: 
  
  
- File: [./plots/avg_wages_by_cat.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1320 )
+ File: [./plots/avg_wages_by_cat.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1320 )
  
-  Created by: [../analysis/avg_wages_by_cat.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/avg_wages_by_cat.R)
+  Created by: [../analysis/avg_wages_by_cat.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/avg_wages_by_cat.R)
  
 
 ### Figure 12: 
  
  
- File: [./plots/hours_zero.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1354 )
+ File: [./plots/hours_zero.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1354 )
  
-  Created by: [../analysis/plot_hours_zero.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_hours_zero.R)
+  Created by: [../analysis/plot_hours_zero.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_hours_zero.R)
  
 
 ### Table 2: 
  
  
- File: [./tables/quantile_hours_worked.tex]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1372 )
+ File: [./tables/quantile_hours_worked.tex]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1372 )
  
-  Created by: [../analysis/quantile_hours_worked.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/quantile_hours_worked.R)
+  Created by: [../analysis/quantile_hours_worked.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/quantile_hours_worked.R)
  
 
 ### Figure 13: 
  
  
- File: [./plots/any_exper.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1382 )
+ File: [./plots/any_exper.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1382 )
  
-  Created by: [../analysis/plot_any_exper.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_any_exper.R)
+  Created by: [../analysis/plot_any_exper.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_any_exper.R)
  
 
 ### Figure 14: 
  
  
- File: [./plots/feedback.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1405 )
+ File: [./plots/feedback.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1405 )
  
-  Created by: [../analysis/plot_feedback.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_feedback.R)
+  Created by: [../analysis/plot_feedback.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_feedback.R)
  
 
 ### Figure 15: 
  
  
- File: [./plots/event_study_hired_admin.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/master/writeup/minimum_wage.tex#L1460 )
+ File: [./plots/event_study_hired_admin.pdf]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1460 )
  
-  Created by: [../analysis/plot_event_study_hired_admin.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/master/analysis/plot_event_study_hired_admin.R)
+  Created by: [../analysis/plot_event_study_hired_admin.R](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis/plot_event_study_hired_admin.R)
  
 
 
