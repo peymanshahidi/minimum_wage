@@ -122,108 +122,14 @@ Description: Individual-level details on the workers hired before and after plat
 
 1. [`df_mw_first.csv`](codebooks/df_mw_first.md) is the main experimental outcomes at job post level.
 1. [`event_study_hired_applicants.csv`](codebooks/event_study_hired_applicants.md) describes the attributes of hired applicants before and after the platform change. 
+1. [`event_study_hired_applicants_with_past_avg_wage.csv`](codebooks/event_study_hired_applicants_with_past_avg_wage.md) is the same dataset as above, but merged with hired applicant wage data.
 1. [`did_panel.csv`](codebooks/did_panel.md)
-
-## `event_study_windows_hr_v_fp.csv`
-Description: Composition of fixed price versus hourly jobs after the platform-wide change
-
-## `event_study_windows.csv`
-Description: 
-
-## `event_study_openings_raw.csv`
-Description: 
-
-## `JobTitles.txt`
-Description: 
-
-## `hires_country_composition.csv`
-Description: 
-
-`event_study_openings.csv`
-Description: All job openings posted before and after platform-wide change.
-
-## Codebooks
-
-## `event_study_hired_applicants_with_past_avg_wage.csv`
-    
-## `df_mw_first.csv`
-    
-Column: first_opening: 
-Column description: ID for the job opening.
-
-Column: opening_date: 
-Column description: The date when the job opening was posted.
-
-Column: num_organic_applications: 
-Column description: Number of applications received organically (i.e., not recruited).
-
-Column: level1: 
-Column description: High-level category of the job, e.g., IT, sales, etc.
-
-Column: job_type: 
-Column description: Hourly or fixed price
-
-Column: employer: 
-Column description: ID for The company or individual offering the job.
-
-Column: total_charge: 
-Column description: The total amount paid to a hired worker
-
-Column: hours: 
-Column description: The number of hours-worked.
-
-Column: mean_wage_over_contract: 
-Column description: Average wage over the contract period.
-
-Column: average_feedback_to_contractor: 
-Column description: Average feedback score given to the contractors by the employer.
-
-Column: average_feedback_to_client: 
-Column description: Average feedback score given to the employer by the contractors.
-
-Column: hires: 
-Column description: Number of hires made from the job posting.
-
-Column: hired_past_y: 
-Column description: Productivity of hired worker in the past.
-
-Column: hired_pr: 
-Column description: Hired worker profile rate.
-
-Column: cell: 
-Column description: Experimental cell cell assignment.
-
-Column: kpo: 
-Column description: Indicator for Knowledge Process Outsourcing.
-
-Column: lwage.hat: 
-Column description: A predicted log-wage based on job attributes.
-
-Column: num.openings: 
-Column description: Number of job openings associated with this listing.
-
-Column: rr: 
-Column description: .
-
-Column: hired.past.w: 
-Column description: Past wage of the hired worker.
-
-Column: markup: 
-Column description: Markup of hourly rate over profile rate.
-    
-## `event_study_hired_applicants.csv`
-
-## `event_study_windows_hr_v_fp.csv`
-
-## `event_study_windows.csv`
-
-## `event_study_openings_raw.csv`
-
-## `JobTitles.txt`
-    
-## `hires_country_composition.csv`
-    
-## `event_study_openings.csv`
+1. [`event_study_windows_hr_v_fp.csv`](codebooks/event_study_windows_hr_v_fp.md)] has the composition of fixed price versus hourly jobs after the platform-wide change
+1. [`event_study_windows.csv`](codebooks/event_study_windows.md)
+1. [`event_study_openings_raw.csv`](codebooks/event_study_openings_raw.md)
+1. [`event_study_openings.csv`](codebooks/event_study_openings.md) all job openings posted before and after platform-wide change.
+1. `JobTitles.txt` is simply a list of jobs by title posted on the other platform, one per line.
+1. [`hires_country_composition.csv`](codebooks/hires_country_composition.md)
         
 # Replication
 
