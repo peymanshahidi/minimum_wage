@@ -10,7 +10,7 @@ RUN apt-get -y install libxml2-dev
 RUN apt-get -y install libssl-dev
 RUN apt-get -y install libnlopt-dev
 RUN apt-get -y install ghostscript
-
+RUN apt-get -y install wget
 RUN apt-get -y install python3 
 
 from base as latex
