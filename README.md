@@ -117,19 +117,16 @@ All data files are CSVs.
 # Dataset list
 The paper uses the following datasets: 
 
-`event_study_hired_applicants_with_past_avg_wage.csv`
-Description: Individual-level details on the workers hired before and after platform-wide change.
-
 1. [`df_mw_first.csv`](codebooks/df_mw_first.md) is the main experimental outcomes at job post level.
-1. [`event_study_hired_applicants.csv`](codebooks/event_study_hired_applicants.md) describes the attributes of hired applicants before and after the platform change. 
-1. [`event_study_hired_applicants_with_past_avg_wage.csv`](codebooks/event_study_hired_applicants_with_past_avg_wage.md) is the same dataset as above, but merged with hired applicant wage data.
-1. [`did_panel.csv`](codebooks/did_panel.md)
-1. [`event_study_windows_hr_v_fp.csv`](codebooks/event_study_windows_hr_v_fp.md)] has the composition of fixed price versus hourly jobs after the platform-wide change
-1. [`event_study_windows.csv`](codebooks/event_study_windows.md)
-1. [`event_study_openings_raw.csv`](codebooks/event_study_openings_raw.md)
-1. [`event_study_openings.csv`](codebooks/event_study_openings.md) all job openings posted before and after platform-wide change.
-1. `JobTitles.txt` is simply a list of jobs by title posted on the other platform, one per line.
+1. [`df_mw_all.csv`](codebooks/df_mw_all.md) is the main experimental outcomes at job post level.
+1. [`df_mw_admin.csv`](codebooks/df_mw_admin.md) is the main experimental outcomes at job post level.
+1. [`df_mw_lpw.csv`](codebooks/df_mw_lpw.md) is the main experimental outcomes at job post level.
+1. [`df_exp_results.csv`](codebooks/df_exp_results.md)
 1. [`hires_country_composition.csv`](codebooks/hires_country_composition.md)
+1. [`event_study_windows.csv`](codebooks/event_study_windows.md)
+1. [`did_panel.csv`](codebooks/did_panel.md)
+1. [`event_study_hired.csv`](codebooks/event_study_hired.md)
+1. [`event_study_windows_hr_v_fp.csv`](codebooks/event_study_windows_hr_v_fp.md)] has the composition of fixed 
         
 # Replication
 
