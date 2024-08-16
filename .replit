@@ -1,0 +1,4 @@
+modules = ["r-4.3", "bash"]
+
+[nix]
+channel = "stable-24_05"
