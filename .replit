@@ -1,4 +1,8 @@
 modules = ["r-4.3", "bash"]
+run = "cd writeup && make minimum_wage.pdf"
 
 [nix]
 channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "cd writeup && make minimum_wage.pdf"]
