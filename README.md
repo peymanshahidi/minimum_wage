@@ -55,11 +55,23 @@ make docker
 
 #### Non-Docker approach
 
+On a linux machine:
+
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage
 cp ~/Downloads/.env writeup
 sudo ./system_update.sh
+
+cd writeup
+make minimum_wage.pdf
+```
+
+```bash
+git clone git@github.com:johnjosephhorton/minimum_wage.git
+cd minimum_wage
+cp ~/Downloads/.env writeup
+zsh ./system_update_mac.sh
 
 cd writeup
 make minimum_wage.pdf
@@ -196,7 +208,7 @@ System info:
 - Processor:  11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
 - Memory available: 31GB memory
 
-The code was last run on 2024-01-03 15:16:41.
+The code was last run on 2024-08-016 15:16:41.
 
 The Linux dependencies are mostly either for LaTeX or dependencies for various R packages.
 
