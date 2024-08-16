@@ -1,5 +1,6 @@
 { pkgs }: {
   deps = [
+    pkgs.texliveFull
     pkgs.tzdata
     pkgs.pkg-config
     pkgs.R
