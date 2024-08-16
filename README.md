@@ -41,6 +41,8 @@ For example, the plot `any_exper.pdf` in `writeup/plots` is created by `plot_any
 The building of this paper is orchestrated by software called ``[make](https://www.gnu.org/software/make/manual/make.html)''.
 From the `writeup` folder at the command line, the user simply types `make minimum wage.pdf` which will then build the paper.
 
+#### Docker approach
+
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage/writeup
@@ -50,6 +52,21 @@ cp ~/Downloads/.env .
 ```bash
 make docker
 ```
+
+#### Non-Docker approach
+
+```bash
+git clone git@github.com:johnjosephhorton/minimum_wage.git
+cd minimum_wage
+cp ~/Downloads/.env writeup
+sudo ./system_update.sh
+
+cd writeup
+make minimum_wage.pdf
+```
+
+
+
 
 ### A short make tutorial
 A Makefile lists recipes for how a particular output used in the paper is constructed.
