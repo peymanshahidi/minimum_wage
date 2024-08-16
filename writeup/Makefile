@@ -23,7 +23,7 @@ docker:
 ## Compress the data & move to Dropbox
 ######################################
 
-.PHONE: fetch-data send-data jjh-misc-installed
+.PHONE: fetch-data send-data
 
 no-cards-up-sleeve:
 	ls plots
@@ -52,8 +52,6 @@ create-dirs:
 fetch-data: ../remote_data.tar.gz.gpg
 	echo "Fetching data"
 
-jjh-misc_installed:
-	Rscript -e 'remotes::install_github("johnjosephhorton/JJHmisc")'
 
 tables = 
 plots = 
