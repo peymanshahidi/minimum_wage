@@ -23,13 +23,13 @@ docker:
 ## Compress the data & move to Dropbox
 ######################################
 
-.PHONE: fetch-data send-data
+.PHONE: fetch-data send-data jjh-misc-installed
 
 no-cards-up-sleeve:
 	ls plots
 	ls tables
 	ls parameters
-	
+
 ###############
 ## Get the data 
 ###############
@@ -48,13 +48,18 @@ create-dirs:
 
 ../remote_data.tar.gz.gpg:
 	cd .. && ./fetch_data.sh
-	
+
 fetch-data: ../remote_data.tar.gz.gpg
 	echo "Fetching data"
+
+jjh-misc_installed:
+	Rscript -e 'remotes::install_github("johnjosephhorton/JJHmisc")'
 
 tables = 
 plots = 
 parameters =
+
+
 
 #################################################
 ## These are all "called out" numbers in the text
