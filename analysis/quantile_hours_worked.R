@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
     library(gt)
     library(tidyr)
     library(cowplot)
-    library(JJHmisc)
+    
     library(stargazer)
     library(quantreg)
 })
@@ -71,6 +71,6 @@ note <- c("\\\\",
 "{\\footnotesize \\emph{Notes}: The outcome in this table is hours-worked, in levels. 
 Each column is quantile regression, with the quantile labeled.}", "\\end{minipage}")
 
-JJHmisc::AddTableNote(s, out.file, note = note)
+AddTableNote(s, out.file, note = note)
 
 

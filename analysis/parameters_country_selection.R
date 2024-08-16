@@ -2,12 +2,13 @@
 
 suppressPackageStartupMessages({
     library(stargazer)
-    library(JJHmisc)
+    #
     library(ggplot2)
     library(dplyr)
     library(magrittr)
 })
 
+source("jjh_misc.R")
 source("settings.R")
 
 df.combo.first <- GetData("hires_country_composition.csv")
@@ -62,7 +63,7 @@ df.combo$country <- with(df.combo,
                          factor(country,
                                 levels = c("United States", "India", "Philippines", "Bangladesh"))) 
 
-addParam <- JJHmisc::genParamAdder("../writeup/parameters/params_country_selection.tex")
+addParam <- genParamAdder("../writeup/parameters/params_country_selection.tex")
 
 addParam("\\USfractionControl", df.combo %>% filter(country == "United States") %>% filter(group == 0) %$% frac %>% multiply_by(100) %>% round(1))
 

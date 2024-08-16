@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
     library(magrittr)
     library(tidyr)
     library(cowplot)
-    library(JJHmisc)
+    
     library(purrr)
 })
 

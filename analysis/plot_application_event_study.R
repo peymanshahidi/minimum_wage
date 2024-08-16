@@ -3,7 +3,7 @@
 suppressPackageStartupMessages({
     library(lfe)
     library(ggplot2)
-    library(JJHmisc)
+    
     library(magrittr)
     library(dplyr)
     options(dplyr.summarise.inform = FALSE)
@@ -121,6 +121,6 @@ g <- ggplot(data = df.combo,
     geom_vline(xintercept = 3, colour = "red", linetype = "dashed")
     
 
-JJHmisc::writeImage(g, "application_event_study", path = "../writeup/plots/",
+writeImage(g, "application_event_study", path = "../writeup/plots/",
                     width = 7, height = 7)
 

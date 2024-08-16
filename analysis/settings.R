@@ -1,7 +1,3 @@
-#library(dotenv)
-#load_dot_env(".env")
-#DATA_PATH <<- Sys.getenv("DATA_PATH")
-#COMPUTED_OBJECTS_PATH <- Sys.getenv("COMPUTED_OBJECTS_PATH")
 DATA_PATH <- "../data/"
 COMPUTED_OBJECTS_PATH <- "../data/"
 
@@ -13,5 +9,5 @@ GetData <- function(csv_file){
     }
 }
 
-
+source("jjh_misc.R")
 

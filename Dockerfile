@@ -42,8 +42,6 @@ RUN Rscript -e "install.packages('stargazer')"
 RUN Rscript -e "install.packages('tidyr')"
 RUN Rscript -e "install.packages('remotes')"
 
-RUN Rscript -e 'remotes::install_github("johnjosephhorton/JJHmisc")'
-
 from rcran as main
 
 RUN mkdir minimum_wage

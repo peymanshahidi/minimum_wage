@@ -2,7 +2,7 @@
 
 suppressPackageStartupMessages({
     library(ggplot2)
-    library(JJHmisc)
+    
     library(dplyr)
 })
 
@@ -44,10 +44,10 @@ g.realized.wage.distro <- ggplot(
     ylab("Cumulative\nDensity")
 
 suppressWarnings({
-    JJHmisc::writeImage(g.realized.wage.distro,
+    writeImage(g.realized.wage.distro,
                         "realized_wage_distro", path = "../writeup/plots/",
                         width = 3, height = 3)
-    JJHmisc::writeImage(
+    writeImage(
                  g.realized.wage.distro + facet_wrap(~opening.cat, ncol = 1),
                  "realized_wage_distro_facet",
                  width = 3, height = 3, path = "../writeup/plots/")

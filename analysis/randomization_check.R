@@ -1,7 +1,7 @@
 #!/usr/bin/Rscript --vanilla 
 
 suppressPackageStartupMessages({
-    library(JJHmisc)
+    
 })
 
 ##################################

@@ -46,7 +46,7 @@ g <- ggplot(data = df.eda, aes(x = date, y = value)) +
     xlab("Week") + ylab("Mean log hourly wage")
 
 
-JJHmisc::writeImage(g, "event_study_hourly_rate_hired",
+writeImage(g, "event_study_hourly_rate_hired",
                     path = "../writeup/plots/",
                     width = 9,
                     height = 6)

@@ -47,7 +47,7 @@ g <- ggplot(data = df.realized.wages,
     theme(legend.position = "none") +
     ylab("Density")
 
-JJHmisc::writeImage(g, "first_stage",
+writeImage(g, "first_stage",
                     width = 6,
                     height = 5,
                     path = "../writeup/plots/")

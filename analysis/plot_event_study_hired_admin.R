@@ -64,6 +64,6 @@ g <- ggplot(data = df.eda, aes(x = date, y = value)) +
     xlab("") 
 
 
-JJHmisc::writeImage(g,
+writeImage(g,
                     "event_study_hired_admin",
                     path = "../writeup/plots/", width = 6, height = 3)

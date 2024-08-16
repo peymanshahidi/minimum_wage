@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 plots.path <- "../writeup/plots/"
 
 source("settings.R")
-
+source("jjh_misc.R")
 
 df.mw.first <- GetData("df_mw_first.csv") %>% 
     select(hours, avg.wage, level1) %>%
@@ -33,4 +33,4 @@ g.wage <- ggplot(data = df.mw, aes(x = level1, y = avg.wage)) +
     xlab("") +
     ylab("Average hourly wage in USD (log scale)")
 
-JJHmisc::writeImage(g.wage, "avg_wages_by_cat", width = 6, height = 3, plots.path)
+writeImage(g.wage, "avg_wages_by_cat", width = 6, height = 3, plots.path)

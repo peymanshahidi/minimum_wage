@@ -8,10 +8,10 @@ suppressPackageStartupMessages({
     library(magrittr)
     library(tidyr)
     library(cowplot)
-    library(JJHmisc)
     library(purrr)
 })
 
+source("jjh_misc.R")
 
 source("utilities_outcome_experimental_plots.R")
 
@@ -19,7 +19,7 @@ df.effects <- AllEffects(outcome.set, wide = FALSE) %>%
     mutate(dataset = as.character(dataset)) %>%
     filter(name %in% c("effects", "pct.change", "control.value", "y"))
 
-addParam <- JJHmisc::genParamAdder("../writeup/parameters/effects_parameters.tex")
+addParam <- genParamAdder("../writeup/parameters/effects_parameters.tex")
 
 formatter <- list(
     "pct.change" = function(p) p %>% abs %>% round(2),

@@ -4,7 +4,7 @@ suppressPackageStartupMessages({
     library(lmtest)
     library(dplyr)
     library(stargazer)
-    library(JJHmisc)
+    
 })
 
 source("settings.R")
@@ -61,5 +61,5 @@ note <- c("\\\\",
 In Columns~(3) and (4), it is the cumulative prior earnings of the hired worker, if any.
 In addition to the treatment cell indicators, one of the regressors is a whether the employer had any on-platform experience (as measured by having hired in the past).}", "\\end{minipage}")
 
-JJHmisc::AddTableNote(s, out.file, note = note)
+AddTableNote(s, out.file, note = note)
 

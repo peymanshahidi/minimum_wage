@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 })
 
 source("settings.R")
-
+source("jjh_misc.R")
 
 df.panel <- GetData("did_panel.csv")
 
@@ -102,7 +102,7 @@ pretty.names <- list("effects" = "Overall",
 
 CreatePlots <- function(base, g) {    
     for (t in names(pretty.names)){
-        JJHmisc::writeImage(g[t][[1]], paste0(base, "_", t), width = width, height = height, path = "../writeup/plots/")
+        writeImage(g[t][[1]], paste0(base, "_", t), width = width, height = height, path = "../writeup/plots/")
     }
     g["effects"] <- NULL
     g["df_results"] <- NULL
@@ -256,7 +256,7 @@ g <- ggplot(data = df.results %>% mutate(post = I(t > -1)), aes(x = t, y = beta)
     theme_bw() +
     expand_limits(x = max(df.results$t) + 3)
 
-JJHmisc::writeImage(g, "did_all_outcomes", width = 9, height = 9, path = "../writeup/plots/")
+writeImage(g, "did_all_outcomes", width = 9, height = 9, path = "../writeup/plots/")
 
 ######################
 ## Posts, and creation 
@@ -300,14 +300,10 @@ DidPlotRow <- function(q.outcomes){
     g
 }
 
-#g <- DidPlotRow(c("num_jobs","total_jobs", "fp_ratio", "fp"))
-#print(g)
-#g <- DidPlotRow(c("fp_ratio"))
-#print(g)
 
 g <- DidPlotRow(c("num_jobs", "total_jobs", "fill_rate"))
 
-JJHmisc::writeImage(g, "did_q_outcomes", width = 8, height = 2.5, path = "../writeup/plots/")
+writeImage(g, "did_q_outcomes", width = 8, height = 2.5, path = "../writeup/plots/")
 
 g <- DidPlotRow(c(
     "avg_wage",
@@ -315,7 +311,7 @@ g <- DidPlotRow(c(
     "avg_earnings"
     ))
 
-JJHmisc::writeImage(g, "did_match_outcomes",
+writeImage(g, "did_match_outcomes",
                     width = 8,
                     height = 2.5,
                     path = "../writeup/plots/")
@@ -331,18 +327,18 @@ ll.subst.outcomes <- c(
 
 g <- DidPlotRow(ll.subst.outcomes)
 
-JJHmisc::writeImage(g,
-                    "did_ll_subst_outcomes",
-                    width = 8,
-                    height = 2.5,
-                    path = "../writeup/plots/")
+writeImage(g,
+           "did_ll_subst_outcomes",
+           width = 8,
+           height = 2.5,
+           path = "../writeup/plots/")
 
 
 df.effects <- df.results %>% filter(t > -1) %>%
     group_by(outcome) %>%
     summarise(mean.beta = mean(beta))
 
-addParam <- JJHmisc::genParamAdder("../writeup/parameters/did_parameters.tex")
+addParam <- genParamAdder("../writeup/parameters/did_parameters.tex")
 
 for(i in 1:nrow(df.effects)){
     key <- gsub("_", "", as.character(df.effects[i, "outcome"]))
