@@ -62,7 +62,7 @@ parameters =
 
 parameters += parameters/parameters.tex
 parameters/parameters.tex: ../analysis/parameters.R 
-	cd ../analysis && ./parameters.R
+	cd ../analysis && Rscript parameters.R
 
 parameters/effects_parameters.tex: ../analysis/utilities_outcome_experimental_plots.R
 
@@ -217,7 +217,7 @@ plots += ./plots/event_study_hired_admin.pdf
 # Table 1: 
 tables += ./tables/randomization_check.tex
 ./tables/randomization_check.tex: ../analysis/randomization_check.R ../data/df_mw_first.csv 
-	cd ../analysis && ./randomization_check.R
+	cd ../analysis && Rscript randomization_check.R
 
 # Table 2
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1372
