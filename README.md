@@ -41,21 +41,30 @@ For example, the plot `any_exper.pdf` in `writeup/plots` is created by `plot_any
 The building of this paper is orchestrated by software called ``[make](https://www.gnu.org/software/make/manual/make.html)''.
 From the `writeup` folder at the command line, the user simply types `make minimum wage.pdf` which will then build the paper.
 
+### Getting the data
+To get the data, you need to obtain a `.env` file from the author.
+It contains a) a private URL to the zipped and encrypted data and b) a key to decrypt the data.
+This is all handled with the `fetch_data.sh` file.
+Once obtained, there are several options.
+
 #### Docker approach
 
+You can just clone the repo and, assuming the `.env` file is in your Downloads folder:
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage/writeup
 cp ~/Downloads/.env . 
 ```
 
+From here, running this will do everything:
 ```bash
 make docker
 ```
+The actual final PDF, however, will be inside the Docker container. It will, however, give you a localhost URL that will have the final PDF.
 
-#### Non-Docker approach
+#### Non-Docker, local approach
 
-On a linux machine:
+On a Linux machine, I have created a `system_update.sh` file that will install the right dependencies.
 
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
@@ -67,18 +76,12 @@ cd writeup
 make minimum_wage.pdf
 ```
 
-```bash
-git clone git@github.com:johnjosephhorton/minimum_wage.git
-cd minimum_wage
-cp ~/Downloads/.env writeup
-zsh ./system_update_mac.sh
+#### Replit approach (convenient)
 
-cd writeup
-make minimum_wage.pdf
-```
-
-
-
+I have created a public replit ``repl'' here: https://replit.com/@johnhorton/minimumwage
+You can __fork__ this repository, then add the `.env` file to to the `writeup` folder then just push the big green 'Run' button.
+The dependencies are specified in the '.replit' `replit.nix` files.
+It will generate the PDF and store it in `writeup'
 
 ### A short make tutorial
 A Makefile lists recipes for how a particular output used in the paper is constructed.
