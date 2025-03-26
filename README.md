@@ -160,6 +160,57 @@ The paper uses the following datasets:
 1. [`event_study_hired.csv`](codebooks/event_study_hired.md)
 1. [`event_study_windows_hr_v_fp.csv`](codebooks/event_study_windows_hr_v_fp.md)] has the composition of fixed 
         
+# Code and Output Mapping
+
+This section provides a detailed mapping between each program file in the analysis directory and the tables and figures it generates for the paper.
+
+## Figures
+
+| Figure | Program | Data Dependency | Location in Paper |
+|--------|---------|-----------------|-------------------|
+| Figure 1: Control Hired CDF | `../analysis/realized_wage_distro.R` | `../data/df_mw_first.csv` | Page 125 |
+| Figure 2: All Hired CDF | `../analysis/first_stage.R` | `../data/df_mw_first.csv` | Page 126 |
+| Figure 3: (TikZ Illustration) | None | None | Page 126 |
+| Figure 4: Fill and Hours | `../analysis/plot_fill_and_hours.R` | `../data/df_mw_all.csv`, `../data/df_mw_admin.csv`, `../data/df_mw_lpw.csv` | Page 130 |
+| Figure 5: Composition | `../analysis/plot_composition.R` | `../data/df_mw_all.csv`, `../data/df_mw_admin.csv`, `../data/df_mw_lpw.csv` | Page 134 |
+| Figure 6: Event Study Hourly Rate | `../analysis/plot_event_study_hourly_rate_hired.R` | `../data/event_study_hired.csv` | Page 138 |
+| Figure 7: DiD Outcomes | `../analysis/plot_did_all_outcomes.R` | `../data/did_panel.csv` | Page 140 |
+| Figure 8: Application Event Study | `../analysis/plot_application_event_study.R` | - | Page 143 |
+| Figure 9: Organic Applications | `../analysis/plot_organic_applications.R` | - | Appendix |
+| Figure 10: Follow-on Openings | `../analysis/plot_follow_on_openings.R` | `../data/df_mw_all.csv`, `../data/df_mw_admin.csv`, `../data/df_mw_lpw.csv` | Appendix |
+| Figure 12: Hours Zero | `../analysis/plot_hours_zero.R` | - | Appendix |
+| Figure 13: Any Experience | `../analysis/plot_any_exper.R` | - | Appendix |
+| Figure 14: Feedback | `../analysis/plot_feedback.R` | - | Appendix |
+| Figure A3: Average Wages by Category | `../analysis/avg_wages_by_cat.R` | - | Appendix |
+| Figure B4: Event Study Hired Admin | `../analysis/plot_event_study_hired_admin.R` | - | Appendix |
+
+## Tables
+
+| Table | Program | Data Dependency | Location in Paper |
+|-------|---------|-----------------|-------------------|
+| Table 1: Randomization Check | `../analysis/randomization_check.R` | `../data/df_mw_first.csv` | Appendix |
+| Table 2: Quantile Hours Worked | `../analysis/quantile_hours_worked.R` | `../data/event_study_windows_hr_v_fp.csv` | Appendix |
+| Any Prior | `../analysis/table_any_prior.R` | - | Appendix |
+
+## Parameters
+
+These files generate parameters that are called out in the text of the paper:
+
+| Parameter File | Program | 
+|----------------|---------|
+| `parameters/parameters.tex` | `../analysis/parameters.R` |
+| `parameters/effects_parameters.tex` | `../analysis/parameters_effects.R` |
+| `parameters/params_country_selection.tex` | `../analysis/parameters_country_selection.R` |
+
+## Utility Files
+
+These utility files are used by multiple analysis scripts:
+
+| Utility File | Used By |
+|--------------|---------|
+| `../analysis/utilities_outcome_experimental_plots.R` | `plot_fill_and_hours.R`, `plot_composition.R`, `plot_organic_applications.R`, `plot_follow_on_openings.R`, `plot_hours_zero.R`, `plot_any_exper.R`, `plot_feedback.R`, `parameters_effects.R` |
+
+
 # Replication
 
 ## Getting the data and code
@@ -255,5 +306,4 @@ The provided code reproduces:
 
 ## References
 
-There are no references.
-
+Horton, John J., "minimum_wage." GitHub Repository. Accessed March 25, 2025. https://github.com/johnjosephhorton/minimum_wage.

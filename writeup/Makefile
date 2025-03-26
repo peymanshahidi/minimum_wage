@@ -168,7 +168,7 @@ plots += plots/did_ll_subst_outcomes.pdf
 
 #  Figure 8
 plots += ./plots/application_event_study.pdf
-./plots/application_event_study.pdf: ../analysis/plot_application_event_study.R 
+./plots/application_event_study.pdf: ../analysis/plot_application_event_study.R ../data/event_study_windows.csv
 	cd ../analysis && Rscript plot_application_event_study.R
 
 
