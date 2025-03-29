@@ -1,6 +1,7 @@
 ts := $(shell /bin/date "+%Y-%m-%d---%H-%M-%S")
 project_name = minimum_wage
 images = images/bidding_interface
+PARENT_DIR := $(shell cd .. && pwd)
 
 include .env
 export
@@ -13,10 +14,10 @@ export
 
 docker:
 	@echo "Building docker image"
-	@cd .. && sudo docker build -t minimum_wage .
-	@echo "Running docker image"
-	@echo "Navigate to: http://localhost:8080/writeup/minimum_wage.pdf"
-	@cd .. & sudo docker run -p 8080:8000 minimum_wage
+	@cd .. && docker build -t minimum_wage .
+	@echo "Running docker image $(PARENT_DIR)"
+	@echo "Running docker image "$(PARENT_DIR)""
+	@pwd && docker run -v "$(PARENT_DIR)":/minimum_wage minimum_wage
 
 
 ######################################
@@ -43,6 +44,8 @@ DIRS := plots tables parameters
 all: create-dirs main
 
 create-dirs:
+	@echo "Creating directories"
+	@pwd
 	@mkdir -p $(DIRS)
 
 
@@ -136,7 +139,11 @@ plots += ./plots/first_stage.pdf
 
 # Figure 3 is a TikZ diagram
 
+######################
+# Define three datasets as "data" to avoid repetition in creation rules of Figures 4, 5, A1, A2, B1, B2, B3
+###########
 data = ../data/df_mw_all.csv ../data/df_mw_admin.csv ../data/df_mw_lpw.csv
+######################
 
 # Figure 4
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L638
@@ -156,30 +163,29 @@ plots += ./plots/event_study_hourly_rate_hired.pdf
 ./plots/event_study_hourly_rate_hired.pdf: ../analysis/plot_event_study_hourly_rate_hired.R ../data/event_study_hired.csv
 	cd ../analysis && Rscript plot_event_study_hourly_rate_hired.R
 
-### Figure 7 
+## Figure 7 
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L927
 plots += plots/did_all_outcomes.pdf
 ./plots/did_all_outcomes.pdf: ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
-	cd ../analysis && ./plot_did_all_outcomes.R 
+	cd ../analysis && Rscript ./plot_did_all_outcomes.R 
 
-### Figure 7 
+## Figure 7 
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L927
 plots += plots/did_q_outcomes.pdf
 ./plots/did_q_outcomes.pdf: ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
-	cd ../analysis && ./plot_did_all_outcomes.R
+	cd ../analysis && Rscript ./plot_did_all_outcomes.R
 
-### Figure 7 
+## Figure 7 
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L927
 plots += plots/did_match_outcomes.pdf
 ./plots/did_match_outcomes.pdf:  ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
-	cd ../analysis && ./plot_did_all_outcomes.R
+	cd ../analysis && Rscript ./plot_did_all_outcomes.R
 
-### Figure 7 
+## Figure 7 
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L927
 plots += plots/did_ll_subst_outcomes.pdf
 ./plots/did_ll_subst_outcomes.pdf:  ../analysis/plot_did_all_outcomes.R ../data/did_panel.csv 
-	cd ../analysis && ./plot_did_all_outcomes.R
-
+	cd ../analysis && Rscript ./plot_did_all_outcomes.R
 
 #  Figure 8
 # https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex#L1040
