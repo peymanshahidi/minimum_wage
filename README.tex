@@ -1,0 +1,332 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\usepackage{pifont}
+
+% Define custom column types for tabularx:
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{T}{>{\ttfamily\small\raggedright\arraybackslash}X}
+
+% Define an environment for tables with 6pt font
+\newenvironment{eightpt}{\begingroup\fontsize{8}{12.5}\selectfont}{\endgroup}
+
+\begin{document}
+
+\section*{Replication Package}
+\subsection*{Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment}
+by \textbf{John Horton}
+
+\section{Overview}
+
+This document describes the organization of code, data, and software associated with \href{https://www.aeaweb.org/articles?id=10.1257/aer.20170637}{``Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment''} (Horton, 2025a). The replication package for this project is available at the Github repository \href{https://www.github.com/johnjosephhorton/minimum_wage.git}{johnjosephhorton/minimum\_wage} (Horton, 2025b) as well as the openICPSR repository \href{http://doi.org/10.3886/E208551V1}{208551V1} (Horton, 2025c).
+
+This project is largely self-documenting in the sense that the key recipes for building the project are captured in code. The key pieces for replicating this project are:
+\begin{enumerate}[label=\arabic*.]
+  \item A \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile}{Makefile} that gives recipes for how each figure, table, and called-out number is constructed in the paper.
+  \item A \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Dockerfile}{Dockerfile} that describes the system set-up needed with respect to computing resources and packages.
+\end{enumerate}
+
+A comprehensive list of files, programs, and software dependencies is provided in the current document for the reader's convenience.
+
+\section{Folder Structure}
+
+The main directory contains three folders:
+\begin{verbatim}
+-analysis
+-codebooks
+-writeup
+\end{verbatim}
+
+The \texttt{analysis} folder contains 23 R scripts that generate all outputs used in the paper. (A complete list of programs as well as software requirements and dependencies is given in Section~3.1.)
+
+The \texttt{codebooks} folder contains 10 Markdown files that give an overview of the contents of each dataset used in the analysis (one Markdown file for each dataset). (A complete list of datasets used in this project is given in Section~3.2.)
+
+The \texttt{writeup} folder contains the main writeup of the paper (see \texttt{minimum\_wage.tex}). The figures, tables, and parameter files generated during replication will be stored in \texttt{writeup/plots}, \texttt{writeup/tables}, and \texttt{writeup/parameters}, respectively. In the repositories hosting the replication package, these locations are empty by design. When the project is built, these folders are populated with the necessary files.
+
+When the project is built (see Section~2 below), a \texttt{data} folder is automatically created in the main directory and populated with the relevant datasets. (There is no need to create an empty \texttt{data} folder manually.)
+
+\section{Replication}
+
+A replicator will obtain a \texttt{.env} file from the author and can reproduce the entire writeup of the paper using one of three available options.
+
+\subsection{Building the Paper}
+
+The building of this project is orchestrated by a software called \href{https://www.gnu.org/software/make/manual/make.html}{make}. From the \texttt{writeup} folder at the command line, simply type:
+\begin{verbatim}
+make minimum_wage.pdf
+\end{verbatim}
+which will then build the paper. Below is a short tutorial on \texttt{make}. Familiar readers may skip the tutorial and go to Section~2.2 directly.
+
+\subsubsection{A Short Make Tutorial}
+A Makefile lists recipes for how a particular output used in the paper is constructed. The Makefile entry for the \texttt{first\_stage.pdf} in the \texttt{plots} folder looks like this:
+\begin{verbatim}
+plots/first_stage.pdf: ../analysis/first_stage.R  data/df_mw_first.csv
+	cd ../analysis && Rscript first_stage.R
+\end{verbatim}
+Note that the target, or output, is \texttt{plots/first\_stage.pdf}. After the colon are the dependencies—here, the R file \texttt{first\_stage.R} in the \texttt{analysis} folder and the dataset \texttt{data/df\_mw\_first.csv}. The indented line is the recipe that constructs the target by running \texttt{Rscript} on \texttt{first\_stage.R}.
+
+There is code shared across multiple figures or tables. For example, \texttt{utilities\_outcome\_experimental\_plots.R} contains helper functions used in several plots. To capture this dependency, the Makefile has entries like:
+\begin{verbatim}
+analysis/plot_any_exper.R: analysis/utilities_outcome_experimental_plots.R
+	touch analysis/plot_any_exper.R
+\end{verbatim}
+The command \texttt{touch} updates the timestamp of \texttt{analysis/plot\_any\_exper.R}, which in turn causes the recipe for \texttt{any\_exper.pdf} to be re-run because \texttt{plot\_any\_exper.R} is a dependency.
+
+\subsection{Getting the Data}
+
+To get the data, obtain a \texttt{.env} file from the author and place it in the \texttt{\~{}/minimum\_wage/writeup} folder. The \texttt{.env} file contains: (1) a private URL to the zipped and encrypted data, and (2) a key to decrypt the data. An example \texttt{.env} file is:
+\begin{verbatim}
+GPG_PASSPHRASE='<password>'
+project_name="minimum_wage"
+DROPBOX_URL="<url of dropbox link hosting the data>"(base)
+\end{verbatim}
+These values are used by the bash script \texttt{fetch\_data.sh} in the main directory.
+
+There are three options to get the data:
+
+\subsubsection{Non-Docker, Local Approach (Recommended)}
+Run the following in the command line:
+\begin{verbatim}
+$ cd writeup 
+$ make docker
+\end{verbatim}
+The script \texttt{system\_update.sh} in the main directory will automatically install the right dependencies on a Linux machine and build the project.
+\begin{verbatim}
+git clone git@github.com:johnjosephhorton/minimum_wage.git
+cd minimum_wage
+cp ~/Downloads/.env writeup
+sudo ./system_update.sh
+\end{verbatim}
+
+\subsubsection{Docker Approach}
+Clone the repository and (assuming the \texttt{.env} file is in your Downloads folder):
+\begin{verbatim}
+git clone git@github.com:johnjosephhorton/minimum_wage.git
+cd minimum_wage/writeup
+cp ~/Downloads/.env .
+\end{verbatim}
+Then run:
+\begin{verbatim}
+make docker
+\end{verbatim}
+The final PDF will be inside the Docker container, which will provide a localhost URL to access the PDF.
+
+\subsubsection{Replit Approach (Convenient)}
+A public Replit "repl" is available at \url{https://replit.com/@johnhorton/minimumwage}. Fork this repository, add the \texttt{.env} file to the \texttt{writeup} folder, and press the big green “Run” button. The dependencies are specified in the \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix.sh}{replit.nix} file in the main directory. The PDF will be generated and stored in the \texttt{writeup} folder.
+
+\section{Code, Datasets, and Outputs}
+
+This section describes software requirements, datasets used, and outputs of the analysis.
+
+\subsection{Program and Software}
+The entire project has been implemented in R (version 4.4.1). The \texttt{analysis} folder contains 23 R scripts that utilize 10 datasets to generate all outputs reported in the paper.
+
+\subsubsection{R Scripts}
+Table below provides a list of all 23 R scripts located in the \texttt{analysis} folder.
+
+\begin{eightpt}
+\begin{tabularx}{\textwidth}{TT}
+\toprule
+R Script & R Script \\
+\midrule
+avg\_wages\_by\_cat.R & first\_stage.R \\
+jjh\_misc.R & parameters.R \\
+parameters\_country\_selection.R & parameters\_effects.R \\
+plot\_any\_exper.R & plot\_application\_event\_study.R \\
+plot\_composition.R & plot\_did\_all\_outcomes.R \\
+plot\_event\_study\_hired\_admin.R & plot\_event\_study\_hourly\_rate\_hired.R \\
+plot\_feedback.R & plot\_fill\_and\_hours.R \\
+plot\_follow\_on\_openings.R & plot\_hours\_zero.R \\
+plot\_organic\_applications.R & quantile\_hours\_worked.R \\
+randomization\_check.R & realized\_wage\_distro.R \\
+settings.R & table\_any\_prior.R \\
+utilities\_outcome\_experimental\_plots.R & \\
+\bottomrule
+\end{tabularx}
+\end{eightpt}
+
+\subsubsection{R Packages}
+The complete list of R packages used in the scripts above, along with the versions last used to run the code, is given below.
+
+\begin{eightpt}
+\begin{tabularx}{\textwidth}{TT}
+\toprule
+R Package (version) & R Package (version) \\
+\midrule
+cowplot (1.1.3) & data.table (1.16.2) \\
+directlabels (2024.1.21) & dplyr (1.1.4) \\
+ggplot2 (3.5.1) & ggrepel (0.9.6) \\
+gridExtra (2.3) & gt (0.11.1) \\
+lfe (3.1.1) & lmtest (0.9-40) \\
+lubridate (1.9.4) & magrittr (2.0.3) \\
+plyr (1.8.9) & purrr (1.0.2) \\
+quantreg (6.00) & sandwich (3.1-1) \\
+scales (1.3.0) & stargazer (5.1) \\
+tidyr (1.3.1) & \\
+\bottomrule
+\end{tabularx}
+\end{eightpt}
+
+\subsection{Datasets}
+The analysis uses 10 different datasets, all automatically stored in the \texttt{data} folder after initiating the data download procedure. The \texttt{codebooks} folder contains 10 Markdown files that document the contents of each dataset. The table below lists all datasets along with a brief description.
+
+\begin{eightpt}
+\begin{tabularx}{\textwidth}{@{}LL@{}}
+\toprule
+Dataset & Description \\
+\midrule
+{df\_mw\_first.csv} & Main experimental outcomes at job post level (first observation) \\
+{df\_mw\_all.csv} & Main experimental outcomes at job post level (all observations) \\
+{df\_mw\_admin.csv} & Main experimental outcomes at job post level for admin data \\
+{df\_mw\_lpw.csv} & Main experimental outcomes at job post level for low wage positions \\
+{df\_exp\_results.csv} & Aggregated experimental results and summary statistics \\
+{hires\_country\_composition.csv} & Geographic composition of hires \\
+{event\_study\_windows.csv} & Time windows and intervals used in the event study analysis \\
+{did\_panel.csv} & Data used for the DiD analysis \\
+{event\_study\_hired.csv} & Detailed hiring outcome data for event study analyses \\
+{event\_study\_windows\_hr\_v\_fp.csv} & Composition of fixed price and hourly jobs over time \\
+\bottomrule
+\end{tabularx}
+\end{eightpt}
+
+\subsection{Outputs}
+
+\subsubsection{Figures}
+The table below maps each figure used in the paper to the generating R script and its dataset dependencies. All figures are stored in \texttt{writeup/plots} after the project is built.
+
+\begin{eightpt}
+\begin{tabularx}{\textwidth}{@{}p{0.07\textwidth}p{0.34\textwidth}p{0.40\textwidth}>{\centering\arraybackslash}p{0.125\textwidth}@{}}
+\toprule
+Figure & R Script & Data Dependency & Location in Paper \\
+\midrule
+Figure 1 & \texttt{analysis/realized\_wage\_distro.R} & \texttt{data/df\_mw\_first.csv} & Page 125 \\
+Figure 2 & \texttt{analysis/first\_stage.R} & \texttt{data/df\_mw\_first.csv} & Page 126 \\
+Figure 3 & None (TikZ Diagram) & None & Page 126 \\
+Figure 4 & \texttt{analysis/plot\_fill\_and\_hours.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Page 130 \\
+Figure 5 & \texttt{analysis/plot\_composition.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Page 134 \\
+Figure 6 & \texttt{analysis/plot\_event\_study\_hourly\_rate\_hired.R} & \texttt{data/event\_study\_hired.csv} & Page 138 \\
+Figure 7 & \texttt{analysis/plot\_did\_all\_outcomes.R} & \texttt{data/did\_panel.csv} & Page 140 \\
+Figure 8 & \texttt{analysis/plot\_application\_event\_study.R} & \texttt{data/event\_study\_windows.csv} & Page 143 \\
+Figure A1 & \texttt{analysis/plot\_organic\_applications.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Appendix \\
+Figure A2 & \texttt{analysis/plot\_follow\_on\_openings.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Appendix \\
+Figure A3 & \texttt{analysis/avg\_wages\_by\_cat.R} & \texttt{data/df\_mw\_first.csv} & Appendix \\
+Figure B1 & \texttt{analysis/plot\_hours\_zero.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Appendix \\
+Figure B2 & \texttt{analysis/plot\_any\_exper.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Appendix \\
+Figure B3 & \texttt{analysis/plot\_feedback.R} & \texttt{data/df\_mw\_all.csv, df\_mw\_admin.csv, df\_mw\_lpw.csv} & Appendix \\
+Figure B4 & \texttt{analysis/plot\_event\_study\_hired\_admin.R} & \texttt{data/event\_study\_hired.csv} & Appendix \\
+\bottomrule
+\end{tabularx}
+\end{eightpt}
+
+\subsubsection{Tables}
+The table below maps each table used in the paper to its generating R script and dataset dependencies. All tables are stored in \texttt{writeup/tables} after the project is built.
+
+\begin{eightpt}
+\begin{tabularx}{\textwidth}{@{}p{0.12\textwidth}p{0.35\textwidth}p{0.34\textwidth}>{\centering\arraybackslash}p{0.125\textwidth}@{}}
+\toprule
+Table & R Script & Data Dependency & Location in Paper \\
+\midrule
+Table A1 & \texttt{analysis/randomization\_check.R} & \texttt{data/df\_mw\_first.csv} & Appendix \\
+Table B1 & \texttt{analysis/quantile\_hours\_worked.R} & \texttt{data/event\_study\_windows\_hr\_v\_fp.csv} & Appendix \\
+Table B2 & \texttt{analysis/table\_any\_prior.R} & \texttt{data/df\_mw\_first.csv} & Appendix \\
+\bottomrule
+\end{tabularx}
+\end{eightpt}
+
+\subsubsection{Parameters}
+Some scripts generate “parameters” (numbers automatically called out in the paper). For example, after building the project, the file \texttt{parameters/parameters.tex} will contain a line such as:
+\begin{verbatim}
+\newcommand{\numTotal}{159,656}
+\end{verbatim}
+which relates to the total allocation to the experiment. In the \texttt{parameters.R} script, this value is created as follows:
+\begin{verbatim}
+addParam("\\numTotal", formatC(dim(df.mw.first)[1], big.mark = ","))
+\end{verbatim}
+The table below maps each parameter file to its generating R script. All parameter files are saved in \texttt{writeup/parameters} after the corresponding R scripts are run.
+
+\begin{eightpt}
+\begin{tabularx}{\textwidth}{@{}LL@{}}
+\toprule
+Parameter File & R Script \\
+\midrule
+\texttt{parameters/parameters.tex} & \texttt{analysis/parameters.R} \\
+\texttt{parameters/effects\_parameters.tex} & \texttt{analysis/parameters\_effects.R} \\
+\texttt{parameters/parameters\_fill\_and\_hours.tex} & \texttt{analysis/plot\_fill\_and\_hours.R} \\
+\texttt{parameters/did\_parameters.tex} & \texttt{analysis/plot\_did\_all\_outcomes.R} \\
+\texttt{parameters/parameters\_composition.tex} & \texttt{analysis/plot\_composition.R} \\
+\texttt{parameters/params\_country\_selection.tex} & \texttt{analysis/parameters\_country\_selection.R} \\
+\bottomrule
+\end{tabularx}
+\end{eightpt}
+
+\subsection{License for Code}
+The code is licensed under an MIT license.
+
+\section{Data Availability and Provenance}
+
+\subsection{Provenance}
+This data comes from a large online labor market (Anonymous Online Platform, 2025) that conducted the experiment described in the paper. The data was pulled from the company's database using SQL. The data used for this analysis is proprietary and confidential, but may likely be obtained via Data Use Agreements with the data provider. The data provider remains anonymous. Researchers interested in accessing the data may contact John Horton at \texttt{jjhorton@mit.edu}. The author will assist with any reasonable replication attempts for two years following publication.
+
+\subsection{Statement about Rights}
+\begin{itemize}[label=\ding{109}]
+  \item [\ding{51}] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript.
+  \item I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permissions are documented in the \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/LICENSE.txt}{LICENSE.txt} file in the main directory.
+\end{itemize}
+
+\subsection{Summary of Availability}
+\begin{itemize}[label=\ding{109}]
+  \item All data \textbf{are} publicly available.
+  \item Some data \textbf{cannot be made} publicly available.
+  \item [\ding{51}] \textbf{No data can be made} publicly available.
+\end{itemize}
+
+\section{Computational Requirements}
+
+The computational requirements for reproducing this paper are minimal. The project can be run on a modern laptop in about 20 minutes using only open-source software.
+
+The machine details when last run are:
+\begin{itemize}
+  \item OS: ``Ubuntu 20.04.6 LTS''
+  \item Processor: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
+  \item Memory available: 31GB
+\end{itemize}
+
+The code was last run on 2025-03-27 15:16:41. Linux dependencies include LaTeX and various R package requirements.
+
+\subsection{Runtime}
+Approximate time needed to reproduce the analyses on a standard 2023 desktop machine is about 20 minutes:
+\begin{itemize}[label=\ding{109}]
+  \item $<$10 minutes
+  \item [\ding{51}] 10--60 minutes
+  \item 1--2 hours
+  \item 2--8 hours
+  \item 8--24 hours
+  \item 1--3 days
+  \item 3--14 days
+  \item $>$14 days
+  \item Not feasible to run on a desktop machine, as described below.
+\end{itemize}
+
+\section{References}
+
+\begin{itemize}
+  \item Anonymous Online Platform. 2025. ``Data For: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment,'' Unpublished Data, Accessed March 29, 2025.
+  \item Horton, John J. 2025a. ``Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment.'' American Economic Review 115, No. 1: 117--146. \href{https://doi.org/10.1257/aer.20170637}{https://doi.org/10.1257/aer.20170637}.
+  \item Horton, John J. 2025b. ``minimum\_wage.'' GitHub Repository. Accessed March 27, 2025. \\ \href{https://github.com/johnjosephhorton/minimum_wage}{https://github.com/johnjosephhorton/minimum\_wage}.
+  \item Horton, John J. 2025c. ``Code For: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment.'' American Economic Association, Inter-university Consortium for Political and Social Research. \\ \href{http://doi.org/10.3886/E208551V1}{http://doi.org/10.3886/E208551V1}.
+\end{itemize}
+
+\end{document}
