@@ -4,6 +4,9 @@ by **John Horton**
 
 
 
+<br>
+
+
 
 # 1. Overview
 
@@ -36,31 +39,33 @@ The main directory contains three folders:
 ```
 
 The [`analysis`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis) folder contains 23 R scripts that generate all outputs used in the paper.
-The complete list of programs as well as software requirements and dependencies is given in section 3.1.
+The complete list of programs as well as software requirements and dependencies is given in section 4.1.
 
 The [`codebooks`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks) folder contains 10 Markdown files that give the overview of the contents of each dataset used in the analysis (one Markdown file for each dataset).
-The complete list of datasets used in this project is given in section 3.2.
+The complete list of datasets used in this project is given in section 4.2.
 
 The [`writeup`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup) folder contains the main writeup of the paper ([`minimum_wage.tex`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex)). 
 The figures, tables, and parameter files generated during replication will be stored in `writeup/plots`, `writeup/tables`, and `writeup/parameters`, respectively.
 In the repositories hosting the replication package, these locations are empty by design.
 When the project is built, these folders are populated with the necessary files. 
 
-When the project is building (more on this in section 2), a `data` folder is automatically created in the main directory and populated with the relevant datasets.
+When the project is building (more on this in section 3), a `data` folder is automatically created in the main directory and populated with the relevant datasets.
 (There is no need to create an empty `data` folder manually.)
 
-# 2. Replication
+# 3. Replication
 
-A replicator will obtain a `.env` file from the author and can reproduce the entire writeup of the paper using one of three available options.
+The build process for this project is managed using "[make](https://www.gnu.org/software/make/manual/make.html)," a tool for automating workflows.
+A replicator will obtain a `.env` file from the author and can reproduce the entire writeup of the paper via a push-button approach using one of three available options brought in section 2.2.
 
-## 2.1. Building the Paper
+## 3.1. Makefile Logic 
 
-The building of this project is orchestrated by a software called "[make](https://www.gnu.org/software/make/manual/make.html)."
-From the `writeup` folder at the command line, the user simply types `make minimum_wage.pdf` which will then build the paper.
-Below is a short tutorial on `make`. 
-Familiar readers may skip the tutorial and go to section 2.2 directly.
 
-### 2.1.1. A Short Make Tutorial
+The [Makefile]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile) in the `writeup` folder specifies the complete list of file dependencies for replication of the project. 
+A comprehensive list of all dependencies is provided in section 4 of the current readme as well.
+Below I provide a short tutorial on `make`. 
+Familiar readers may skip the tutorial and go to section 3.2 directly.
+
+### 3.1.1. A Short Make Tutorial
 A Makefile lists recipes for how a particular output used in the paper is constructed.
 The Makefile entry for the `first_stage.pdf` in the `plots` folder looks like this: 
 
@@ -84,9 +89,9 @@ analysis/plot_any_exper.R: analysis/utilities_outcome_experimental_plots.R
 ```
 The command `touch` here updates the timestamp of `analysis/plot_any_exper.R` which in turn would cause the recipe for `any_exper.pdf` to be re-run, as `plot_any_exper.R` is a dependency.
 
-## 2.2. Getting the Data
+## 3.2. Building the Project
 
-To get the data, you need to obtain a `.env` file from the author and put it in the `~/minimum_wage/writeup` folder. 
+To get the data and build the project, you need to obtain a `.env` file from the author and put it in the `~/minimum_wage/writeup` folder. 
 The `.env` file contains: 1) a private URL to the zipped and encrypted data, and 2) a key to decrypt the data. 
 The `.env` file will look like this:
 
@@ -98,46 +103,68 @@ DROPBOX_URL="<url of dropbox link hosting the data>"(base)
 
 These values are used in a bash script that fetches the data, at [fetch_data.sh](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/fetch_data.sh) in the main directory.
 
-There are three options to get the data:
+There are three options to get the data and build the project: 1) local machine approach, 2) Docker approach, and 3) Replit approach.
 
-### 2.2.1. Non-Docker, Local Approach (Recommended)
+### 3.2.1. Non-Docker, Local Approach
 
-The least error-prone method is run the following in commmand line:
-```bash 
-$ cd writeup 
-$ make docker
-```
-
-The [system_update.sh](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/system_update.sh) file in the main directory will automatically install the right dependencies on a Linux machine and the project is built.
+First, assuming the `.env` file is in your `Downloads` folder, run the folloiwng in your command line:
 
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage
 cp ~/Downloads/.env writeup
-sudo ./system_update.sh
 ```
 
-### 2.2.2. Docker Approach
+Equivalently, you can download the project and manually put the `.env` file in the `writeup` folder.
 
-You can clone the repository and, assuming the `.env` file is in your Downloads folder:
+On a Linux machine, the [system_setup.sh](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/system_setup.sh) file in the main directory will install the right dependencies. 
+In the command line, type:
+
+```bash
+sudo ./system_setup.sh
+```
+
+Then, running the following will build the project:
+
+```bash 
+cd writeup 
+make minimum_wage.pdf
+```
+
+On a non-Linux machine, ensure the R packages listed in section 4.1.2 are installed on your machine. 
+Then, run the following to build everything:
+
+```bash 
+git clone git@github.com:johnjosephhorton/minimum_wage.git
+cd minimum_wage/writeup
+make minimum_wage.pdf
+```
+
+### 3.2.2. Docker Approach
+
+As in the Non-Docker approach, clone (or download) the repository and ensure a copy of the `.env` file is present in the `writeup` folder.
+To clone the repository and copy a version of the `.env` file to the `writeup` folder you can type the following in the command line:
+
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage/writeup
 cp ~/Downloads/.env . 
 ```
 
-From here, running this will do everything:
+From here, running this will build the entire project:
+
 ```bash
 make docker
 ```
-The actual final PDF, will be inside the Docker container. It will, however, give you a localhost URL that will have the final PDF.
+After the project is built, a copy of the final pdf will appear inside the `writeup` folder on your local machine.
 
-### 2.2.3. Replit Approach (Convenient)
+### 3.2.3. Replit Approach
 
 I have created a public replit "repl" here: https://replit.com/@johnhorton/minimumwage.
 You can __fork__ this repository, then add the `.env` file to the `writeup` folder then just push the big green 'Run' button.
-The dependencies are specified in the [replit.nix](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix.sh) file available in the main directory.
+The dependencies are specified in the [replit.nix](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix) file available in the main directory.
 It will generate the PDF and store it in `writeup`.
+
 
 
 
@@ -145,51 +172,52 @@ It will generate the PDF and store it in `writeup`.
 
 
 
-# 3. Code, Datasets, and Outputs
+
+# 4. Code, Datasets, and Outputs
 
 This section describes software requirements, datasets used, and outputs of the analysis.
 
-## 3.1 Program and Software
+## 4.1 Program and Software
 
 The entire project has been implemented in R (version 4.4.1). The `analysis` folder contains 23 R scripts that utilize 10 datasets to generate all outputs reported in the paper. 
 
-### 3.1.1. R Scripts
+### 4.1.1. R Scripts
 
 Table below provides a list of all 23 R scripts located in the `analysis` folder.
 
-| R Script                          		| R Script                                |
-|-------------------------------------------|-----------------------------------------|
-| `avg_wages_by_cat.R`             			| `first_stage.R`                         |
-| `jjh_misc.R`                      		| `parameters.R`                          |
-| `parameters_country_selection.R`  		| `parameters_effects.R`                  |
-| `plot_any_exper.R`               			| `plot_application_event_study.R`        |
-| `plot_composition.R`             			| `plot_did_all_outcomes.R`               |
-| `plot_event_study_hired_admin.R`  		| `plot_event_study_hourly_rate_hired.R`  |
-| `plot_feedback.R`                			| `plot_fill_and_hours.R`                 |
-| `plot_follow_on_openings.R`       		| `plot_hours_zero.R`                     |
-| `plot_organic_applications.R`  		  	| `quantile_hours_worked.R`               |
-| `randomization_check.R`          			| `realized_wage_distro.R`                |
-| `settings.R`                      		| `table_any_prior.R`                     |
-| `utilities_outcome_experimental_plots.R`	|                                  		  |
+| R Script                               | R Script                                      |
+|----------------------------------------|-----------------------------------------------|
+| `avg_wages_by_cat.R`                   | `plot_feedback.R`                             |
+| `first_stage.R`                        | `plot_fill_and_hours.R`                       |
+| `jjh_misc.R`                           | `plot_follow_on_openings.R`                   |
+| `parameters.R`                         | `plot_hours_zero.R`                           |
+| `parameters_country_selection.R`       | `plot_organic_applications.R`                 |
+| `parameters_effects.R`                 | `quantile_hours_worked.R`                     |
+| `plot_any_exper.R`                     | `randomization_check.R`                       |
+| `plot_application_event_study.R`       | `realized_wage_distro.R`                      |
+| `plot_composition.R`                   | `settings.R`                                  |
+| `plot_did_all_outcomes.R`              | `table_any_prior.R`                           |
+| `plot_event_study_hired_admin.R`       | `utilities_outcome_experimental_plots.R`      |
+| `plot_event_study_hourly_rate_hired.R` |                                               |
 
-### 3.1.2. R Packages
+### 4.1.2. R Packages
 
 The complete list of R packages used in the scripts above, along with the versions I last used to run the code is given in the table below.
 
-| R Package (version)               | R Package (version)               |
-|-----------------------------------|-----------------------------------|
-| `cowplot (1.1.3)`                 | `data.table (1.16.2)`             |
-| `directlabels (2024.1.21)`        | `dplyr (1.1.4)`                   |
-| `ggplot2 (3.5.1)`                 | `ggrepel (0.9.6)`                 |
-| `gridExtra (2.3)`                 | `gt (0.11.1)`                   	|
-| `lfe (3.1.1)`                     | `lmtest (0.9-40)`                	|
-| `lubridate (1.9.4)`               | `magrittr (2.0.3)`               	|
-| `plyr (1.8.9)`                    | `purrr (1.0.2)`                  	|
-| `quantreg (6.00)`                 | `sandwich (3.1-1)`               	|
-| `scales (1.3.0)`                  | `stargazer (5.1)`                	|
-| `tidyr (1.3.1)`                   |                                   |
+| R Package (version)        | R Package (version)         |
+|----------------------------|-----------------------------|
+| `cowplot (1.1.3)`          | `lmtest (0.9-40)`           |
+| `data.table (1.16.2)`      | `lubridate (1.9.4)`         |
+| `directlabels (2024.1.21)` | `magrittr (2.0.3)`          |
+| `dplyr (1.1.4)`            | `plyr (1.8.9)`              |
+| `dotenv (1.0.3)`           | `purrr (1.0.2)`             |
+| `ggplot2 (3.5.1)`          | `quantreg (6.00)`           |
+| `ggrepel (0.9.6)`          | `sandwich (3.1-1)`          |
+| `gridExtra (2.3)`          | `scales (1.3.0)`            |
+| `gt (0.11.1)`              | `stargazer (5.1)`           |
+| `lfe (3.1.1)`              | `tidyr (1.3.1)`             |
 
-## 3.2. Datasets
+## 4.2. Datasets
 
 The analysis uses 10 different datasets, all of which are automatically stored in the `data` folder after initiating the data download procedure (more on this later).
 Table below gives a list of all datasets along with a brief description of each.
@@ -197,21 +225,21 @@ The `codebooks` folder contains 10 Markdown files that document the contents of 
 
 | Dataset																		| Description										               				|
 |-------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| [`df_mw_first.csv`](codebooks/df_mw_first.md)									| Main experimental outcomes at job post level (first observation)			|
-| [`df_mw_all.csv`](codebooks/df_mw_all.md)										| Main experimental outcomes at job post level (all observations).			|
-| [`df_mw_admin.csv`](codebooks/df_mw_admin.md)									| Main experimental outcomes at job post level for admin data.				|
-| [`df_mw_lpw.csv`](codebooks/df_mw_lpw.md): 									| Main experimental outcomes at job post level for low wage positions.		|
-| [`df_exp_results.csv`](codebooks/df_exp_results.md)							| Has aggregated experimental results and summary statistics.					|
-| [`hires_country_composition.csv`](codebooks/hires_country_composition.md)		| Has information on geographic composition of hires.							|
-| [`event_study_windows.csv`](codebooks/event_study_windows.md)					| Defines the time windows and intervals used in the event study analysis.		|
-| [`did_panel.csv`](codebooks/did_panel.md)										| The data used for the DiD analysis.											|
-| [`event_study_hired.csv`](codebooks/event_study_hired.md)						| Has detailed hiring outcome data for use in event study analyses.				|
-| [`event_study_windows_hr_v_fp.csv`](codebooks/event_study_windows_hr_v_fp.md)	| Has the composition of fixed price and hourly jobs over time.					|
+| [`df_mw_first.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_first.md)									| Main experimental outcomes at job post level (first observation)			|
+| [`df_mw_all.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_all.md)										| Main experimental outcomes at job post level (all observations).			|
+| [`df_mw_admin.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_admin.md)									| Main experimental outcomes at job post level for admin data.				|
+| [`df_mw_lpw.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_lpw.md): 									| Main experimental outcomes at job post level for low wage positions.		|
+| [`df_exp_results.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_exp_results.md)							| Has aggregated experimental results and summary statistics.					|
+| [`hires_country_composition.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/hires_country_composition.md)		| Has information on geographic composition of hires.							|
+| [`event_study_windows.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/event_study_windows.md)					| Defines the time windows and intervals used in the event study analysis.		|
+| [`did_panel.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/did_panel.md)										| The data used for the DiD analysis.											|
+| [`event_study_hired.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/event_study_hired.md)						| Has detailed hiring outcome data for use in event study analyses.				|
+| [`event_study_windows_hr_v_fp.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/event_study_windows_hr_v_fp.md)	| Has the composition of fixed price and hourly jobs over time.					|
 
 
-## 3.3. Outputs
+## 4.3. Outputs
 
-### 3.3.1. Figures
+### 4.3.1. Figures
 
 Table below provides a detailed mapping between each figure used in the text of the paper, which R script generates it, and its dataset dependencies. 
 All figures will be stored in `writeup/plots` after the project is built.
@@ -236,7 +264,7 @@ All figures will be stored in `writeup/plots` after the project is built.
 | Figure B4: Event Study Hired Admin 	| `analysis/plot_event_study_hired_admin.R` 		| `data/event_study_hired.csv` 													| Appendix 			|
 
 
-### 3.3.2. Tables
+### 4.3.2. Tables
 
 Table below provides a detailed mapping between each table used in the text of the paper, which R script generates it, and its dataset dependencies. 
 All figures will be stored in `writeup/tables` after the project is built.
@@ -247,7 +275,7 @@ All figures will be stored in `writeup/tables` after the project is built.
 | Table B1: Quantile Hours Worked 	| `analysis/quantile_hours_worked.R` 	| `data/event_study_windows_hr_v_fp.csv` 	| Appendix 			|
 | Table B2: Any Prior 				| `analysis/table_any_prior.R` 			| `data/df_mw_first.csv` 					| Appendix 			|
 
-### 3.3.3. Parameters
+### 4.3.3. Parameters
 
 Some of the scripts do not generate tables or figures, but instead generate "parameters."
 These are numbers that are called out in the text of the paper but are generated automatically. 
@@ -270,7 +298,7 @@ All parameter files are saved in `writeup/parameters` after the corresponding R 
 | `parameters/params_country_selection.tex` 	| `analysis/parameters_country_selection.R` |
 
 
-## 3.4. License for Code
+## 4.4. License for Code
 
 The code is licensed under an MIT license. 
 
@@ -282,9 +310,9 @@ The code is licensed under an MIT license.
 
 
 
-# 4. Data Availability and Provenance
+# 5. Data Availability and Provenance
 
-## 4.1. Provenance
+## 5.1. Provenance
 
 This data comes from a large online labor market (Anonymous Online Platform, 2025) that conducted the experiment described in the paper. 
 The data was pulled from the company's database using SQL. 
@@ -293,13 +321,13 @@ The data provider itself chooses to remain anonymous.
 As such, researchers interested in access to the data may contact John Horton at jjhorton@mit.edu. 
 The author will assist with any reasonable replication attempts for two years following publication.
 
-## 4.2. Statement about Rights
+## 5.2. Statement about Rights
 
 - [X] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript. 
 
 - [] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permissions are documented in the [LICENSE.txt](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/LICENSE.txt) file in the main directory.
 
-## 4.3. Summary of Availability
+## 5.3. Summary of Availability
 
 - [ ] All data **are** publicly available.
 - [ ] Some data **cannot be made** publicly available.
@@ -313,22 +341,20 @@ The author will assist with any reasonable replication attempts for two years fo
 
 
 
-# 5. Computational Requirements
+# 6. Computational Requirements
 
 The computational requirements for reproducing this paper are minimal. 
 The project can be run on a modern laptop in about 20 minutes, using only open-source softwares.
 
-The machine details when I last ran it are: 
+The code was last run on 2025-03-30 15:16:41. The machine details when I last ran it are: 
 System info:
 - OS: "Ubuntu 20.04.6 LTS"
 - Processor:  11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
 - Memory available: 31GB memory
 
-The code was last run on 2025-03-27 15:16:41.
-
 The Linux dependencies are mostly either for LaTeX or dependencies for various R packages.
 
-## 5.1. Runtime
+## 6.1. Runtime
 Approximate time needed to reproduce the analyses on a standard 2023 desktop machine is about 20 minutes:
 
 - [ ] <10 minutes
@@ -347,7 +373,7 @@ Approximate time needed to reproduce the analyses on a standard 2023 desktop mac
 
 
 
-# 6. References
+# 7. References
 
 - Anonymous Online Platform. 2025. "Data For: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment," Unpublished Data, Accessed March 29, 2025.
 

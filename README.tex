@@ -12,16 +12,27 @@
 \usepackage{verbatim}
 \usepackage{fancyvrb}
 \usepackage{enumitem}
+\usepackage{pifont}
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
-\usepackage{pifont}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{verbatim}
 
 % Define custom column types for tabularx:
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 \newcolumntype{T}{>{\ttfamily\small\raggedright\arraybackslash}X}
 
 % Define an environment for tables with 6pt font
-\newenvironment{eightpt}{\begingroup\fontsize{8}{12.5}\selectfont}{\endgroup}
+\newenvironment{eightpt}{\begingroup\fontsize{8}{13}\selectfont}{\endgroup}
 
 \begin{document}
 
@@ -29,19 +40,26 @@
 \subsection*{Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment}
 by \textbf{John Horton}
 
-\section{Overview}
+% ========== Section 1 ==========
+\vspace{1em}
+\section*{1. Overview}
 
-This document describes the organization of code, data, and software associated with \href{https://www.aeaweb.org/articles?id=10.1257/aer.20170637}{``Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment''} (Horton, 2025a). The replication package for this project is available at the Github repository \href{https://www.github.com/johnjosephhorton/minimum_wage.git}{johnjosephhorton/minimum\_wage} (Horton, 2025b) as well as the openICPSR repository \href{http://doi.org/10.3886/E208551V1}{208551V1} (Horton, 2025c).
+This document describes the organization of code, data, and software associated with ``\href{https://www.aeaweb.org/articles?id=10.1257/aer.20170637}{Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment}'' (Horton, 2025a).
+The replication package for this project is available at the Github repository \href{https://www.github.com/johnjosephhorton/minimum\_wage.git}{johnjosephhorton/minimum\_wage} (Horton, 2025b) as well as the openICPSR repository \href{http://doi.org/10.3886/E208551V1}{208551V1} (Horton, 2025c).
 
-This project is largely self-documenting in the sense that the key recipes for building the project are captured in code. The key pieces for replicating this project are:
-\begin{enumerate}[label=\arabic*.]
-  \item A \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile}{Makefile} that gives recipes for how each figure, table, and called-out number is constructed in the paper.
-  \item A \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Dockerfile}{Dockerfile} that describes the system set-up needed with respect to computing resources and packages.
+This project is largely self-documenting in the sense that the key recipes for building the project are captured in code. 
+The key pieces for replicating this project are: 
+
+\begin{enumerate}
+    \item A \href{https://www.github.com/johnjosephhorton/minimum\_wage/blob/main/writeup/Makefile}{Makefile} that gives recipes for how each figure, table, and called-out number is constructed in the paper.
+    \item A \href{https://www.github.com/johnjosephhorton/minimum\_wage/blob/main/writeup/Dockerfile}{Dockerfile} that describes the system set-up needed with respect to computing resources and packages.
 \end{enumerate}
 
-A comprehensive list of files, programs, and software dependencies is provided in the current document for the reader's convenience.
+A comprehensive list of files, programs, and software dependecies is provided in the current document as well for the reader's convenience.
 
-\section{Folder Structure}
+% ========== Section 2 ==========
+\vspace{1em}
+\section*{2. Folder Structure}
 
 The main directory contains three folders:
 \begin{verbatim}
@@ -50,91 +68,148 @@ The main directory contains three folders:
 -writeup
 \end{verbatim}
 
-The \texttt{analysis} folder contains 23 R scripts that generate all outputs used in the paper. (A complete list of programs as well as software requirements and dependencies is given in Section~3.1.)
+The \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis}{\texttt{analysis}} folder contains 23 R scripts that generate all outputs used in the paper.
+The complete list of programs as well as software requirements and dependencies is given in section 4.1.
 
-The \texttt{codebooks} folder contains 10 Markdown files that give an overview of the contents of each dataset used in the analysis (one Markdown file for each dataset). (A complete list of datasets used in this project is given in Section~3.2.)
+The \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks}{\texttt{codebooks}} folder contains 10 Markdown files that give the overview of the contents of each dataset used in the analysis (one Markdown file for each dataset).
+The complete list of datasets used in this project is given in section 4.2.
 
-The \texttt{writeup} folder contains the main writeup of the paper (see \texttt{minimum\_wage.tex}). The figures, tables, and parameter files generated during replication will be stored in \texttt{writeup/plots}, \texttt{writeup/tables}, and \texttt{writeup/parameters}, respectively. In the repositories hosting the replication package, these locations are empty by design. When the project is built, these folders are populated with the necessary files.
+The \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup}{\texttt{writeup}} folder contains the main writeup of the paper (\href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum\_wage.tex}{\texttt{minimum\_wage.tex}}). 
+The figures, tables, and parameter files generated during replication will be stored in \texttt{writeup/plots}, \texttt{writeup/tables}, and \texttt{writeup/parameters}, respectively.
+In the repositories hosting the replication package, these locations are empty by design.
+When the project is built, these folders are populated with the necessary files. 
 
-When the project is built (see Section~2 below), a \texttt{data} folder is automatically created in the main directory and populated with the relevant datasets. (There is no need to create an empty \texttt{data} folder manually.)
+When the project is building (more on this in section 3), a \texttt{data} folder is automatically created in the main directory and populated with the relevant datasets.
+(There is no need to create an empty \texttt{data} folder manually.)
 
-\section{Replication}
+% ========== Section 3 ==========
+\vspace{1em}
+\section*{3. Replication}
 
-A replicator will obtain a \texttt{.env} file from the author and can reproduce the entire writeup of the paper using one of three available options.
+The build process for this project is managed using ``\href{https://www.gnu.org/software/make/manual/make.html}{make}'' -- a tool for automating workflows.
+A replicator will obtain a \texttt{.env} file from the author and can reproduce the entire writeup of the paper via a push-button approach using one of three available options brought in section 3.2.
 
-\subsection{Building the Paper}
+\subsection*{3.1. Makefile Logic}
 
-The building of this project is orchestrated by a software called \href{https://www.gnu.org/software/make/manual/make.html}{make}. From the \texttt{writeup} folder at the command line, simply type:
-\begin{verbatim}
-make minimum_wage.pdf
-\end{verbatim}
-which will then build the paper. Below is a short tutorial on \texttt{make}. Familiar readers may skip the tutorial and go to Section~2.2 directly.
+The \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile}{Makefile} in the \texttt{writeup} folder specifies the complete list of file dependencies for replication of the project. 
+A comprehensive list of all dependencies is provided in section 4 of the current readme as well.
+Below I provide a short tutorial on \texttt{make}. 
+Familiar readers may skip the tutorial and go to section 3.2 directly.
 
-\subsubsection{A Short Make Tutorial}
-A Makefile lists recipes for how a particular output used in the paper is constructed. The Makefile entry for the \texttt{first\_stage.pdf} in the \texttt{plots} folder looks like this:
+\subsubsection*{3.1.1. A Short Make Tutorial}
+A Makefile lists recipes for how a particular output used in the paper is constructed.
+The Makefile entry for the \texttt{first\_stage.pdf} in the \texttt{plots} folder looks like this: 
+
 \begin{verbatim}
 plots/first_stage.pdf: ../analysis/first_stage.R  data/df_mw_first.csv
 	cd ../analysis && Rscript first_stage.R
 \end{verbatim}
-Note that the target, or output, is \texttt{plots/first\_stage.pdf}. After the colon are the dependencies—here, the R file \texttt{first\_stage.R} in the \texttt{analysis} folder and the dataset \texttt{data/df\_mw\_first.csv}. The indented line is the recipe that constructs the target by running \texttt{Rscript} on \texttt{first\_stage.R}.
 
-There is code shared across multiple figures or tables. For example, \texttt{utilities\_outcome\_experimental\_plots.R} contains helper functions used in several plots. To capture this dependency, the Makefile has entries like:
+Note that the target, or output is \texttt{plots/first\_stage.pdf}.  
+After the colon is what this output depends on, code-wise, which is an R file in the \texttt{analysis} folder called \texttt{first\_stage.R}.
+The tabbed-in-line below is the recipe for how the target is constructed. 
+In this case, it is just by running \texttt{Rscript} on \texttt{first\_stage.R.}
+
+There is some code that is shared across multiple figures or tables in this repository. 
+For example, \texttt{utilities\_outcome\_experimental\_plots.R} has helper functions used in several plots.
+To capture this dependency, there are entries in the Makefile that look like this: 
+
 \begin{verbatim}
 analysis/plot_any_exper.R: analysis/utilities_outcome_experimental_plots.R
 	touch analysis/plot_any_exper.R
 \end{verbatim}
-The command \texttt{touch} updates the timestamp of \texttt{analysis/plot\_any\_exper.R}, which in turn causes the recipe for \texttt{any\_exper.pdf} to be re-run because \texttt{plot\_any\_exper.R} is a dependency.
 
-\subsection{Getting the Data}
+The command \texttt{touch} here updates the timestamp of \texttt{analysis/plot\_any\_exper.R} which in turn would cause the recipe for \texttt{any\_exper.pdf} to be re-run, as \texttt{plot\_any\_exper.R} is a dependency.
 
-To get the data, obtain a \texttt{.env} file from the author and place it in the \texttt{\~{}/minimum\_wage/writeup} folder. The \texttt{.env} file contains: (1) a private URL to the zipped and encrypted data, and (2) a key to decrypt the data. An example \texttt{.env} file is:
+\subsection*{3.2. Building the Project}
+
+To get the data and build the project, you need to obtain a \texttt{.env} file from the author and put it in the \texttt{\~/minimum\_wage/writeup} folder. 
+The \texttt{.env} file contains: 1) a private URL to the zipped and encrypted data, and 2) a key to decrypt the data. 
+The \texttt{.env} file will look like this:
+
 \begin{verbatim}
 GPG_PASSPHRASE='<password>'
 project_name="minimum_wage"
 DROPBOX_URL="<url of dropbox link hosting the data>"(base)
 \end{verbatim}
-These values are used by the bash script \texttt{fetch\_data.sh} in the main directory.
 
-There are three options to get the data:
+These values are used in a bash script that fetches the data, at \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/fetch_data.sh}{fetch\_data.sh} in the main directory.
 
-\subsubsection{Non-Docker, Local Approach (Recommended)}
-Run the following in the command line:
-\begin{verbatim}
-$ cd writeup 
-$ make docker
-\end{verbatim}
-The script \texttt{system\_update.sh} in the main directory will automatically install the right dependencies on a Linux machine and build the project.
+There are three options to get the data and build the project: 1) local machine approach, 2) Docker approach, and 3) Replit approach.
+
+\subsubsection*{3.2.1. Non-Docker, Local Approach}
+
+First, assuming the \texttt{.env} file is in your \texttt{Downloads} folder, run the folloiwng in your command line:
+
 \begin{verbatim}
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage
 cp ~/Downloads/.env writeup
-sudo ./system_update.sh
 \end{verbatim}
 
-\subsubsection{Docker Approach}
-Clone the repository and (assuming the \texttt{.env} file is in your Downloads folder):
+Equivalently, you can download the project and manually put the \texttt{.env} file in the \texttt{writeup} folder.
+
+On a Linux machine, the \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/system_setup.sh}{system\_setup.sh} file in the main directory will install the right dependencies. 
+In the command line, type:
+
+\begin{verbatim}
+sudo ./system_setup.sh
+\end{verbatim}
+
+Then, running the following will build the project:
+
+\begin{verbatim}
+cd writeup 
+make minimum_wage.pdf
+\end{verbatim}
+
+On a non-Linux machine, ensure the R packages listed in section 4.1.2 are installed on your machine. 
+Then, run the following to build everything:
+
+\begin{verbatim}
+git clone git@github.com:johnjosephhorton/minimum_wage.git
+cd minimum_wage/writeup
+make minimum_wage.pdf
+\end{verbatim}
+
+\subsubsection*{3.2.2. Docker Approach}
+
+As in the Non-Docker approach, clone (or download) the repository and ensure a copy of the \texttt{.env} file is present in the \texttt{writeup} folder.
+To clone the repository and copy a version of the \texttt{.env} file to the \texttt{writeup} folder you can type the following in the command line:
+
 \begin{verbatim}
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage/writeup
 cp ~/Downloads/.env .
 \end{verbatim}
-Then run:
+
+From here, running this will build the entire project:
+
 \begin{verbatim}
 make docker
 \end{verbatim}
-The final PDF will be inside the Docker container, which will provide a localhost URL to access the PDF.
 
-\subsubsection{Replit Approach (Convenient)}
-A public Replit "repl" is available at \url{https://replit.com/@johnhorton/minimumwage}. Fork this repository, add the \texttt{.env} file to the \texttt{writeup} folder, and press the big green “Run” button. The dependencies are specified in the \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix.sh}{replit.nix} file in the main directory. The PDF will be generated and stored in the \texttt{writeup} folder.
+After the project is built, a copy of the final pdf will appear inside the \texttt{writeup} folder on your local machine.
 
-\section{Code, Datasets, and Outputs}
+\subsubsection*{3.2.3. Replit Approach}
+
+I have created a public replit ``repl'' here: \href{https://replit.com/@johnhorton/minimumwage}{https://replit.com/@johnhorton/minimumwage}.
+You can \textbf{fork} this repository, then add the \texttt{.env} file to the \texttt{writeup} folder then just push the big green `Run' button.
+The dependencies are specified in the \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix}{replit.nix} file available in the main directory.
+It will generate the PDF and store it in \texttt{writeup}.
+
+% ========== Section 4 ==========
+\vspace{1em}
+\section*{4. Code, Datasets, and Outputs}
 
 This section describes software requirements, datasets used, and outputs of the analysis.
 
-\subsection{Program and Software}
-The entire project has been implemented in R (version 4.4.1). The \texttt{analysis} folder contains 23 R scripts that utilize 10 datasets to generate all outputs reported in the paper.
+\subsection*{4.1 Program and Software}
 
-\subsubsection{R Scripts}
+The entire project has been implemented in R (version 4.4.1). The \texttt{analysis} folder contains 23 R scripts that utilize 10 datasets to generate all outputs reported in the paper. 
+
+\subsubsection*{4.1.1. R Scripts}
+
 Table below provides a list of all 23 R scripts located in the \texttt{analysis} folder.
 
 \begin{eightpt}
@@ -158,33 +233,37 @@ utilities\_outcome\_experimental\_plots.R & \\
 \end{tabularx}
 \end{eightpt}
 
-\subsubsection{R Packages}
-The complete list of R packages used in the scripts above, along with the versions last used to run the code, is given below.
+\subsubsection*{4.1.2. R Packages}
+
+The complete list of R packages used in the scripts above, along with the versions I last used to run the code is given in the table below.
 
 \begin{eightpt}
 \begin{tabularx}{\textwidth}{TT}
 \toprule
 R Package (version) & R Package (version) \\
 \midrule
-cowplot (1.1.3) & data.table (1.16.2) \\
-directlabels (2024.1.21) & dplyr (1.1.4) \\
-ggplot2 (3.5.1) & ggrepel (0.9.6) \\
-gridExtra (2.3) & gt (0.11.1) \\
-lfe (3.1.1) & lmtest (0.9-40) \\
-lubridate (1.9.4) & magrittr (2.0.3) \\
-plyr (1.8.9) & purrr (1.0.2) \\
-quantreg (6.00) & sandwich (3.1-1) \\
-scales (1.3.0) & stargazer (5.1) \\
-tidyr (1.3.1) & \\
+cowplot (1.1.3)          & lmtest (0.9-40)           \\
+data.table (1.16.2)      & lubridate (1.9.4)         \\
+directlabels (2024.1.21) & magrittr (2.0.3)          \\
+dplyr (1.1.4)            & plyr (1.8.9)              \\
+dotenv (1.0.3)           & purrr (1.0.2)             \\
+ggplot2 (3.5.1)          & quantreg (6.00)           \\
+ggrepel (0.9.6)          & sandwich (3.1-1)          \\
+gridExtra (2.3)          & scales (1.3.0)            \\
+gt (0.11.1)              & stargazer (5.1)           \\
+lfe (3.1.1)              & tidyr (1.3.1)             \\
 \bottomrule
 \end{tabularx}
 \end{eightpt}
 
-\subsection{Datasets}
-The analysis uses 10 different datasets, all automatically stored in the \texttt{data} folder after initiating the data download procedure. The \texttt{codebooks} folder contains 10 Markdown files that document the contents of each dataset. The table below lists all datasets along with a brief description.
+\subsection*{4.2. Datasets}
+
+The analysis uses 10 different datasets, all of which are automatically stored in the \texttt{data} folder after initiating the data download procedure (more on this later).
+Table below gives a list of all datasets along with a brief description of each.
+The \texttt{codebooks} folder contains 10 Markdown files that document the contents of each dataset.
 
 \begin{eightpt}
-\begin{tabularx}{\textwidth}{@{}LL@{}}
+\begin{tabularx}{\textwidth}{T@{}p{0.5\textwidth}p{0.5\textwidth}@{}}
 \toprule
 Dataset & Description \\
 \midrule
@@ -202,10 +281,13 @@ Dataset & Description \\
 \end{tabularx}
 \end{eightpt}
 
-\subsection{Outputs}
 
-\subsubsection{Figures}
-The table below maps each figure used in the paper to the generating R script and its dataset dependencies. All figures are stored in \texttt{writeup/plots} after the project is built.
+\subsection*{4.3. Outputs}
+
+\subsubsection*{4.3.1. Figures}
+
+Table below provides a detailed mapping between each figure used in the text of the paper, which R script generates it, and its dataset dependencies. 
+All figures will be stored in \texttt{writeup/plots} after the project is built.
 
 \begin{eightpt}
 \begin{tabularx}{\textwidth}{@{}p{0.07\textwidth}p{0.34\textwidth}p{0.40\textwidth}>{\centering\arraybackslash}p{0.125\textwidth}@{}}
@@ -231,11 +313,13 @@ Figure B4 & \texttt{analysis/plot\_event\_study\_hired\_admin.R} & \texttt{data/
 \end{tabularx}
 \end{eightpt}
 
-\subsubsection{Tables}
-The table below maps each table used in the paper to its generating R script and dataset dependencies. All tables are stored in \texttt{writeup/tables} after the project is built.
+\subsubsection*{4.3.2. Tables}
+
+Table below provides a detailed mapping between each table used in the text of the paper, which R script generates it, and its dataset dependencies. 
+All tables will be stored in \texttt{writeup/tables} after the project is built.
 
 \begin{eightpt}
-\begin{tabularx}{\textwidth}{@{}p{0.12\textwidth}p{0.35\textwidth}p{0.34\textwidth}>{\centering\arraybackslash}p{0.125\textwidth}@{}}
+\begin{tabularx}{\textwidth}{@{}p{0.07\textwidth}p{0.34\textwidth}p{0.40\textwidth}>{\centering\arraybackslash}p{0.125\textwidth}@{}}
 \toprule
 Table & R Script & Data Dependency & Location in Paper \\
 \midrule
@@ -246,16 +330,20 @@ Table B2 & \texttt{analysis/table\_any\_prior.R} & \texttt{data/df\_mw\_first.cs
 \end{tabularx}
 \end{eightpt}
 
-\subsubsection{Parameters}
-Some scripts generate “parameters” (numbers automatically called out in the paper). For example, after building the project, the file \texttt{parameters/parameters.tex} will contain a line such as:
-\begin{verbatim}
-\newcommand{\numTotal}{159,656}
-\end{verbatim}
-which relates to the total allocation to the experiment. In the \texttt{parameters.R} script, this value is created as follows:
+\subsubsection*{4.3.3. Parameters}
+
+Some of the scripts do not generate tables or figures, but instead generate ``parameters.''
+These are numbers that are called out in the text of the paper but are generated automatically. 
+For example, after the project is built the \texttt{parameters/parameters.tex} file will contain a line 
+\verb|\newcommand{\numTotal}{159,656}| that is related to the total allocation to the experiment.
+If we look in \texttt{parameters.R} script we see the corresponding code that creates this value.
+
 \begin{verbatim}
 addParam("\\numTotal", formatC(dim(df.mw.first)[1], big.mark = ","))
 \end{verbatim}
-The table below maps each parameter file to its generating R script. All parameter files are saved in \texttt{writeup/parameters} after the corresponding R scripts are run.
+
+The table below provides the mapping between each parameter file and the R script that generates it. 
+All parameter files are saved in \texttt{writeup/parameters} after the corresponding R scripts is run.
 
 \begin{eightpt}
 \begin{tabularx}{\textwidth}{@{}LL@{}}
@@ -272,41 +360,55 @@ Parameter File & R Script \\
 \end{tabularx}
 \end{eightpt}
 
-\subsection{License for Code}
+\subsection*{4.4. License for Code}
+
 The code is licensed under an MIT license.
 
-\section{Data Availability and Provenance}
+% ========== Section 5 ==========
+\vspace{1em}
+\section*{5. Data Availability and Provenance}
 
-\subsection{Provenance}
-This data comes from a large online labor market (Anonymous Online Platform, 2025) that conducted the experiment described in the paper. The data was pulled from the company's database using SQL. The data used for this analysis is proprietary and confidential, but may likely be obtained via Data Use Agreements with the data provider. The data provider remains anonymous. Researchers interested in accessing the data may contact John Horton at \texttt{jjhorton@mit.edu}. The author will assist with any reasonable replication attempts for two years following publication.
+\subsection*{5.1. Provenance}
 
-\subsection{Statement about Rights}
+This data comes from a large online labor market (Anonymous Online Platform, 2025) that conducted the experiment described in the paper. 
+The data was pulled from the company's database using SQL. 
+The data used for this analysis is proprietary and confidential, but may likely be obtained with Data Use Agreements with the data provider.
+The data provider itself chooses to remain anonymous.
+As such, researchers interested in access to the data may contact John Horton at \texttt{jjhorton@mit.edu}. 
+The author will assist with any reasonable replication attempts for two years following publication.
+
+\subsection*{5.2. Statement about Rights}
 \begin{itemize}[label=\ding{109}]
   \item [\ding{51}] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript.
   \item I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permissions are documented in the \href{https://www.github.com/johnjosephhorton/minimum_wage/blob/main/LICENSE.txt}{LICENSE.txt} file in the main directory.
 \end{itemize}
 
-\subsection{Summary of Availability}
+\subsection*{5.3. Summary of Availability}
 \begin{itemize}[label=\ding{109}]
   \item All data \textbf{are} publicly available.
   \item Some data \textbf{cannot be made} publicly available.
   \item [\ding{51}] \textbf{No data can be made} publicly available.
 \end{itemize}
 
-\section{Computational Requirements}
+% ========== Section 6 ==========
+\vspace{1em}
+\section*{6. Computational Requirements}
 
-The computational requirements for reproducing this paper are minimal. The project can be run on a modern laptop in about 20 minutes using only open-source software.
+The computational requirements for reproducing this paper are minimal. 
+The project can be run on a modern laptop in about 20 minutes, using only open-source softwares.
 
-The machine details when last run are:
+The code was last run on 2025-03-30 15:16:41. The machine details when I last ran it are:\\
+System info:
 \begin{itemize}
-  \item OS: ``Ubuntu 20.04.6 LTS''
-  \item Processor: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
-  \item Memory available: 31GB
+    \item OS: ``Ubuntu 20.04.6 LTS''
+    \item Processor: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
+    \item Memory available: 31GB memory
 \end{itemize}
 
-The code was last run on 2025-03-27 15:16:41. Linux dependencies include LaTeX and various R package requirements.
+The Linux dependencies are mostly either for LaTeX or dependencies for various R packages.
 
-\subsection{Runtime}
+\subsection*{6.1. Runtime}
+
 Approximate time needed to reproduce the analyses on a standard 2023 desktop machine is about 20 minutes:
 \begin{itemize}[label=\ding{109}]
   \item $<$10 minutes
@@ -320,7 +422,9 @@ Approximate time needed to reproduce the analyses on a standard 2023 desktop mac
   \item Not feasible to run on a desktop machine, as described below.
 \end{itemize}
 
-\section{References}
+% ========== Section 7 ==========
+\vspace{1em}
+\section*{7. References}
 
 \begin{itemize}
   \item Anonymous Online Platform. 2025. ``Data For: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment,'' Unpublished Data, Accessed March 29, 2025.
