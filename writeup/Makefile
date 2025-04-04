@@ -13,11 +13,15 @@ export
 .PHONY: docker
 
 docker:
-	@echo "Building docker image"
-	@cd .. && docker build -t minimum_wage .
-	@echo "Running docker image $(PARENT_DIR)"
-	@echo "Running docker image "$(PARENT_DIR)""
-	@pwd && docker run -v "$(PARENT_DIR)":/minimum_wage minimum_wage
+	@echo "Building docker image (which includes data fetching)"
+	@cd $(PARENT_DIR) && docker build -t minimum_wage .
+
+	@echo "Running container"
+	@docker run --rm \
+		--env-file $(PARENT_DIR)/writeup/.env \
+		-w /minimum_wage/writeup \
+		-v $(PARENT_DIR)/writeup:/minimum_wage/writeup \
+		minimum_wage
 
 
 ######################################
@@ -282,7 +286,7 @@ purge:
 	-cd parameters && find . -maxdepth 1 -type f -print0 | xargs -0 -I {} mv {} unused && touch PLACEHOLDER.txt
 
 
-$(project_name).pdf: create-dirs fetch-data $(project_name).tex $(project_name).bib $(parameters) $(LEVEL_PLOTS) $(LINE_PLOTS) $(WRAPPERS) $(COMBINED_TABLES) $(plots) $(tables)
+$(project_name).pdf: create-dirs fetch-data $(project_name).tex $(project_name).bib $(parameters) $(plots) $(tables)
 	pdflatex -shell-escape -interaction=batchmode $(project_name)
 	pdflatex -shell-escape -interaction=batchmode $(project_name)
 	bibtex $(project_name) 
