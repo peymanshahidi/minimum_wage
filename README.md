@@ -314,7 +314,7 @@ The code is licensed under an MIT license.
 
 ## 5.1. Provenance
 
-This data comes from a large online labor market (Anonymous Online Platform, 2025) that conducted the experiment described in the paper. 
+This data comes from a large online labor market (Anonymous Online Platform, 2023) that conducted the experiment described in the paper. 
 The data was pulled from the company's database using SQL. 
 The data used for this analysis is proprietary and confidential, but may likely be obtained with Data Use Agreements with the data provider.
 The data provider itself chooses to remain anonymous.
@@ -375,7 +375,7 @@ Approximate time needed to reproduce the analyses on a standard 2023 desktop mac
 
 # 7. References
 
-- Anonymous Online Platform. 2025. "Data For: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment," Unpublished Data, Accessed March 29, 2025.
+- Anonymous Online Platform. 2023. "Production Database on Contractors," Unpublished Data, Accessed December 9, 2023.
 
 - Horton, John J. 2025a. “Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment.” American Economic Review 115, No. 1: 117–146. https://doi.org/10.1257/aer.20170637.
 
