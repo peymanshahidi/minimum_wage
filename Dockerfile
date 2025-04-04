@@ -12,6 +12,9 @@ RUN apt-get -y install libnlopt-dev
 RUN apt-get -y install ghostscript
 RUN apt-get -y install wget
 RUN apt-get -y install python3 
+RUN apt-get -y install gnupg
+RUN apt-get -y install file
+RUN apt-get -y install curl
 
 FROM base AS latex
 RUN apt-get -y install texlive-latex-base
@@ -43,7 +46,13 @@ RUN Rscript -e "install.packages('tidyr')"
 RUN Rscript -e "install.packages('remotes')"
 
 FROM rcran AS main
-RUN mkdir minimum_wage
 
+
+# Set working directory inside the image
 WORKDIR /minimum_wage/writeup
-CMD ["make", "minimum_wage.pdf"]
+
+# Copy the project folder into the container
+COPY . /minimum_wage
+
+# Final run command
+CMD ["bash", "-c", "bash /minimum_wage/fetch_data.sh && make minimum_wage.pdf"]
