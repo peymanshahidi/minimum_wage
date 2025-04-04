@@ -255,13 +255,13 @@ All figures will be stored in `writeup/plots` after the project is built.
 | Figure 6: Event Study Hourly Rate 	| `analysis/plot_event_study_hourly_rate_hired.R` 	| `data/event_study_hired.csv` 													| Page 138 			|
 | Figure 7: DiD Outcomes 				| `analysis/plot_did_all_outcomes.R` 				| `data/did_panel.csv` 															| Page 140 			|
 | Figure 8: Application Event Study 	| `analysis/plot_application_event_study.R`	 		| `data/event_study_windows.csv` 												| Page 143 			|
-| Figure A1: Organic Applications 		| `analysis/plot_organic_applications.R` 			| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Appendix 			|
-| Figure A2: Follow-on Openings 		| `analysis/plot_follow_on_openings.R` 				| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Appendix 			|
-| Figure A3: Average Wages by Category 	| `analysis/avg_wages_by_cat.R` 					| `data/df_mw_first.csv` 														| Appendix 			|
-| Figure B1: Hours with 0 for Unfilled 	| `analysis/plot_hours_zero.R` 						| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Appendix 			|
-| Figure B2: Any Experience 			| `analysis/plot_any_exper.R` 						| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Appendix 			|
-| Figure B3: Feedback 					| `analysis/plot_feedback.R` 						| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Appendix 			|
-| Figure B4: Event Study Hired Admin 	| `analysis/plot_event_study_hired_admin.R` 		| `data/event_study_hired.csv` 													| Appendix 			|
+| Figure A1: Organic Applications 		| `analysis/plot_organic_applications.R` 			| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Page A2 			|
+| Figure A2: Follow-on Openings 		| `analysis/plot_follow_on_openings.R` 				| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Page A3 			|
+| Figure A3: Average Wages by Category 	| `analysis/avg_wages_by_cat.R` 					| `data/df_mw_first.csv` 														| Page A6 			|
+| Figure B1: Hours with 0 for Unfilled 	| `analysis/plot_hours_zero.R` 						| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Page A7 			|
+| Figure B2: Any Experience 			| `analysis/plot_any_exper.R` 						| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Page A9 			|
+| Figure B3: Feedback 					| `analysis/plot_feedback.R` 						| `data/df_mw_all.csv`<br>`data/df_mw_admin.csv`<br>`data/df_mw_lpw.csv` 		| Page A9 			|
+| Figure B4: Event Study Hired Admin 	| `analysis/plot_event_study_hired_admin.R` 		| `data/event_study_hired.csv` 													| Page A11 			|
 
 
 ### 4.3.2. Tables
@@ -271,9 +271,9 @@ All figures will be stored in `writeup/tables` after the project is built.
 
 | Table 							| R Script 								| Data Dependency 							| Location in Paper |
 |-----------------------------------|---------------------------------------|-------------------------------------------|-------------------|
-| Table A1: Randomization Check 	| `analysis/randomization_check.R` 		| `data/df_mw_first.csv` 					| Appendix 			|
-| Table B1: Quantile Hours Worked 	| `analysis/quantile_hours_worked.R` 	| `data/event_study_windows_hr_v_fp.csv` 	| Appendix 			|
-| Table B2: Any Prior 				| `analysis/table_any_prior.R` 			| `data/df_mw_first.csv` 					| Appendix 			|
+| Table A1: Randomization Check 	| `analysis/randomization_check.R` 		| `data/df_mw_first.csv` 					| Page A2 			|
+| Table B1: Quantile Hours Worked 	| `analysis/quantile_hours_worked.R` 	| `data/event_study_windows_hr_v_fp.csv` 	| Page A8 			|
+| Table B2: Any Prior 				| `analysis/table_any_prior.R` 			| `data/df_mw_first.csv` 					| Page A10 			|
 
 ### 4.3.3. Parameters
 
