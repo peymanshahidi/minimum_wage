@@ -12,3 +12,5 @@ data/*
 *.log
 *.aux
 *.out
+send_data.sh
+README.tex
