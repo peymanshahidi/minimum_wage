@@ -8,3 +8,6 @@ analysis/Rplots.pdf
 writeup/minimum_wage.pdf
 data/*
 *.gz.gpg
+*.gz
+*.log
+*.aux
