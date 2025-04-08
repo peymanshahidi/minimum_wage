@@ -1,4 +1,4 @@
-data.tar.gz
+*.tar.gz
 *.env
 writeup/tables/*
 writeup/plots/*
@@ -7,4 +7,4 @@ writeup/parameters/*
 analysis/Rplots.pdf
 writeup/minimum_wage.pdf
 data/*
-remote_data.tar.gz.gpg
+*.gz.gpg

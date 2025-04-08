@@ -19,8 +19,8 @@ spinner() {
 # Set file names and paths
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WRITEUP_DIR="$ROOT_DIR/writeup"
-GPG_FILE="$ROOT_DIR/remote_data.tar.gz.gpg"
-TAR_FILE="$ROOT_DIR/data.tar.gz"
+GPG_FILE="$ROOT_DIR/minimum_wage_data.tar.gz.gpg"
+TAR_FILE="$ROOT_DIR/minimum_wage_data.tar.gz"
 
 # Load .env if DROPBOX_URL is not set
 if [ -z "${DROPBOX_URL:-}" ] && [ -f "$WRITEUP_DIR/.env" ]; then

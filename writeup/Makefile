@@ -13,15 +13,22 @@ export
 .PHONY: docker
 
 docker:
-	@echo "Building docker image (which includes data fetching)"
+	@echo "Building docker image (which includes data fetching)..."
 	@cd $(PARENT_DIR) && docker build -t minimum_wage .
 
-	@echo "Running container"
+	@echo "Running container..."
 	@docker run --rm \
 		--env-file $(PARENT_DIR)/writeup/.env \
 		-w /minimum_wage/writeup \
 		-v $(PARENT_DIR)/writeup:/minimum_wage/writeup \
 		minimum_wage
+
+	# Export the docker image as a Tar export in the main directory
+	@echo "Archiving Docker image 'minimum_wage'..."
+	@docker save -o $(PARENT_DIR)/minimum_wage_data.tar minimum_wage
+	
+	@gzip $(PARENT_DIR)/minimum_wage_data.tar
+	@echo "Docker image archived as $(PARENT_DIR)/minimum_wage_data.tar.gz"
 
 
 ######################################
@@ -53,10 +60,10 @@ create-dirs:
 	@mkdir -p $(DIRS)
 
 
-../remote_data.tar.gz.gpg:
+../minimum_wage_data.tar.gz.gpg:
 	cd .. && ./fetch_data.sh
 
-fetch-data: ../remote_data.tar.gz.gpg
+fetch-data: ../minimum_wage_data.tar.gz.gpg
 	echo "Fetching data"
 
 
@@ -279,8 +286,8 @@ website: $(project_name).pdf
 
 purge:
 	-rm -rf ../data
-	-rm ../remote_data.tar.gz
-	-rm ../remote_data.tar.gz.gpg
+	-rm ../minimum_wage_data.tar.gz
+	-rm ../minimum_wage_data.tar.gz.gpg
 	-cd plots && find . -maxdepth 1 -type f -print0 | xargs -0 -I {} mv {} unused && touch PLACEHOLDER.txt
 	-cd tables && find . -maxdepth 1 -type f -print0 | xargs -0 -I {} mv {} unused && touch PLACEHOLDER.txt
 	-cd parameters && find . -maxdepth 1 -type f -print0 | xargs -0 -I {} mv {} unused && touch PLACEHOLDER.txt

@@ -242,6 +242,7 @@ The `codebooks` folder contains 10 Markdown files that document the contents of 
 ### 4.3.1. Figures
 
 Table below provides a detailed mapping between each figure used in the text of the paper, which R script generates it, and its dataset dependencies. 
+(Note that the location in paper entries correspond to the published version of the manuscript, not the version produced by the replication package.)
 All figures will be stored in `writeup/plots` after the project is built.
 
 
@@ -267,6 +268,7 @@ All figures will be stored in `writeup/plots` after the project is built.
 ### 4.3.2. Tables
 
 Table below provides a detailed mapping between each table used in the text of the paper, which R script generates it, and its dataset dependencies. 
+(Note that the location in paper entries correspond to the published version of the manuscript, not the version produced by the replication package.)
 All figures will be stored in `writeup/tables` after the project is built.
 
 | Table 							| R Script 								| Data Dependency 							| Location in Paper |
@@ -379,6 +381,6 @@ Approximate time needed to reproduce the analyses on a standard 2023 desktop mac
 
 - Horton, John J. 2025a. “Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment.” American Economic Review 115, No. 1: 117–146. https://doi.org/10.1257/aer.20170637.
 
-- Horton, John J. 2025b. “minimum_wage.” GitHub Repository. Accessed March 27, 2025. https://github.com/johnjosephhorton/minimum_wage.
+- Horton, John J. 2025b. “minimum_wage (Version 1.0).” GitHub Repository. Accessed March 27, 2025. https://github.com/johnjosephhorton/minimum_wage/releases/tag/v1.0.
 
 - Horton, John J. 2025c. “Code For: Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment.” American Economic Association, Inter-university Consortium for Political and Social Research. http://doi.org/10.3886/E208551V1.
