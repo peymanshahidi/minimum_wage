@@ -40,31 +40,31 @@ The main directory contains three folders:
 ```
 
 The [`analysis`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/analysis) folder contains 23 R scripts that generate all outputs used in the paper.
-The complete list of programs as well as software requirements and dependencies is given in section 4.1.
+The complete list of programs as well as software requirements and dependencies is given in Section 4.1.
 
 The [`codebooks`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks) folder contains 10 Markdown files that give the overview of the contents of each dataset used in the analysis (one Markdown file for each dataset).
-The complete list of datasets used in this project is given in section 4.2.
+The complete list of datasets used in this project is given in Section 4.2.
 
 The [`writeup`]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup) folder contains the main writeup of the paper ([`minimum_wage.tex`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/minimum_wage.tex)). 
 The figures, tables, and parameter files generated during replication will be stored in `writeup/plots`, `writeup/tables`, and `writeup/parameters`, respectively.
 In the repositories hosting the replication package, these locations are empty by design.
 When the project is built, these folders are populated with the necessary files. 
 
-When the project is building (more on this in section 3), a `data` folder is automatically created in the main directory and populated with the relevant datasets.
+When the project is building (more on this in Section 3), a `data` folder is automatically created in the main directory and populated with the relevant datasets.
 (There is no need to create an empty `data` folder manually.)
 
 # 3. Replication
 
 The build process for this project is managed using "[make](https://www.gnu.org/software/make/manual/make.html)," a tool for automating workflows.
-A replicator will obtain a `.env` file from the author and can reproduce the entire writeup of the paper via a push-button approach using one of three available options brought in section 2.2.
+A replicator will obtain a `.env` file from the author and can reproduce the entire writeup of the paper via a push-button approach using one of three available options brought in Section 3.2.
 
 ## 3.1. Makefile Logic 
 
 
 The [Makefile]( https://www.github.com/johnjosephhorton/minimum_wage/blob/main/writeup/Makefile) in the `writeup` folder specifies the complete list of file dependencies for replication of the project. 
-A comprehensive list of all dependencies is provided in section 4 of the current readme as well.
+A comprehensive list of all dependencies is provided in Section 4 of the current readme as well.
 Below I provide a short tutorial on `make`. 
-Familiar readers may skip the tutorial and go to section 3.2 directly.
+Familiar readers may skip the tutorial and go to Section 3.2 directly.
 
 ### 3.1.1. A Short Make Tutorial
 A Makefile lists recipes for how a particular output used in the paper is constructed.
@@ -76,9 +76,9 @@ plots/first_stage.pdf: ../analysis/first_stage.R  data/df_mw_first.csv
 ```
 
 Note that the target, or output is `plots/first_stage.pdf` 
-After the colon is what this output depends on, code-wise, which is an R file in the `analysis` folder called `first_stage.R`.
-The tabbed-in-line below is the recipe for how the target is constructed. 
-In this case, it is just by running `Rscript` on `first_stage.R.`
+After the colon is what this output depends on, which is an R file in the `analysis` folder called `first_stage.R`, and a dataset called `df_mw_first.csv` in folder `data`.
+The tabbed-in-line entry on the second line is the recipe for how the target is constructed. 
+In this case, it is just by running `Rscript` on `first_stage.R`.
 
 There is some code that is shared across multiple figures or tables in this repository. 
 For example, `utilities_outcome_experimental_plots.R` has helper functions used in several plots.
@@ -97,9 +97,9 @@ The `.env` file contains: 1) a private URL to the zipped and encrypted data, and
 The `.env` file will look like this:
 
 ```bash
-GPG_PASSPHRASE='<password>'
+GPG_PASSPHRASE="<password>"
 project_name="minimum_wage"
-DROPBOX_URL="<url of dropbox link hosting the data>"(base)
+DROPBOX_URL="<url of dropbox link hosting the data>"
 ```
 
 These values are used in a bash script that fetches the data, at [fetch_data.sh](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/fetch_data.sh) in the main directory.
@@ -125,26 +125,27 @@ In the command line, type:
 sudo ./system_setup.sh
 ```
 
-Then, running the following will build the project:
+Then, running the following in the command line will build the project:
 
 ```bash 
 cd writeup 
 make minimum_wage.pdf
 ```
 
-On a non-Linux machine, ensure the R packages listed in section 4.1.2 are installed on your machine. 
-Then, run the following to build everything:
+On a non-Linux machine, ensure the R packages listed in Section 4.1.2 are installed on your machine.
+Then, run the following in the command line to build everything:
 
 ```bash 
 git clone git@github.com:johnjosephhorton/minimum_wage.git
 cd minimum_wage/writeup
+cp ~/Downloads/.env .
 make minimum_wage.pdf
 ```
 
 ### 3.2.2. Docker Approach
 
 As in the Non-Docker approach, clone (or download) the repository and ensure a copy of the `.env` file is present in the `writeup` folder.
-To clone the repository and copy a version of the `.env` file to the `writeup` folder you can type the following in the command line:
+To clone the repository and copy a version of the `.env` file to the `writeup` folder you can type the following in the command line (assuming the `.env` file is in your `Downloads` folder):
 
 ```bash
 git clone git@github.com:johnjosephhorton/minimum_wage.git
@@ -152,7 +153,7 @@ cd minimum_wage/writeup
 cp ~/Downloads/.env . 
 ```
 
-From here, running this will build the entire project:
+From here, running the following in the command line will build the entire project:
 
 ```bash
 make docker
@@ -162,9 +163,9 @@ After the project is built, a copy of the final pdf will appear inside the `writ
 ### 3.2.3. Replit Approach
 
 I have created a public replit "repl" here: https://replit.com/@johnhorton/minimumwage.
-You can __fork__ this repository, then add the `.env` file to the `writeup` folder then just push the big green 'Run' button.
+You can __fork__ this repository, add the `.env` file to the `writeup` folder, and then just push the big green 'Run' button.
 The dependencies are specified in the [replit.nix](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix) file available in the main directory.
-It will generate the PDF and store it in `writeup`.
+It will generate the PDF and store it in the `writeup` folder.
 
 
 
@@ -178,7 +179,7 @@ It will generate the PDF and store it in `writeup`.
 
 This section describes software requirements, datasets used, and outputs of the analysis.
 
-## 4.1 Program and Software
+## 4.1. Program and Software
 
 The entire project has been implemented in R (version 4.4.1). The `analysis` folder contains 23 R scripts that utilize 10 datasets to generate all outputs reported in the paper. 
 
@@ -229,7 +230,7 @@ The `codebooks` folder contains 10 Markdown files that document the contents of 
 | [`df_mw_first.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_first.md)									| Main experimental outcomes at job post level (first observation)			|
 | [`df_mw_all.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_all.md)										| Main experimental outcomes at job post level (all observations).			|
 | [`df_mw_admin.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_admin.md)									| Main experimental outcomes at job post level for admin data.				|
-| [`df_mw_lpw.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_lpw.md): 									| Main experimental outcomes at job post level for low wage positions.		|
+| [`df_mw_lpw.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_mw_lpw.md) 										| Main experimental outcomes at job post level for low wage positions.		|
 | [`df_exp_results.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/df_exp_results.md)							| Has aggregated experimental results and summary statistics.					|
 | [`hires_country_composition.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/hires_country_composition.md)		| Has information on geographic composition of hires.							|
 | [`event_study_windows.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/event_study_windows.md)					| Defines the time windows and intervals used in the event study analysis.		|
@@ -282,7 +283,7 @@ All figures will be stored in `writeup/tables` after the project is built.
 
 Some of the scripts do not generate tables or figures, but instead generate "parameters."
 These are numbers that are called out in the text of the paper but are generated automatically. 
-For example, after the project is built the `parameters/parameters.tex` file will contain a line `\newcommand{\numTotal}{159,656}` that is related to the total allocation to the experiment.
+For example, after the project is built the `parameters/parameters.tex` file will contain a line `\newcommand{\numTotal}{159,656}` that is related to the total number of job openings assigned to the experiment.
 If we look in `parameters.R` script we see the corresponding code that creates this value.
 ```R
 addParam("\\numTotal", formatC(dim(df.mw.first)[1], big.mark = ","))
@@ -328,7 +329,7 @@ The author will assist with any reasonable replication attempts for two years fo
 
 - [X] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript. 
 
-- [] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permissions are documented in the [LICENSE.txt](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/LICENSE.txt) file in the main directory.
+- [ ] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permissions are documented in the [LICENSE.txt](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/LICENSE.txt) file in the main directory.
 
 ## 5.3. Summary of Availability
 
@@ -349,8 +350,7 @@ The author will assist with any reasonable replication attempts for two years fo
 The computational requirements for reproducing this paper are minimal. 
 The project can be run on a modern laptop in about 20 minutes, using only open-source softwares.
 
-The code was last run on 2025-03-30 15:16:41. The machine details when I last ran it are: 
-System info:
+The code was last run on 2025-03-30 15:16:41. The machine specifications when I last ran it are: 
 - OS: "Ubuntu 20.04.6 LTS"
 - Processor:  11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz, 16 cores
 - Memory available: 31GB memory
