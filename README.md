@@ -56,7 +56,7 @@ When the project is building (more on this in Section 3), a `data` folder is aut
 # 3. Replication
 
 The build process for this project is managed using "[make](https://www.gnu.org/software/make/manual/make.html)," a tool for automating workflows.
-A replicator will obtain a `.env` file from the author and can reproduce the entire writeup of the paper via a push-button approach using one of three available options brought in Section 3.2.
+A replicator will obtain a `.env` file from the author and can reproduce the entire writeup of the paper via a push-button approach using one of two available options brought in Section 3.2.
 
 ## 3.1. Makefile Logic 
 
@@ -81,7 +81,7 @@ The tabbed-in-line entry on the second line is the recipe for how the target is 
 In this case, it is just by running `Rscript` on `first_stage.R`.
 
 There is some code that is shared across multiple figures or tables in this repository. 
-For example, `utilities_outcome_experimental_plots.R` has helper functions used in several plots.
+For example, the R script `utilities_outcome_experimental_plots.R` has helper functions used in several plots.
 To capture this dependency, there are entries in the Makefile that look like this: 
 
 ```Makefile
@@ -104,7 +104,7 @@ DROPBOX_URL="<url of dropbox link hosting the data>"
 
 These values are used in a bash script that fetches the data, at [fetch_data.sh](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/fetch_data.sh) in the main directory.
 
-There are three options to get the data and build the project: 1) local machine approach, 2) Docker approach, and 3) Replit approach.
+There are two options to get the data and build the project: 1) local machine approach and 2) Docker approach.
 
 ### 3.2.1. Non-Docker, Local Approach
 
@@ -160,14 +160,6 @@ make docker
 ```
 After the project is built, a copy of the final pdf will appear inside the `writeup` folder on your local machine.
 
-### 3.2.3. Replit Approach
-
-I have created a public replit "repl" here: https://replit.com/@johnhorton/minimumwage.
-You can __fork__ this repository, add the `.env` file to the `writeup` folder, and then just push the big green 'Run' button.
-The dependencies are specified in the [replit.nix](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/replit.nix) file available in the main directory.
-It will generate the PDF and store it in the `writeup` folder.
-
-
 
 
 <br>
@@ -222,7 +214,7 @@ The complete list of R packages used in the scripts above, along with the versio
 ## 4.2. Datasets
 
 The analysis uses 10 different datasets, all of which are automatically stored in the `data` folder after initiating the data download procedure (more on this later).
-Table below gives a list of all datasets along with a brief description of each.
+Table below gives a list of all datasets used in the analysis along with a brief description of each.
 The `codebooks` folder contains 10 Markdown files that document the contents of each dataset.
 
 | Dataset																		| Description										               				|
@@ -238,6 +230,17 @@ The `codebooks` folder contains 10 Markdown files that document the contents of 
 | [`event_study_hired.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/event_study_hired.md)						| Has detailed hiring outcome data for use in event study analyses.				|
 | [`event_study_windows_hr_v_fp.csv`](https://www.github.com/johnjosephhorton/minimum_wage/blob/main/codebooks/event_study_windows_hr_v_fp.md)	| Has the composition of fixed price and hourly jobs over time.					|
 
+The `data` folder also contains 6 files which <u>are not used in the analysis</u> and are to be <u>ignored</u>. 
+These files are:
+
+| Unused Dataset																|  |
+|-------------------------------------------------------------------------------|--|
+| [`event_study_hired_applicants_with_past_avg_wage.csv`]()						|  |
+| [`event_study_hired_applicants.csv`]()										|  |
+| [`event_study_openings_raw.csv`]()											|  |
+| [`event_study_openings.csv`]() 												|  |
+| [`JobTitles.txt`]()															|  |
+| [`test.txt`]()																|  |
 
 ## 4.3. Outputs
 
